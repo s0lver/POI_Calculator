@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.poicalculator;
+package tamps.cinvestav.s0lver.spCalculator.classes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -1,15 +1,79 @@
-package tamps.cinvestav.s0lver.poicalculator;
+package tamps.cinvestav.s0lver.spCalculator.algorithms;
 
-public class DifferenceCalculator {
-    private static float[] results = new float[2];
+import org.gavaghan.geodesy.Ellipsoid;
+import org.gavaghan.geodesy.GeodeticCalculator;
+import org.gavaghan.geodesy.GeodeticCurve;
+import org.gavaghan.geodesy.GlobalCoordinates;
+import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
+import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
 
-    public static long calculateTimeDifference(GpsFix origin, GpsFix dest) {
-        return dest.getTimestamp().getTime() - origin.getTimestamp().getTime();
+import java.util.ArrayList;
+
+public abstract class StayPointsDetectionAlgorithm {
+    protected long minTimeTreshold;
+    protected double distanceTreshold;
+    protected boolean verbose;
+    protected ArrayList<GpsFix> gpsFixes;
+
+    public StayPointsDetectionAlgorithm(ArrayList<GpsFix> gpsFixes, long minTimeTreshold, double distanceTreshold, boolean verbose) {
+        this.gpsFixes = gpsFixes;
+        this.minTimeTreshold = minTimeTreshold;
+        this.distanceTreshold = distanceTreshold;
+        this.verbose = verbose;
     }
 
-    public static float calculateDistance(GpsFix origin, GpsFix dest) {
-        computeDistanceAndBearing(origin.getLatitude(), origin.getLongitude(), dest.getLatitude(), dest.getLongitude());
-        return results[0];
+    public abstract ArrayList<StayPoint> extractStayPoints();
+
+    /***
+     * Calculates the distance between two points (GPSFix)
+     *
+     * @param p
+     *            Origin point
+     * @param q
+     *            Destination point
+     * @return The distance between p and q points using WGS84 ellipsoid
+     */
+    protected double distance(GpsFix p, GpsFix q) {
+        // instantiate the calculator
+        GeodeticCalculator geoCalc = new GeodeticCalculator();
+
+        // select a reference elllipsoid
+        Ellipsoid reference = Ellipsoid.WGS84;
+
+        // set Lincoln Memorial coordinates
+        GlobalCoordinates lincolnMemorial;
+        lincolnMemorial = new GlobalCoordinates(p.getLatitude(),
+                p.getLongitude());
+
+        // set Eiffel Tower coordinates
+        GlobalCoordinates eiffelTower;
+        eiffelTower = new GlobalCoordinates(q.getLatitude(), q.getLongitude());
+
+        // calculate the geodetic curve
+        GeodeticCurve geoCurve = geoCalc.calculateGeodeticCurve(reference,
+                lincolnMemorial, eiffelTower);
+
+        // System.out.printf(
+        // "   Ellipsoidal Distance: %1.2f kilometers (%1.2f miles)\n",
+        // ellipseKilometers, ellipseMiles);
+        return geoCurve.getEllipsoidalDistance();
+    }
+
+    /***
+     * Calculates the time span between two Points (GPSFix)
+     *
+     * @param p
+     *            Origin point
+     * @param q
+     *            Destination point
+     * @return Time span between the p and q points
+     */
+    protected long timeDifference(GpsFix p, GpsFix q) {
+        if (p == null || q == null) {
+            return Long.MIN_VALUE;
+        }
+        long timespan = q.getTimestamp().getTime() - p.getTimestamp().getTime();
+        return timespan;
     }
 
     /***
@@ -21,6 +85,7 @@ public class DifferenceCalculator {
      * @param lon2
      */
     private static void computeDistanceAndBearing(double lat1, double lon1, double lat2, double lon2) {
+        float[] results = new float[2];
         int MAXITERS = 20;
 
         lat1 *= Math.PI / 180.0;

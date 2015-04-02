@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="POI Calculator:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/POI_Calculator_jar</output-path>
+    <root id="archive" name="POI Calculator.jar">
+      <element id="module-output" name="POI Calculator" />
+    </root>
+  </artifact>
+</component>

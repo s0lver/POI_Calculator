@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.poicalculator;
+package tamps.cinvestav.s0lver.spCalculator.classes;
 
 public class AlgorithmMontoliuExecutor {
 //
@@ -133,7 +133,7 @@ public class AlgorithmMontoliuExecutor {
 //                    System.out.println("Distancia es " + d);
 //                if (d > umbralDistancia) {
 //
-//                    //t = timespan(entrada.get(i), entrada.get(j - 1));
+//                    //t = timeDifference(entrada.get(i), entrada.get(j - 1));
 //                    t = DifferenceCalculator.calculateTimeDifference(entrada.get(i), entrada.get(j - 1));
 //                    if (debug)
 //                        System.out.println("Tiempo es " + t);

@@ -1,7 +1,7 @@
-package tamps.cinvestav.algorithms;
+package tamps.cinvestav.s0lver.spCalculator.algorithms;
 
-import tamps.cinvestav.s0lver.poicalculator.GpsFix;
-import tamps.cinvestav.s0lver.poicalculator.StayPoint;
+import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
+import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,9 +14,9 @@ public class ZhenSqlEnabledAlgorithm extends StayPointsDetectionAlgorithm {
     private String dbTableName = "tbl_geo";
 
 
-    public ZhenSqlEnabledAlgorithm(double minTimeTreshold, double distanceTreshold, boolean verbose,
+    public ZhenSqlEnabledAlgorithm(ArrayList<GpsFix> gpsFixes, long minTimeTreshold, double distanceTreshold, boolean verbose,
                                    String urlDbServer, String dbUsername, String dbPass, String dbTableName) {
-        super(minTimeTreshold, distanceTreshold, verbose);
+        super(gpsFixes, minTimeTreshold, distanceTreshold, verbose);
         this.urlDbServer = urlDbServer;
         this.dbUsername = dbUsername;
         this.dbPassword = dbPass;
@@ -24,7 +24,7 @@ public class ZhenSqlEnabledAlgorithm extends StayPointsDetectionAlgorithm {
     }
 
     @Override
-    public ArrayList<StayPoint> extractPois(ArrayList<GpsFix> gpsFixes) {
+    public ArrayList<StayPoint> extractStayPoints() {
         ArrayList<StayPoint> result = new ArrayList<>();
         try {
             MySQLConnector connector = new MySQLConnector(urlDbServer,
@@ -81,7 +81,7 @@ public class ZhenSqlEnabledAlgorithm extends StayPointsDetectionAlgorithm {
                     distance = distance(pi, pj);
 
                     if (distance > distanceTreshold) {
-                        timespan = timespan(pi, pj);
+                        timespan = timeDifference(pi, pj);
                         if (timespan > minTimeTreshold) {
                             StayPoint sp = StayPoint.createStayPoint(tmpList);
 

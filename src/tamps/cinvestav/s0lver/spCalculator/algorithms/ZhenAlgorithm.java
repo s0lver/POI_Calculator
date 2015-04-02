@@ -1,53 +1,53 @@
-package tamps.cinvestav.algorithms;
+package tamps.cinvestav.s0lver.spCalculator.algorithms;
 
-import tamps.cinvestav.s0lver.poicalculator.GpsFix;
-import tamps.cinvestav.s0lver.poicalculator.StayPoint;
+import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
+import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
 
 import java.util.ArrayList;
 
 public class ZhenAlgorithm extends StayPointsDetectionAlgorithm {
 
-    public ZhenAlgorithm(double minTimeTreshold, double distanceTreshold) {
-        super(minTimeTreshold, distanceTreshold, false);
+    public ZhenAlgorithm(ArrayList<GpsFix> gpsFixes, long minTimeTreshold, double distanceTreshold) {
+        super(gpsFixes, minTimeTreshold, distanceTreshold, false);
     }
 
     @Override
-    public ArrayList<StayPoint> extractPois(ArrayList<GpsFix> list) {
+    public ArrayList<StayPoint> extractStayPoints() {
         ArrayList<StayPoint> result = new ArrayList<>();
-        GpsFix pi = null, pj = null;
-        double distance = 0.0;
-        long timespan = 0L;
+        GpsFix pi, pj;
+        double distance;
+        long timespan;
 
-        int i = 0, j = 0, pointNum = list.size();
+        int i = 0, j = 0, pointNum = gpsFixes.size();
         boolean weAreDone = false;
 
-        if (list.size() == 0) {
+        if (gpsFixes.size() == 0) {
             System.out.println("Provided list is empty");
             return result;
         }
 
         while (i < pointNum) {
             if (weAreDone) {
-                StayPoint sp = StayPoint.createStayPoint(list, i, j);
+                StayPoint sp = StayPoint.createStayPoint(gpsFixes, i, j);
                 result.add(sp);
                 break;
             }
-            pi = list.get(i);
+            pi = gpsFixes.get(i);
             j = i + 1;
             while (j < pointNum) {
-                pj = list.get(j);
+                pj = gpsFixes.get(j);
                 distance = distance(pi, pj);
                 if (distance > distanceTreshold) {
-                    timespan = timespan(pi, pj);
+                    timespan = timeDifference(pi, pj);
                     // If the point is NOT within the interval, then we
                     // have moved out of the stay point
                     if (timespan > minTimeTreshold) {
-                        StayPoint sp = StayPoint.createStayPoint(list, i, j);
+                        StayPoint sp = StayPoint.createStayPoint(gpsFixes, i, j);
                         result.add(sp);
                         if (verbose) {
                             System.out.println("New SP generated. Fixes involved: ");
                             for (int k = i; k <= j; k++) {
-                                System.out.println(list.get(k));
+                                System.out.println(gpsFixes.get(k));
                             }
                         }
                     }

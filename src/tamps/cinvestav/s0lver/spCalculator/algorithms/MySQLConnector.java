@@ -1,6 +1,6 @@
-package tamps.cinvestav.algorithms;
+package tamps.cinvestav.s0lver.spCalculator.algorithms;
 
-import tamps.cinvestav.s0lver.poicalculator.GpsFix;
+import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
 
 import java.sql.*;
 

@@ -1,9 +1,15 @@
-package tamps.cinvestav.s0lver;
+package tamps.cinvestav.s0lver.spCalculator;
 
-import tamps.cinvestav.s0lver.poicalculator.GpsFix;
+import tamps.cinvestav.s0lver.spCalculator.algorithms.MontoliuAlgorithm;
+import tamps.cinvestav.s0lver.spCalculator.algorithms.StayPointsDetectionAlgorithm;
+import tamps.cinvestav.s0lver.spCalculator.algorithms.ZhenAlgorithm;
+import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
+import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class Main {
@@ -23,6 +29,29 @@ public class Main {
                 new GpsFix(24.849789f, -98.155647f, 0, simpleDateFormat.parse("Tue May 15 14:15:39 CDT 2012"), 0),
                 new GpsFix(24.850178f, -98.155594f, 0, simpleDateFormat.parse("Tue May 15 14:16:32 CDT 2012"), 0)
         };
+
+
+        ArrayList<GpsFix> gpsFixArrayList = new ArrayList<GpsFix>(Arrays.asList(gpsFixes));
+
+        StayPointsDetectionAlgorithm zhengAlgorithm = new ZhenAlgorithm(gpsFixArrayList, 60 * 1000, 150);
+        StayPointsDetectionAlgorithm montoliuAlgorithm = new MontoliuAlgorithm(gpsFixArrayList, 60 * 1000, 3600 * 1000, 150);
+
+        ArrayList<StayPoint> stayPointsZheng = zhengAlgorithm.extractStayPoints();
+        ArrayList<StayPoint> stayPointsMontoliu = montoliuAlgorithm.extractStayPoints();
+
+        System.out.println(String.format("Zheng obtained %d points", stayPointsZheng.size()));
+        System.out.println(String.format("Montoliu obtained %d points", stayPointsMontoliu.size()));
+
+        System.out.println("Points obtained by Zheng");
+        for (StayPoint stayPoint : stayPointsZheng) {
+            System.out.println(stayPoint);
+        }
+
+        System.out.println("Points obtained by Montoliu");
+        for (StayPoint stayPoint : stayPointsMontoliu) {
+            System.out.println(stayPoint);
+        }
+
 
     }
 }
