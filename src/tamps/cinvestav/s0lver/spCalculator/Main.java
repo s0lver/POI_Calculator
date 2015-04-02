@@ -6,6 +6,10 @@ import tamps.cinvestav.s0lver.spCalculator.algorithms.ZhenAlgorithm;
 import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
 import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,7 +18,7 @@ import java.util.Locale;
 
 public class Main {
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, IOException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
 
         GpsFix[] gpsFixes = new GpsFix[]{
@@ -30,6 +34,8 @@ public class Main {
                 new GpsFix(24.850178f, -98.155594f, 0, simpleDateFormat.parse("Tue May 15 14:16:32 CDT 2012"), 0)
         };
 
+
+        //writeFile("c:\\users\\cinvestav\\Desktop\\gpsFixes.csv", gpsFixes);
 
         ArrayList<GpsFix> gpsFixArrayList = new ArrayList<GpsFix>(Arrays.asList(gpsFixes));
 
@@ -51,7 +57,13 @@ public class Main {
         for (StayPoint stayPoint : stayPointsMontoliu) {
             System.out.println(stayPoint);
         }
+    }
 
-
+    public static void writeFile(String fileName, GpsFix[] gpsFixes) throws IOException {
+        PrintWriter pw = new PrintWriter(new FileWriter(fileName));
+        for (GpsFix gpsFix: gpsFixes) {
+            pw.println(gpsFix.toCsv());
+        }
+        pw.close();
     }
 }

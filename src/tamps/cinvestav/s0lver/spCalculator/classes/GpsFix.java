@@ -51,12 +51,6 @@ public class GpsFix {
         this.timestamp = timestamp;
     }
 
-    public String toString(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
-        return String.format("Lat: %f, Long: %f, Alt: %f, Date: %s", getLatitude(), getLongitude(),
-                getAltitude(), simpleDateFormat.format(getTimestamp()));
-    }
-
     public float getAccuracy() {
         return accuracy;
     }
@@ -64,4 +58,17 @@ public class GpsFix {
     public void setAccuracy(float accuracy) {
         this.accuracy = accuracy;
     }
+
+    public String toString(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+        return String.format("Lat: %f, Long: %f, Alt: %f, Acc: %f, Date: %s", getLatitude(), getLongitude(),
+                getAltitude(), getAccuracy(), simpleDateFormat.format(getTimestamp()));
+    }
+
+    public String toCsv(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+        return String.format("%f,%f,%f,%f,%s", getLatitude(), getLongitude(),
+                getAltitude(), getAccuracy(), simpleDateFormat.format(getTimestamp()));
+    }
+
 }
