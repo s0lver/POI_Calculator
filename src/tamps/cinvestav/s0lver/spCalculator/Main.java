@@ -8,15 +8,13 @@ import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
 import tamps.cinvestav.s0lver.spCalculator.guiMontoliou.GUIMontoliouLive;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 public class Main {
 
@@ -56,7 +54,7 @@ public class Main {
     }
 
     public static GpsFix[] createList() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         GpsFix[] gpsFixes = new GpsFix[]{
                 new GpsFix(24.840481f, -98.166489f, 0, simpleDateFormat.parse("Tue May 15 13:47:20 CDT 2012"), 0),
                 new GpsFix(24.84123f, -98.164726f, 0, simpleDateFormat.parse("Tue May 15 13:50:20 CDT 2012"), 0),
@@ -70,6 +68,36 @@ public class Main {
                 new GpsFix(24.850178f, -98.155594f, 0, simpleDateFormat.parse("Tue May 15 14:16:32 CDT 2012"), 0)
         };
 
+        return gpsFixes;*/
+
+        try {
+            return readFile("C:\\Users\\Rafael\\Desktop\\registros\\registros-test.csv");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static GpsFix[] readFile(String filename) throws IOException, ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        ArrayList<GpsFix> fixes = new ArrayList<>();
+
+        BufferedReader br = new BufferedReader(new FileReader(filename));
+        String line = br.readLine();
+        while (line!=null) {
+            String[] slices = line.split(",");
+            GpsFix fix = new GpsFix(
+                    Float.valueOf(slices[0]),
+                    Float.valueOf(slices[1]),
+                    0,
+                    simpleDateFormat.parse(slices[3]),
+                    Float.valueOf(slices[2])
+            );
+            fixes.add(fix);
+            line = br.readLine();
+        }
+
+        GpsFix[] gpsFixes = fixes.toArray(new GpsFix[fixes.size()]);
         return gpsFixes;
     }
 
