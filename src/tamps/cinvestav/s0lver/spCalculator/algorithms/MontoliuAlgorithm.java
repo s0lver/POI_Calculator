@@ -9,7 +9,7 @@ public class MontoliuAlgorithm extends StayPointsDetectionAlgorithm {
     private long maxTimeTreshold;
 
     public MontoliuAlgorithm(ArrayList<GpsFix> gpsFixes, long minTimeTreshold, long maxTimeTreshold, double distanceTreshold) {
-        super(gpsFixes, minTimeTreshold, distanceTreshold, false);
+        super(gpsFixes, minTimeTreshold, distanceTreshold, true);
         this.maxTimeTreshold = maxTimeTreshold;
     }
 

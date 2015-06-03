@@ -26,13 +26,13 @@ public class Main {
 
         ArrayList<GpsFix> gpsFixArrayList = new ArrayList<GpsFix>(Arrays.asList(gpsFixes));
 
-        //StayPointsDetectionAlgorithm zhengAlgorithm = new ZhenAlgorithm(gpsFixArrayList, UN_MINUTO, 150);
-        StayPointsDetectionAlgorithm montoliuAlgorithm = new MontoliuAlgorithm(gpsFixArrayList, 10 * UN_MINUTO, 60 * UN_MINUTO, 150);
+//        StayPointsDetectionAlgorithm zhengAlgorithm = new ZhenAlgorithm(gpsFixArrayList, 60 * 1000, 150);
+        StayPointsDetectionAlgorithm montoliuAlgorithm = new MontoliuAlgorithm(gpsFixArrayList, 60 * 1000, 3600 * 1000, 150);
 
-        //ArrayList<StayPoint> stayPointsZheng = zhengAlgorithm.extractStayPoints();
+//        ArrayList<StayPoint> stayPointsZheng = zhengAlgorithm.extractStayPoints();
         ArrayList<StayPoint> stayPointsMontoliu = montoliuAlgorithm.extractStayPoints();
 
-        //System.out.println(String.format("Zheng obtained %d points", stayPointsZheng.size()));
+//        System.out.println(String.format("Zheng obtained %d points", stayPointsZheng.size()));
         System.out.println(String.format("Montoliu obtained %d points", stayPointsMontoliu.size()));
 
 //        System.out.println("Points obtained by Zheng");
@@ -46,6 +46,12 @@ public class Main {
         }
 
 
+//        JFrame frame = new JFrame("GUIMontoliouLive");
+//        frame.setContentPane(new GUIMontoliouLive().getPnlGUIMontliouLive());
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(800,600);
+//        frame.pack();
+//        frame.setVisible(true);
         //launchGUIMontoliouLive();
 
 
@@ -82,7 +88,7 @@ public class Main {
 
     public static GpsFix[] createList() throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        /*GpsFix[] gpsFixes = new GpsFix[]{
+        GpsFix[] gpsFixes = new GpsFix[]{
                 new GpsFix(24.840481f, -98.166489f, 0, simpleDateFormat.parse("Tue May 15 13:47:20 CDT 2012"), 0),
                 new GpsFix(24.84123f, -98.164726f, 0, simpleDateFormat.parse("Tue May 15 13:50:20 CDT 2012"), 0),
                 new GpsFix(24.841026f, -98.163269f, 0, simpleDateFormat.parse("Tue May 15 13:52:25 CDT 2012"), 0),
@@ -95,14 +101,14 @@ public class Main {
                 new GpsFix(24.850178f, -98.155594f, 0, simpleDateFormat.parse("Tue May 15 14:16:32 CDT 2012"), 0)
         };
 
-        return gpsFixes;*/
+        return gpsFixes;
 
-        try {
-            return readFileImportedFromPhone("C:\\Users\\cinvestav\\Desktop\\registros\\registros28-may-2015-19-10.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+//        try {
+//            return readFile("C:\\Users\\Rafael\\Desktop\\registros\\registros-test.csv");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
     }
 
     public static GpsFix[] readFile(String filename) throws IOException, ParseException {
