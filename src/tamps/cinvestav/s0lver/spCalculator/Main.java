@@ -26,19 +26,19 @@ public class Main {
 
         ArrayList<GpsFix> gpsFixArrayList = new ArrayList<GpsFix>(Arrays.asList(gpsFixes));
 
-//        StayPointsDetectionAlgorithm zhengAlgorithm = new ZhenAlgorithm(gpsFixArrayList, 60 * 1000, 150);
+        StayPointsDetectionAlgorithm zhengAlgorithm = new ZhenAlgorithm(gpsFixArrayList, 60 * 1000, 150);
         StayPointsDetectionAlgorithm montoliuAlgorithm = new MontoliuAlgorithm(gpsFixArrayList, 60 * 1000, 3600 * 1000, 150);
 
-//        ArrayList<StayPoint> stayPointsZheng = zhengAlgorithm.extractStayPoints();
+        ArrayList<StayPoint> stayPointsZheng = zhengAlgorithm.extractStayPoints();
         ArrayList<StayPoint> stayPointsMontoliu = montoliuAlgorithm.extractStayPoints();
 
-//        System.out.println(String.format("Zheng obtained %d points", stayPointsZheng.size()));
+        System.out.println(String.format("Zheng obtained %d points", stayPointsZheng.size()));
         System.out.println(String.format("Montoliu obtained %d points", stayPointsMontoliu.size()));
 
-//        System.out.println("Points obtained by Zheng");
-//        for (StayPoint stayPoint : stayPointsZheng) {
-//            System.out.println(stayPoint);
-//        }
+        System.out.println("Points obtained by Zheng");
+        for (StayPoint stayPoint : stayPointsZheng) {
+            System.out.println(stayPoint);
+        }
 
         System.out.println("Points obtained by Montoliu");
         for (StayPoint stayPoint : stayPointsMontoliu) {
@@ -46,35 +46,29 @@ public class Main {
         }
 
 
-//        JFrame frame = new JFrame("GUIMontoliouLive");
-//        frame.setContentPane(new GUIMontoliouLive().getPnlGUIMontliouLive());
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(800,600);
-//        frame.pack();
-//        frame.setVisible(true);
         //launchGUIMontoliouLive();
 
 
-        MontoliouLiveAlgorithm mla = new MontoliouLiveAlgorithm(60 * UN_MINUTO, 10 * UN_MINUTO, 150);
-        ArrayList<StayPoint> stayPointsMLA = new ArrayList<>();
-
-        for (int i = 0; i < gpsFixes.length; i++) {
-            StayPoint sp = mla.processFix(gpsFixes[i]);
-            if (sp!=null) {
-                stayPointsMLA.add(sp);
-            }
-        }
-
-        StayPoint sp = mla.processLastPart();
-        if (sp!=null) {
-            stayPointsMLA.add(sp);
-        }
-
-        System.out.println(String.format("MLA obtained %d points", stayPointsMLA.size()));
-        System.out.println("Points obtained by Montoliu Live");
-        for (StayPoint stayPoint : stayPointsMLA) {
-            System.out.println(stayPoint);
-        }
+//        MontoliouLiveAlgorithm mla = new MontoliouLiveAlgorithm(60 * UN_MINUTO, 10 * UN_MINUTO, 150);
+//        ArrayList<StayPoint> stayPointsMLA = new ArrayList<>();
+//
+//        for (int i = 0; i < gpsFixes.length; i++) {
+//            StayPoint sp = mla.processFix(gpsFixes[i]);
+//            if (sp!=null) {
+//                stayPointsMLA.add(sp);
+//            }
+//        }
+//
+//        StayPoint sp = mla.processLastPart();
+//        if (sp!=null) {
+//            stayPointsMLA.add(sp);
+//        }
+//
+//        System.out.println(String.format("MLA obtained %d points", stayPointsMLA.size()));
+//        System.out.println("Points obtained by Montoliu Live");
+//        for (StayPoint stayPoint : stayPointsMLA) {
+//            System.out.println(stayPoint);
+//        }
     }
 
     private static void launchGUIMontoliouLive() {

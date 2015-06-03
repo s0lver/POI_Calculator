@@ -10,6 +10,7 @@ public class StayPoint {
     private float longitude;
     private Date arrivalTime;
     private Date departureTime;
+    private int amountFixes;
 
     private StayPoint(){
 
@@ -31,6 +32,7 @@ public class StayPoint {
         pointOfInterest.setLongitude(sumLongitude / sizeOfList);
         pointOfInterest.setArrivalTime(list.get(0).getTimestamp());
         pointOfInterest.setDepartureTime(list.get(sizeOfList - 1).getTimestamp());
+        pointOfInterest.setAmountFixes(sizeOfList);
 
         return pointOfInterest;
     }
@@ -53,6 +55,7 @@ public class StayPoint {
         pointOfInterest.setLongitude((float) (sumLng / sizeOfListPortion));
         pointOfInterest.setArrivalTime(list.get(i).getTimestamp());
         pointOfInterest.setDepartureTime(list.get(j).getTimestamp());
+        pointOfInterest.setAmountFixes(sizeOfListPortion);
 
         return pointOfInterest;
     }
@@ -89,9 +92,17 @@ public class StayPoint {
         this.departureTime = departureTime;
     }
 
+    public int getAmountFixes() {
+        return amountFixes;
+    }
+
+    public void setAmountFixes(int amountFixes) {
+        this.amountFixes = amountFixes;
+    }
+
     public String toString(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
-        return String.format("Lat: %f, Long: %f, Arr: %s, Dep: %s", getLatitude(), getLongitude(),
-                simpleDateFormat.format(getArrivalTime()), simpleDateFormat.format(getDepartureTime()));
+        return String.format("Lat: %f, Long: %f, Arr: %s, Dep: %s, Fixes: %d", getLatitude(), getLongitude(),
+                simpleDateFormat.format(getArrivalTime()), simpleDateFormat.format(getDepartureTime()), getAmountFixes());
     }
 }
