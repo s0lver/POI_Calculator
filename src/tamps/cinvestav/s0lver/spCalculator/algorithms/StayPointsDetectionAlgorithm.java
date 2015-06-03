@@ -1,9 +1,5 @@
 package tamps.cinvestav.s0lver.spCalculator.algorithms;
 
-import org.gavaghan.geodesy.Ellipsoid;
-import org.gavaghan.geodesy.GeodeticCalculator;
-import org.gavaghan.geodesy.GeodeticCurve;
-import org.gavaghan.geodesy.GlobalCoordinates;
 import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
 import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
 
@@ -34,29 +30,7 @@ public abstract class StayPointsDetectionAlgorithm {
      * @return The distance between p and q points using WGS84 ellipsoid
      */
     protected double distance(GpsFix p, GpsFix q) {
-        // instantiate the calculator
-        GeodeticCalculator geoCalc = new GeodeticCalculator();
-
-        // select a reference elllipsoid
-        Ellipsoid reference = Ellipsoid.WGS84;
-
-        // set Lincoln Memorial coordinates
-        GlobalCoordinates lincolnMemorial;
-        lincolnMemorial = new GlobalCoordinates(p.getLatitude(),
-                p.getLongitude());
-
-        // set Eiffel Tower coordinates
-        GlobalCoordinates eiffelTower;
-        eiffelTower = new GlobalCoordinates(q.getLatitude(), q.getLongitude());
-
-        // calculate the geodetic curve
-        GeodeticCurve geoCurve = geoCalc.calculateGeodeticCurve(reference,
-                lincolnMemorial, eiffelTower);
-
-        // System.out.printf(
-        // "   Ellipsoidal Distance: %1.2f kilometers (%1.2f miles)\n",
-        // ellipseKilometers, ellipseMiles);
-        return geoCurve.getEllipsoidalDistance();
+        return computeDistanceAndBearing(p.getLatitude(), p.getLongitude(), q.getLatitude(), q.getLongitude());
     }
 
     /***
@@ -84,8 +58,7 @@ public abstract class StayPointsDetectionAlgorithm {
      * @param lat2
      * @param lon2
      */
-    private static void computeDistanceAndBearing(double lat1, double lon1, double lat2, double lon2) {
-        float[] results = new float[2];
+    private static float computeDistanceAndBearing(double lat1, double lon1, double lat2, double lon2) {
         int MAXITERS = 20;
 
         lat1 *= Math.PI / 180.0;
@@ -167,6 +140,6 @@ public abstract class StayPointsDetectionAlgorithm {
         }
 
         float distance = (float) (b * A * (sigma - deltaSigma));
-        results[0] = distance;
+        return distance;
     }
 }

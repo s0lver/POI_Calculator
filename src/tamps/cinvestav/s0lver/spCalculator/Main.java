@@ -1,5 +1,6 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
+import tamps.cinvestav.s0lver.spCalculator.algorithms.MontoliouLiveAlgorithm;
 import tamps.cinvestav.s0lver.spCalculator.algorithms.MontoliuAlgorithm;
 import tamps.cinvestav.s0lver.spCalculator.algorithms.StayPointsDetectionAlgorithm;
 import tamps.cinvestav.s0lver.spCalculator.algorithms.ZhenAlgorithm;
@@ -17,6 +18,7 @@ import java.util.Locale;
 
 public class Main {
 
+    public static final int UN_MINUTO = 60 * 1000;
     public static void main(String[] args) throws ParseException, IOException {
 
         GpsFix[] gpsFixes = createList();
@@ -24,19 +26,19 @@ public class Main {
 
         ArrayList<GpsFix> gpsFixArrayList = new ArrayList<GpsFix>(Arrays.asList(gpsFixes));
 
-        StayPointsDetectionAlgorithm zhengAlgorithm = new ZhenAlgorithm(gpsFixArrayList, 60 * 1000, 150);
-        StayPointsDetectionAlgorithm montoliuAlgorithm = new MontoliuAlgorithm(gpsFixArrayList, 60 * 1000, 3600 * 1000, 150);
+        //StayPointsDetectionAlgorithm zhengAlgorithm = new ZhenAlgorithm(gpsFixArrayList, UN_MINUTO, 150);
+        StayPointsDetectionAlgorithm montoliuAlgorithm = new MontoliuAlgorithm(gpsFixArrayList, 10 * UN_MINUTO, 60 * UN_MINUTO, 150);
 
-        ArrayList<StayPoint> stayPointsZheng = zhengAlgorithm.extractStayPoints();
+        //ArrayList<StayPoint> stayPointsZheng = zhengAlgorithm.extractStayPoints();
         ArrayList<StayPoint> stayPointsMontoliu = montoliuAlgorithm.extractStayPoints();
 
-        System.out.println(String.format("Zheng obtained %d points", stayPointsZheng.size()));
+        //System.out.println(String.format("Zheng obtained %d points", stayPointsZheng.size()));
         System.out.println(String.format("Montoliu obtained %d points", stayPointsMontoliu.size()));
 
-        System.out.println("Points obtained by Zheng");
-        for (StayPoint stayPoint : stayPointsZheng) {
-            System.out.println(stayPoint);
-        }
+//        System.out.println("Points obtained by Zheng");
+//        for (StayPoint stayPoint : stayPointsZheng) {
+//            System.out.println(stayPoint);
+//        }
 
         System.out.println("Points obtained by Montoliu");
         for (StayPoint stayPoint : stayPointsMontoliu) {
@@ -45,6 +47,28 @@ public class Main {
 
 
         //launchGUIMontoliouLive();
+
+
+        MontoliouLiveAlgorithm mla = new MontoliouLiveAlgorithm(60 * UN_MINUTO, 10 * UN_MINUTO, 150);
+        ArrayList<StayPoint> stayPointsMLA = new ArrayList<>();
+
+        for (int i = 0; i < gpsFixes.length; i++) {
+            StayPoint sp = mla.processFix(gpsFixes[i]);
+            if (sp!=null) {
+                stayPointsMLA.add(sp);
+            }
+        }
+
+        StayPoint sp = mla.processLastPart();
+        if (sp!=null) {
+            stayPointsMLA.add(sp);
+        }
+
+        System.out.println(String.format("MLA obtained %d points", stayPointsMLA.size()));
+        System.out.println("Points obtained by Montoliu Live");
+        for (StayPoint stayPoint : stayPointsMLA) {
+            System.out.println(stayPoint);
+        }
     }
 
     private static void launchGUIMontoliouLive() {
@@ -74,7 +98,7 @@ public class Main {
         return gpsFixes;*/
 
         try {
-            return readFile("C:\\Users\\Rafael\\Desktop\\registros\\registros-test.csv");
+            return readFileImportedFromPhone("C:\\Users\\cinvestav\\Desktop\\registros\\registros28-may-2015-19-10.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,6 +121,31 @@ public class Main {
                     Float.valueOf(slices[2])
             );
             fixes.add(fix);
+            line = br.readLine();
+        }
+
+        GpsFix[] gpsFixes = fixes.toArray(new GpsFix[fixes.size()]);
+        return gpsFixes;
+    }
+
+    public static GpsFix[] readFileImportedFromPhone(String filename) throws IOException, ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        ArrayList<GpsFix> fixes = new ArrayList<>();
+
+        BufferedReader br = new BufferedReader(new FileReader(filename));
+        String line = br.readLine();
+        while (line!=null) {
+            String[] slices = line.split(",");
+            if (slices[0].equals("Si")) {
+                GpsFix fix = new GpsFix(
+                        Float.valueOf(slices[1]),
+                        Float.valueOf(slices[2]),
+                        0,
+                        simpleDateFormat.parse(slices[4]),
+                        Float.valueOf(slices[3])
+                );
+                fixes.add(fix);
+            }
             line = br.readLine();
         }
 
