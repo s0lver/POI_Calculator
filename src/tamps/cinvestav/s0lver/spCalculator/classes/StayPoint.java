@@ -1,5 +1,7 @@
 package tamps.cinvestav.s0lver.spCalculator.classes;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,6 +60,10 @@ public class StayPoint {
         pointOfInterest.setAmountFixes(sizeOfListPortion);
 
         return pointOfInterest;
+    }
+
+    public static StayPoint createStayPoint(float sigmaLatitude, float sigmaLongitude, Date arrivalTime, Date departureTime, int amountFixes) {
+        throw new NotImplementedException();
     }
 
     public float getLatitude() {
