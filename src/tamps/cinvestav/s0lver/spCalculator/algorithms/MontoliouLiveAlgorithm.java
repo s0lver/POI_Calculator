@@ -87,7 +87,7 @@ public class MontoliouLiveAlgorithm {
         return timespan;
     }
 
-    private float distance(GpsFix p, GpsFix q) {
+    private double distance(GpsFix p, GpsFix q) {
         return computeDistanceAndBearing(p.getLatitude(), p.getLongitude(), q.getLatitude(), q.getLongitude());
     }
 
@@ -99,7 +99,7 @@ public class MontoliouLiveAlgorithm {
      * @param lat2
      * @param lon2
      */
-    private static float computeDistanceAndBearing(double lat1, double lon1, double lat2, double lon2) {
+    private static double computeDistanceAndBearing(double lat1, double lon1, double lat2, double lon2) {
        // float[] results = new float[2];
         int MAXITERS = 20;
 
@@ -181,7 +181,7 @@ public class MontoliouLiveAlgorithm {
             }
         }
 
-        float distance = (float) (b * A * (sigma - deltaSigma));
-        return        distance;
+        double distance = b * A * (sigma - deltaSigma);
+        return distance;
     }
 }

@@ -1,15 +1,13 @@
 package tamps.cinvestav.s0lver.spCalculator.classes;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 public class StayPoint {
-    private float latitude;
-    private float longitude;
+    private double latitude;
+    private double longitude;
     private Date arrivalTime;
     private Date departureTime;
     private int amountFixes;
@@ -59,26 +57,36 @@ public class StayPoint {
         pointOfInterest.setDepartureTime(list.get(j).getTimestamp());
         pointOfInterest.setAmountFixes(sizeOfListPortion);
 
+        // System.out.println("Creating with sigma lat " + sumLat + " and sigma lon " + sumLng + " and amnt " + sizeOfListPortion);
+
         return pointOfInterest;
     }
 
-    public static StayPoint createStayPoint(float sigmaLatitude, float sigmaLongitude, Date arrivalTime, Date departureTime, int amountFixes) {
-        throw new NotImplementedException();
+    public static StayPoint createStayPoint(double sigmaLatitude, double sigmaLongitude, Date arrivalTime, Date departureTime, int amountFixes) {
+        StayPoint stayPoint = new StayPoint();
+        stayPoint.setAmountFixes(amountFixes);
+        stayPoint.setLatitude((float) (sigmaLatitude / amountFixes));
+        stayPoint.setLongitude((float) (sigmaLongitude / amountFixes));
+        stayPoint.setArrivalTime(arrivalTime);
+        stayPoint.setDepartureTime(departureTime);
+
+        // System.out.println("Creating with sigma lat " + sigmaLatitude + " and sigma lon " + sigmaLongitude + " and amnt " + amountFixes);
+        return stayPoint;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 

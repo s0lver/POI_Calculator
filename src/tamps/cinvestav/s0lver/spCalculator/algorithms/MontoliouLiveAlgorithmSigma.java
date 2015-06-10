@@ -3,7 +3,6 @@ package tamps.cinvestav.s0lver.spCalculator.algorithms;
 import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
 import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class MontoliouLiveAlgorithmSigma {
@@ -12,8 +11,8 @@ public class MontoliouLiveAlgorithmSigma {
     private long minTimeThreshold;
 
     private int amountFixes;
-    private float sigmaLatitude;
-    private float sigmaLongitude;
+    private double sigmaLatitude;
+    private double sigmaLongitude;
     private Date arrivalTime, departureTime;
 
     private GpsFix pi, pj, pjMinus;
@@ -37,13 +36,14 @@ public class MontoliouLiveAlgorithmSigma {
             amountFixes = 1;
             return null;
         } else if (sizeOfBufferedData == 1) {
-            pjMinus = null;
+            pjMinus = pi;
             pj = fix;
-            return null;
         }
         else {
-            return processLive();
+            pjMinus = pj;
+            pj = fix;
         }
+        return processLive();
     }
 
     private int estimateAmountOfFixes() {
@@ -72,16 +72,26 @@ public class MontoliouLiveAlgorithmSigma {
             timespan = timeDifference(pi, pj);
 
             if (timespan > minTimeThreshold) {
+                includeCurrentFix();
                 StayPoint sp = StayPoint.createStayPoint(sigmaLatitude, sigmaLongitude, arrivalTime, departureTime, amountFixes);
                 cleanAcumulated();
                 return sp;
             }
             cleanAcumulated();
+            return null;
         }
 
+        includeCurrentFix();
+        return null;
+    }
+
+    private void includeCurrentFix() {
+        // System.out.println("Adding the pj " + pj);
+        // System.out.println(String.format("Previous data was sLat %f, sLong %f, amnt %d", sigmaLatitude, sigmaLongitude, amountFixes));
         amountFixes++;
         departureTime = pj.getTimestamp();
-        return null;
+        sigmaLatitude += pj.getLatitude();
+        sigmaLongitude += pj.getLongitude();
     }
 
     public StayPoint processLastPart() {
@@ -97,6 +107,7 @@ public class MontoliouLiveAlgorithmSigma {
         sigmaLatitude = pj.getLatitude();
         sigmaLongitude = pj.getLongitude();
         arrivalTime = pj.getTimestamp();
+        departureTime = pj.getTimestamp();
 
         pi = pj;
         pj = null;

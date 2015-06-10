@@ -58,7 +58,7 @@ public abstract class StayPointsDetectionAlgorithm {
      * @param lat2
      * @param lon2
      */
-    private static float computeDistanceAndBearing(double lat1, double lon1, double lat2, double lon2) {
+    private static double computeDistanceAndBearing(double lat1, double lon1, double lat2, double lon2) {
         int MAXITERS = 20;
 
         lat1 *= Math.PI / 180.0;
@@ -139,7 +139,7 @@ public abstract class StayPointsDetectionAlgorithm {
             }
         }
 
-        float distance = (float) (b * A * (sigma - deltaSigma));
+        double distance = b * A * (sigma - deltaSigma);
         return distance;
     }
 }
