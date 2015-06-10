@@ -27,15 +27,12 @@ public class MontoliouLiveAlgorithmSigma {
     }
 
     public StayPoint processFix(GpsFix fix) {
-        int sizeOfBufferedData = estimateAmountOfFixes();
-        if (sizeOfBufferedData == 0) {
+        includeFix(fix);
+        if (amountFixes == 1) {
             pi = fix;
-            sigmaLatitude = fix.getLatitude();
-            sigmaLongitude = fix.getLongitude();
-            arrivalTime = fix.getTimestamp();
-            amountFixes = 1;
             return null;
-        } else if (sizeOfBufferedData == 1) {
+        }
+        else if (amountFixes == 2) {
             pjMinus = pi;
             pj = fix;
         }
@@ -46,23 +43,10 @@ public class MontoliouLiveAlgorithmSigma {
         return processLive();
     }
 
-    private int estimateAmountOfFixes() {
-        if (pi == null) {
-            return 0;
-        }
-        if (pi != null && pj == null) {
-            return 1;
-        }
-        if (pi != null && pj != null) {
-            return 2;
-        }
-        return 3;
-    }
-
     private StayPoint processLive() {
         long timespan = timeDifference(pjMinus, pj);
         if (timespan > maxTimeThreshold) {
-            cleanAcumulated();
+            resetAccumulated();
             return null;
         }
 
@@ -72,26 +56,22 @@ public class MontoliouLiveAlgorithmSigma {
             timespan = timeDifference(pi, pj);
 
             if (timespan > minTimeThreshold) {
-                includeCurrentFix();
                 StayPoint sp = StayPoint.createStayPoint(sigmaLatitude, sigmaLongitude, arrivalTime, departureTime, amountFixes);
-                cleanAcumulated();
+                resetAccumulated();
                 return sp;
             }
-            cleanAcumulated();
+            resetAccumulated();
             return null;
         }
 
-        includeCurrentFix();
         return null;
     }
 
-    private void includeCurrentFix() {
-        // System.out.println("Adding the pj " + pj);
-        // System.out.println(String.format("Previous data was sLat %f, sLong %f, amnt %d", sigmaLatitude, sigmaLongitude, amountFixes));
+    private void includeFix(GpsFix fix) {
         amountFixes++;
-        departureTime = pj.getTimestamp();
-        sigmaLatitude += pj.getLatitude();
-        sigmaLongitude += pj.getLongitude();
+        departureTime = fix.getTimestamp();
+        sigmaLatitude += fix.getLatitude();
+        sigmaLongitude += fix.getLongitude();
     }
 
     public StayPoint processLastPart() {
@@ -102,7 +82,7 @@ public class MontoliouLiveAlgorithmSigma {
         return null;
     }
 
-    private void cleanAcumulated() {
+    private void resetAccumulated() {
         amountFixes = 1;
         sigmaLatitude = pj.getLatitude();
         sigmaLongitude = pj.getLongitude();

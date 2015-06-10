@@ -70,7 +70,7 @@ public class StayPoint {
         stayPoint.setArrivalTime(arrivalTime);
         stayPoint.setDepartureTime(departureTime);
 
-        // System.out.println("Creating with sigma lat " + sigmaLatitude + " and sigma lon " + sigmaLongitude + " and amnt " + amountFixes);
+        System.out.println("Creating with sigma lat " + sigmaLatitude + " and sigma lon " + sigmaLongitude + " and amnt " + amountFixes);
         return stayPoint;
     }
 
