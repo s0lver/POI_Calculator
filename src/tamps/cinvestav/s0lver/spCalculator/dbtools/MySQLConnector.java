@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.spCalculator.algorithms;
+package tamps.cinvestav.s0lver.spCalculator.dbtools;
 
 import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
 

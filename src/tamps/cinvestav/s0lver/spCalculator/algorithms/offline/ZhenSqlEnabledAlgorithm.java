@@ -1,13 +1,14 @@
-package tamps.cinvestav.s0lver.spCalculator.algorithms;
+package tamps.cinvestav.s0lver.spCalculator.algorithms.offline;
 
 import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
 import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
+import tamps.cinvestav.s0lver.spCalculator.dbtools.MySQLConnector;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ZhenSqlEnabledAlgorithm extends StayPointsDetectionAlgorithm {
+public class ZhenSqlEnabledAlgorithm extends OfflineAlgorithm {
     private String urlDbServer = "jdbc:mysql://localhost/bd_geo";
     private String dbUsername = "root";
     private String dbPassword = "root";
@@ -54,14 +55,11 @@ public class ZhenSqlEnabledAlgorithm extends StayPointsDetectionAlgorithm {
                 if (!listHasBeenDepurated) {
                     if (!rs.next()) {
                         // There are no more Gps Fixes
-                        // System.out
-                        // .println("No Gps Fixes left. Outter loop");
+                        // sout("No Gps Fixes left. Outter loop");
                         break;
                     }
-                    pi = new GpsFix(rs.getInt("id"), //userId,
-                            (float) rs.getDouble("latitud"), (float) rs.getDouble("longitud"),
-                            rs.getTimestamp("timestamp"), rs.getFloat("precision"));
-
+                    // Fix this when needed
+                    pi = new GpsFix(rs.getDouble("latitud"), rs.getDouble("longitud"), 0, rs.getFloat("precision"), 0, rs.getTimestamp("timestamp"));
                     tmpList.add(pi);
                 }
                 while (true) {
@@ -72,16 +70,14 @@ public class ZhenSqlEnabledAlgorithm extends StayPointsDetectionAlgorithm {
                         weAreDone = true;
                         break;
                     }
-                    pj = new GpsFix(rs.getInt("id"), //userId,
-                            (float) rs.getDouble("latitud"), (float) rs.getDouble("longitud"),
-                            rs.getTimestamp("timestamp"), rs.getFloat("precision"));
+                    pj = new GpsFix(rs.getDouble("latitud"), rs.getDouble("longitud"), 0, rs.getFloat("precision"), 0, rs.getTimestamp("timestamp"));
                     tmpList.add(pj);
 
                     // Obtener la distancia entre ambos
-                    distance = distance(pi, pj);
+                    distance = pi.distanceTo(pj);
 
                     if (distance > distanceTreshold) {
-                        timespan = timeDifference(pi, pj);
+                        timespan = pi.timeDifference(pj);
                         if (timespan > minTimeTreshold) {
                             StayPoint sp = StayPoint.createStayPoint(tmpList);
 

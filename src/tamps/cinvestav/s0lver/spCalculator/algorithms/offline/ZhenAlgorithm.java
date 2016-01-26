@@ -1,11 +1,11 @@
-package tamps.cinvestav.s0lver.spCalculator.algorithms;
+package tamps.cinvestav.s0lver.spCalculator.algorithms.offline;
 
 import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
 import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
 
 import java.util.ArrayList;
 
-public class ZhenAlgorithm extends StayPointsDetectionAlgorithm {
+public class ZhenAlgorithm extends OfflineAlgorithm {
 
     public ZhenAlgorithm(ArrayList<GpsFix> gpsFixes, long minTimeTreshold, double distanceTreshold) {
         super(gpsFixes, minTimeTreshold, distanceTreshold, false);
@@ -13,7 +13,7 @@ public class ZhenAlgorithm extends StayPointsDetectionAlgorithm {
 
     @Override
     public ArrayList<StayPoint> extractStayPoints() {
-        ArrayList<StayPoint> result = new ArrayList<>();
+        ArrayList<StayPoint> result = new ArrayList<StayPoint>();
         GpsFix pi, pj;
         double distance;
         long timespan;
@@ -36,9 +36,9 @@ public class ZhenAlgorithm extends StayPointsDetectionAlgorithm {
             j = i + 1;
             while (j < pointNum) {
                 pj = gpsFixes.get(j);
-                distance = distance(pi, pj);
+                distance = pi.distanceTo(pj); //distance(pi, pj);
                 if (distance > distanceTreshold) {
-                    timespan = timeDifference(pi, pj);
+                    timespan = pi.timeDifference(pj);
                     // If the point is NOT within the interval, then we
                     // have moved out of the stay point
                     if (timespan > minTimeTreshold) {

@@ -57,8 +57,6 @@ public class StayPoint {
         pointOfInterest.setDepartureTime(list.get(j).getTimestamp());
         pointOfInterest.setAmountFixes(sizeOfListPortion);
 
-        // System.out.println("Creating with sigma lat " + sumLat + " and sigma lon " + sumLng + " and amnt " + sizeOfListPortion);
-
         return pointOfInterest;
     }
 
