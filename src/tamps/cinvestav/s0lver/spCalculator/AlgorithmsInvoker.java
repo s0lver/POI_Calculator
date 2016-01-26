@@ -1,13 +1,13 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
-import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
-import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
 import tamps.cinvestav.s0lver.spCalculator.algorithms.live.LiveAlgorithm;
 import tamps.cinvestav.s0lver.spCalculator.algorithms.live.buffered.MontoliouBufferedAlgorithm;
 import tamps.cinvestav.s0lver.spCalculator.algorithms.live.sigma.MontoliouSigmaAlgorithm;
 import tamps.cinvestav.s0lver.spCalculator.algorithms.offline.MontoliuAlgorithm;
 import tamps.cinvestav.s0lver.spCalculator.algorithms.offline.OfflineAlgorithm;
 import tamps.cinvestav.s0lver.spCalculator.algorithms.offline.ZhenAlgorithm;
+import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
+import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
 import tamps.cinvestav.s0lver.spCalculator.filereaders.GPSFixesFileReader;
 import tamps.cinvestav.s0lver.spCalculator.filereaders.LoggerReaderFixes;
 import tamps.cinvestav.s0lver.spCalculator.filereaders.SmartphoneFixesFileReader;
@@ -18,12 +18,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class TerminalVersion {
+public class AlgorithmsInvoker {
     public static final int ONE_MINUTE = 60 * 1000;
 
-    public void calculateStaypoints() throws ParseException, IOException {
-
-        System.out.println("Enter the path for the gps fixes file");
+    public void invokeAlgorithms(){
 
         String pathPolicyOne = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros.csv";
         String pathPolicyTwo = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-2\\registros.csv";
@@ -45,7 +43,6 @@ public class TerminalVersion {
         stayPointsPolicyTwo.forEach(System.out::println);
         stayPointsGpsLogger.forEach(System.out::println);
     }
-
     private void executeZhen(ArrayList<GpsFix> gpsFixArrayList) {
         OfflineAlgorithm zhengAlgorithm = new ZhenAlgorithm(gpsFixArrayList, 60 * 1000, 150);
         ArrayList<StayPoint> stayPointsZheng = zhengAlgorithm.extractStayPoints();

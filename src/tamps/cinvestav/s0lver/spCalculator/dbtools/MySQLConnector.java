@@ -41,13 +41,7 @@ public class MySQLConnector {
             conexion = DriverManager.getConnection(dbServerURL, username,
                     password);
             // System.out.println("Conexion establecida");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }

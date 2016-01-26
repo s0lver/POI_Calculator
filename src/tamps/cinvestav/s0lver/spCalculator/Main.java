@@ -6,21 +6,10 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-import java.util.Scanner;
 
 public class Main {
-
     public static void main(String[] args) throws IOException, ParseException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Launch GUI version? 1) Yes, X) No: ");
-        int answer = scanner.nextInt();
-        if (1 == answer){
-            new GuiVersionLauncher().launchGUIMontoliouLive();
-        }
-        else{
-            new TerminalVersion().calculateStaypoints();
-        }
-        scanner.close();
+        new AlgorithmsInvoker().invokeAlgorithms();
     }
 
     /***
@@ -44,12 +33,5 @@ public class Main {
         };
 
         return gpsFixes;
-
-//        try {
-//            return readFile("C:\\Users\\Rafael\\Desktop\\registros\\registros-test.csv");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
     }
 }

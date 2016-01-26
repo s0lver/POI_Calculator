@@ -30,8 +30,7 @@ public abstract class GPSFixesFileReader {
 
         // Skip the header as needed
         if (skipFirstLine) {
-            String header = scanner.nextLine();
-            System.out.println(header);
+            scanner.nextLine();
         }
 
         while (scanner.hasNextLine()) {
