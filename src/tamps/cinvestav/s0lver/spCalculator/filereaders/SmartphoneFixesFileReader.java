@@ -7,6 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class SmartphoneFixesFileReader extends GPSFixesFileReader {
+    private final int LATITUDE = 1;
+    private final int LONGITUDE = 2;
+    private final int ALTITUDE = 3;
+    private final int ACCURACY = 4;
+    private final int SPEED = 5;
+    private final int TIMESTAMP = 6;
 
     public SmartphoneFixesFileReader(String path) {
         super(path, false);
@@ -21,12 +27,12 @@ public class SmartphoneFixesFileReader extends GPSFixesFileReader {
         if (slices[0].equals("Si")) {
             try {
                 fix = new GpsFix(
-                        Double.valueOf(slices[1]),
-                        Double.valueOf(slices[2]),
-                        Double.valueOf(slices[3]),
-                        Double.valueOf(slices[4]),
-                        Double.valueOf(slices[5]),
-                        simpleDateFormat.parse(slices[6])
+                        Double.valueOf(slices[LATITUDE]),
+                        Double.valueOf(slices[LONGITUDE]),
+                        Double.valueOf(slices[ALTITUDE]),
+                        Double.valueOf(slices[ACCURACY]),
+                        Double.valueOf(slices[SPEED]),
+                        simpleDateFormat.parse(slices[TIMESTAMP])
                 );
             } catch (ParseException e) {
                 e.printStackTrace();
