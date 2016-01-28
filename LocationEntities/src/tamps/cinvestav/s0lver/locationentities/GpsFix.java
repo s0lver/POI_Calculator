@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.spCalculator.classes;
+package tamps.cinvestav.s0lver.locationentities;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,12 +63,6 @@ public class GpsFix {
     public String toString(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
         return String.format("Lat: %f, Long: %f, Alt: %f, Acc: %f, Date: %s", getLatitude(), getLongitude(),
-                getAltitude(), getAccuracy(), simpleDateFormat.format(getTimestamp()));
-    }
-
-    public String toCsv(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
-        return String.format("%f,%f,%f,%f,%s", getLatitude(), getLongitude(),
                 getAltitude(), getAccuracy(), simpleDateFormat.format(getTimestamp()));
     }
 

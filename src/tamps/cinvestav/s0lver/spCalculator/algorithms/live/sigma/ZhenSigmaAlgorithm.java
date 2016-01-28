@@ -1,6 +1,6 @@
 package tamps.cinvestav.s0lver.spCalculator.algorithms.live.sigma;
 
-import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
+import tamps.cinvestav.s0lver.locationentities.StayPoint;
 
 public class ZhenSigmaAlgorithm extends SigmaLiveAlgorithm {
     public ZhenSigmaAlgorithm(long minTimeThreshold, double distanceThreshold) {
@@ -28,8 +28,7 @@ public class ZhenSigmaAlgorithm extends SigmaLiveAlgorithm {
     @Override
     public StayPoint processLastPart() {
         if (amountFixes >= 1){
-            StayPoint sp = StayPoint.createStayPoint(sigmaLatitude, sigmaLongitude, arrivalTime, departureTime, amountFixes);
-            return sp;
+            return StayPoint.createStayPoint(sigmaLatitude, sigmaLongitude, arrivalTime, departureTime, amountFixes);
         }
         return null;
     }

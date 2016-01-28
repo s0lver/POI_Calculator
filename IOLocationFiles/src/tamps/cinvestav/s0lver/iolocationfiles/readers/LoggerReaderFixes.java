@@ -1,6 +1,6 @@
-package tamps.cinvestav.s0lver.spCalculator.filereaders;
+package tamps.cinvestav.s0lver.iolocationfiles.readers;
 
-import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
+import tamps.cinvestav.s0lver.locationentities.GpsFix;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +32,7 @@ public class LoggerReaderFixes extends GPSFixesFileReader {
         double altitude = Double.parseDouble(tokens[ALTITUDE]);
         double accuracy = 0; // The GPS logger is the big brother
         double speed = Double.parseDouble(tokens[SPEED]);
-        Date timestamp = createTimestampString(tokens);
+        Date timestamp = createTimestamp(tokens);
 
         return new GpsFix(latitude, longitude, altitude, accuracy, speed, timestamp);
     }
@@ -55,7 +55,7 @@ public class LoggerReaderFixes extends GPSFixesFileReader {
         return latitudeValue;
     }
 
-    private Date createTimestampString(String[] tokens) {
+    private Date createTimestamp(String[] tokens) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/M/d h:m:s");
 
         StringBuilder sb = new StringBuilder();

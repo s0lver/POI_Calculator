@@ -1,6 +1,7 @@
-package tamps.cinvestav.s0lver.spCalculator.filereaders;
+package tamps.cinvestav.s0lver.iolocationfiles.readers;
 
-import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
+
+import tamps.cinvestav.s0lver.locationentities.GpsFix;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,7 +21,7 @@ public abstract class GPSFixesFileReader {
 
     public ArrayList<GpsFix> readFile() {
         ArrayList<GpsFix> gpsFixes = new ArrayList<>();
-        Scanner scanner = null;
+        Scanner scanner;
 
         try {
             scanner = new Scanner(new FileReader(path));

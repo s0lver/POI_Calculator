@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/IOLocationFiles/IOLocationFiles.iml" filepath="$PROJECT_DIR$/IOLocationFiles/IOLocationFiles.iml" />
+      <module fileurl="file://$PROJECT_DIR$/KmlGenerator/KmlGenerator.iml" filepath="$PROJECT_DIR$/KmlGenerator/KmlGenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LocationEntities/LocationEntities.iml" filepath="$PROJECT_DIR$/LocationEntities/LocationEntities.iml" />
       <module fileurl="file://$PROJECT_DIR$/POI Calculator.iml" filepath="$PROJECT_DIR$/POI Calculator.iml" />
     </modules>
   </component>

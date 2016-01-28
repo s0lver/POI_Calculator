@@ -1,7 +1,7 @@
 package tamps.cinvestav.s0lver.spCalculator.algorithms.offline;
 
-import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
-import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
+import tamps.cinvestav.s0lver.locationentities.GpsFix;
+import tamps.cinvestav.s0lver.locationentities.StayPoint;
 import tamps.cinvestav.s0lver.spCalculator.dbtools.MySQLConnector;
 
 import java.sql.ResultSet;
@@ -44,7 +44,7 @@ public class ZhenSqlEnabledAlgorithm extends OfflineAlgorithm {
                         + (endTimeQuery - startTimeQuery)
                         + " ms, starting algorithm execution");
             }
-            GpsFix pi = null, pj = null;
+            GpsFix pi = null, pj;
             double distance = 0.0;
             long timespan = 0L;
             ArrayList<GpsFix> tmpList = new ArrayList<>();

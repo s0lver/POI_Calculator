@@ -1,6 +1,6 @@
 package tamps.cinvestav.s0lver.spCalculator.algorithms.live.sigma;
 
-import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
+import tamps.cinvestav.s0lver.locationentities.StayPoint;
 
 public class MontoliouSigmaAlgorithm extends SigmaLiveAlgorithm {
     private long maxTimeThreshold;
@@ -37,10 +37,8 @@ public class MontoliouSigmaAlgorithm extends SigmaLiveAlgorithm {
     @Override
     public StayPoint processLastPart() {
         if (amountFixes >= 1){
-            StayPoint sp = StayPoint.createStayPoint(sigmaLatitude, sigmaLongitude, arrivalTime, departureTime, amountFixes);
-            return sp;
+            return StayPoint.createStayPoint(sigmaLatitude, sigmaLongitude, arrivalTime, departureTime, amountFixes);
         }
         return null;
     }
 }
-

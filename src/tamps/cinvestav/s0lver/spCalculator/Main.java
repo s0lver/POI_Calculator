@@ -1,37 +1,56 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
-import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
+import tamps.cinvestav.s0lver.iolocationfiles.readers.SmartphoneFixesFileReader;
+import tamps.cinvestav.s0lver.kmltranslator.translators.KmlFileTranslator;
+import tamps.cinvestav.s0lver.kmltranslator.translators.LinedKmlCreator;
+import tamps.cinvestav.s0lver.kmltranslator.translators.PinnedKmlCreator;
+import tamps.cinvestav.s0lver.kmltranslator.translators.TimePinnedKmlCreator;
+import tamps.cinvestav.s0lver.locationentities.GpsFix;
+import tamps.cinvestav.s0lver.locationentities.StayPoint;
+import tamps.cinvestav.s0lver.spCalculator.algorithms.offline.MontoliuAlgorithm;
+import tamps.cinvestav.s0lver.spCalculator.algorithms.offline.OfflineAlgorithm;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) throws IOException, ParseException {
-        new AlgorithmsInvoker().invokeAlgorithms();
-    }
+    public static final int ONE_MINUTE = 60 * 1000;
 
-    /***
-     * Dummmy GPS fixes list
-     * @return
-     * @throws ParseException
-     */
-    public static GpsFix[] createList() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        GpsFix[] gpsFixes = new GpsFix[]{
-                new GpsFix(24.840481, -98.166489, 0, 0, 0, simpleDateFormat.parse("Tue May 15 13:47:20 CDT 2012")),
-                new GpsFix(24.84123, -98.164726, 0, 0, 0, simpleDateFormat.parse("Tue May 15 13:50:20 CDT 2012")),
-                new GpsFix(24.841026, -98.163269, 0, 0, 0, simpleDateFormat.parse("Tue May 15 13:52:25 CDT 2012")),
-                new GpsFix(24.842857, -98.156059, 0, 0, 0, simpleDateFormat.parse("Tue May 15 14:02:10 CDT 2012")),
-                new GpsFix(24.844316, -98.155846, 0, 0, 0, simpleDateFormat.parse("Tue May 15 14:04:21 CDT 2012")),
-                new GpsFix(24.845079, -98.155792, 0, 0, 0, simpleDateFormat.parse("Tue May 15 14:05:33 CDT 2012")),
-                new GpsFix(24.845606, -98.155815, 0, 0, 0, simpleDateFormat.parse("Tue May 15 14:06:38 CDT 2012")),
-                new GpsFix(24.846004, -98.155792, 0, 0, 0, simpleDateFormat.parse("Tue May 15 14:14:44 CDT 2012")),
-                new GpsFix(24.849789, -98.155647, 0, 0, 0, simpleDateFormat.parse("Tue May 15 14:15:39 CDT 2012")),
-                new GpsFix(24.850178, -98.155594, 0, 0, 0, simpleDateFormat.parse("Tue May 15 14:16:32 CDT 2012"))
-        };
+    public static void main(String[] args) throws IOException, ParseException, TransformerException, ParserConfigurationException {
+        String sourceGpsFixes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros.csv";
+        String kmlPinnedOutput = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros-pinned.kml";
+        String kmlTimePinnedOutput = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros-time-pinned.kml";
+        String kmlLinedOutput = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros-lined.kml";
 
-        return gpsFixes;
+        String kmlSpPinnedOutput = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\stay-points-pinned.kml";
+
+        SmartphoneFixesFileReader sfr = new SmartphoneFixesFileReader(sourceGpsFixes);
+        ArrayList<GpsFix> gpsFixes = sfr.readFile();
+
+        KmlFileTranslator pinnedTranslator = PinnedKmlCreator.createForGpsFixes(kmlPinnedOutput, gpsFixes);
+        pinnedTranslator.translate();
+
+        KmlFileTranslator timepinnedTranslator = TimePinnedKmlCreator.createForGpsFixes(kmlTimePinnedOutput, gpsFixes);
+        timepinnedTranslator.translate();
+
+        KmlFileTranslator linedTranslator = LinedKmlCreator.createForGpsFixes(kmlLinedOutput, gpsFixes);
+        linedTranslator.translate();
+
+        OfflineAlgorithm montoliuAlgorithm = new MontoliuAlgorithm(gpsFixes, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        ArrayList<StayPoint> stayPoints = montoliuAlgorithm.extractStayPoints();
+
+        KmlFileTranslator pinnedSpKmlCreator = PinnedKmlCreator.createForStaypoints(kmlSpPinnedOutput, stayPoints);
+        pinnedSpKmlCreator.translate();
+
+//        String outputCalculatedStayPoints = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\stay-points-calculated.csv";
+//        StayPointCsvWriter stayPointsWriter = new StayPointCsvWriter(outputCalculatedStayPoints, stayPoints);
+//        stayPointsWriter.writeFile();
+
+//        String outputReadFixes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\read-fixes.csv";
+//        GpsFixCsvWriter gpsFixesWriter = new GpsFixCsvWriter(outputReadFixes, gpsFixes);
+//        gpsFixesWriter.writeFile();
     }
 }

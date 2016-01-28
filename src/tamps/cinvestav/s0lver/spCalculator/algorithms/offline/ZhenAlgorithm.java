@@ -1,7 +1,7 @@
 package tamps.cinvestav.s0lver.spCalculator.algorithms.offline;
 
-import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
-import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
+import tamps.cinvestav.s0lver.locationentities.GpsFix;
+import tamps.cinvestav.s0lver.locationentities.StayPoint;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class ZhenAlgorithm extends OfflineAlgorithm {
 
     @Override
     public ArrayList<StayPoint> extractStayPoints() {
-        ArrayList<StayPoint> result = new ArrayList<StayPoint>();
+        ArrayList<StayPoint> result = new ArrayList<>();
         GpsFix pi, pj;
         double distance;
         long timespan;

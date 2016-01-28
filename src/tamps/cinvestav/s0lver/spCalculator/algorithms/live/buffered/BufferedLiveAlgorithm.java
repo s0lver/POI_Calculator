@@ -1,7 +1,7 @@
 package tamps.cinvestav.s0lver.spCalculator.algorithms.live.buffered;
 
-import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
-import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
+import tamps.cinvestav.s0lver.locationentities.GpsFix;
+import tamps.cinvestav.s0lver.locationentities.StayPoint;
 import tamps.cinvestav.s0lver.spCalculator.algorithms.live.LiveAlgorithm;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public abstract class BufferedLiveAlgorithm extends LiveAlgorithm {
 
     public BufferedLiveAlgorithm(long minTimeThreshold, double distanceThreshold) {
         super(minTimeThreshold, distanceThreshold);
-        this.list = new ArrayList<GpsFix>();
+        this.list = new ArrayList<>();
     }
 
     @Override
@@ -38,7 +38,7 @@ public abstract class BufferedLiveAlgorithm extends LiveAlgorithm {
     }
 
     protected void cleanList(GpsFix pj) {
-        list = new ArrayList<GpsFix>();
+        list = new ArrayList<>();
         list.add(pj);
     }
 }

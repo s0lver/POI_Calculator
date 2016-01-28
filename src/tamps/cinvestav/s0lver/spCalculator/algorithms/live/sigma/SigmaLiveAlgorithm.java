@@ -1,7 +1,7 @@
 package tamps.cinvestav.s0lver.spCalculator.algorithms.live.sigma;
 
-import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
-import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
+import tamps.cinvestav.s0lver.locationentities.GpsFix;
+import tamps.cinvestav.s0lver.locationentities.StayPoint;
 import tamps.cinvestav.s0lver.spCalculator.algorithms.live.LiveAlgorithm;
 
 import java.util.Date;

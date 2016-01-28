@@ -1,7 +1,7 @@
 package tamps.cinvestav.s0lver.spCalculator.algorithms.offline;
 
-import tamps.cinvestav.s0lver.spCalculator.classes.GpsFix;
-import tamps.cinvestav.s0lver.spCalculator.classes.StayPoint;
+import tamps.cinvestav.s0lver.locationentities.GpsFix;
+import tamps.cinvestav.s0lver.locationentities.StayPoint;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class MontoliuAlgorithm extends OfflineAlgorithm {
 
     @Override
     public ArrayList<StayPoint> extractStayPoints() {
-        ArrayList<StayPoint> output = new ArrayList<StayPoint>();
+        ArrayList<StayPoint> output = new ArrayList<>();
         GpsFix pi, pj, pjMinus;
         int i = 0, j = 0, n = gpsFixes.size();
         long timespan;
@@ -33,7 +33,7 @@ public class MontoliuAlgorithm extends OfflineAlgorithm {
 
             if (j == n) {
                 // The we have to stop it
-                weAreDone = true;
+                // weAreDone = true;
                 break;
             }
 

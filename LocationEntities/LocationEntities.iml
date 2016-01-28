@@ -7,8 +7,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="LocationEntities" />
-    <orderEntry type="module" module-name="KmlGenerator" />
-    <orderEntry type="module" module-name="IOLocationFiles" />
   </component>
 </module>
