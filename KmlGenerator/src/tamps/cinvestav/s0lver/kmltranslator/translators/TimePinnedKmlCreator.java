@@ -20,7 +20,7 @@ public class TimePinnedKmlCreator extends PinnedKmlCreator {
     }
 
     @Override
-    public void translate() throws ParserConfigurationException, TransformerException, FileNotFoundException {
+    public void create() throws ParserConfigurationException, TransformerException, FileNotFoundException {
         prepareDomPreamble();
 
         for (SpatialTimeElement spatialTimeElement : spatialTimeElements) {

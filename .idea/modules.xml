@@ -6,6 +6,8 @@
       <module fileurl="file://$PROJECT_DIR$/KmlGenerator/KmlGenerator.iml" filepath="$PROJECT_DIR$/KmlGenerator/KmlGenerator.iml" />
       <module fileurl="file://$PROJECT_DIR$/LocationEntities/LocationEntities.iml" filepath="$PROJECT_DIR$/LocationEntities/LocationEntities.iml" />
       <module fileurl="file://$PROJECT_DIR$/POI Calculator.iml" filepath="$PROJECT_DIR$/POI Calculator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StayPointsCalculator/StayPointsCalculator.iml" filepath="$PROJECT_DIR$/StayPointsCalculator/StayPointsCalculator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StayPointsComparator/StayPointsComparator.iml" filepath="$PROJECT_DIR$/StayPointsComparator/StayPointsComparator.iml" />
     </modules>
   </component>
 </project>

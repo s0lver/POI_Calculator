@@ -10,7 +10,7 @@ import javax.xml.transform.TransformerException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class LinedKmlCreator extends KmlFileTranslator{
+public class LinedKmlCreator extends KmlFileCreator {
     private String coordinates;
     private final String LINE_STYLE_NAME = "theline";
     private final String LINE_COLOR = "FF00FFFF";
@@ -20,7 +20,7 @@ public class LinedKmlCreator extends KmlFileTranslator{
     }
 
     @Override
-    public void translate() throws ParserConfigurationException, TransformerException, FileNotFoundException {
+    public void create() throws ParserConfigurationException, TransformerException, FileNotFoundException {
         prepareDomPreamble();
         createStructure();
         buildCoordinatesList();

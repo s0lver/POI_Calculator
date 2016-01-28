@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.spCalculator.algorithms.offline;
+package tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline;
 
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;

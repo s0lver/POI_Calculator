@@ -1,17 +1,19 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
+import tamps.cinvestav.s0lver.iolocationfiles.readers.LoggerReaderFixes;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.SmartphoneFixesFileReader;
-import tamps.cinvestav.s0lver.kmltranslator.translators.KmlFileTranslator;
-import tamps.cinvestav.s0lver.kmltranslator.translators.LinedKmlCreator;
+import tamps.cinvestav.s0lver.kmltranslator.translators.KmlFileCreator;
 import tamps.cinvestav.s0lver.kmltranslator.translators.PinnedKmlCreator;
-import tamps.cinvestav.s0lver.kmltranslator.translators.TimePinnedKmlCreator;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
-import tamps.cinvestav.s0lver.spCalculator.algorithms.offline.MontoliuAlgorithm;
-import tamps.cinvestav.s0lver.spCalculator.algorithms.offline.OfflineAlgorithm;
+import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline.MontoliuAlgorithm;
+import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline.OfflineAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsComparator.comparator.StayPointsComparator;
+import tamps.cinvestav.s0lver.stayPointsComparator.comparatorResults.StayPointsComparatorResult;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -20,37 +22,78 @@ public class Main {
     public static final int ONE_MINUTE = 60 * 1000;
 
     public static void main(String[] args) throws IOException, ParseException, TransformerException, ParserConfigurationException {
-        String sourceGpsFixes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros.csv";
-        String kmlPinnedOutput = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros-pinned.kml";
-        String kmlTimePinnedOutput = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros-time-pinned.kml";
-        String kmlLinedOutput = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros-lined.kml";
+        String gpsFixesSmartphoneOne = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros.csv";
+        String gpsFixesSmartphoneTwo = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-2\\registros.csv";
 
-        String kmlSpPinnedOutput = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\stay-points-pinned.kml";
+        SmartphoneFixesFileReader sfr1 = new SmartphoneFixesFileReader(gpsFixesSmartphoneOne);
+        ArrayList<GpsFix> gpsFixesSmartphone1 = sfr1.readFile();
 
-        SmartphoneFixesFileReader sfr = new SmartphoneFixesFileReader(sourceGpsFixes);
-        ArrayList<GpsFix> gpsFixes = sfr.readFile();
+        SmartphoneFixesFileReader sfr2 = new SmartphoneFixesFileReader(gpsFixesSmartphoneTwo);
+        ArrayList<GpsFix> gpsFixesSmartphone2 = sfr2.readFile();
 
-        KmlFileTranslator pinnedTranslator = PinnedKmlCreator.createForGpsFixes(kmlPinnedOutput, gpsFixes);
-        pinnedTranslator.translate();
+        processSmartphoneOne(gpsFixesSmartphone1);
+        processSmartphoneTwo(gpsFixesSmartphone2);
+        processGpsLogger();
+    }
 
-        KmlFileTranslator timepinnedTranslator = TimePinnedKmlCreator.createForGpsFixes(kmlTimePinnedOutput, gpsFixes);
-        timepinnedTranslator.translate();
+    private static void processSmartphoneOne(ArrayList<GpsFix> gpsFixes) throws FileNotFoundException, TransformerException, ParserConfigurationException {
+        String kmlSp10Minutes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\stay-points-10-pinned.kml";
+        String kmlSp15Minutes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\stay-points-15-pinned.kml";
 
-        KmlFileTranslator linedTranslator = LinedKmlCreator.createForGpsFixes(kmlLinedOutput, gpsFixes);
-        linedTranslator.translate();
+        OfflineAlgorithm montoliuAlgorithmTenMinutes = new MontoliuAlgorithm(gpsFixes, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        ArrayList<StayPoint> stayPointsTenMinutes = montoliuAlgorithmTenMinutes.extractStayPoints();
+        KmlFileCreator creatorFromSP = PinnedKmlCreator.createForStaypoints(kmlSp10Minutes, stayPointsTenMinutes);
+        creatorFromSP.create();
 
-        OfflineAlgorithm montoliuAlgorithm = new MontoliuAlgorithm(gpsFixes, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
-        ArrayList<StayPoint> stayPoints = montoliuAlgorithm.extractStayPoints();
+        OfflineAlgorithm montoliouAlgorithmFifteenMinutes = new MontoliuAlgorithm(gpsFixes, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        ArrayList<StayPoint> stayPointsFiftenMinutes = montoliouAlgorithmFifteenMinutes.extractStayPoints();
+        creatorFromSP = PinnedKmlCreator.createForStaypoints(kmlSp15Minutes, stayPointsFiftenMinutes);
+        creatorFromSP.create();
 
-        KmlFileTranslator pinnedSpKmlCreator = PinnedKmlCreator.createForStaypoints(kmlSpPinnedOutput, stayPoints);
-        pinnedSpKmlCreator.translate();
+    }
 
-//        String outputCalculatedStayPoints = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\stay-points-calculated.csv";
-//        StayPointCsvWriter stayPointsWriter = new StayPointCsvWriter(outputCalculatedStayPoints, stayPoints);
-//        stayPointsWriter.writeFile();
+    private static void processSmartphoneTwo(ArrayList<GpsFix> gpsFixes) throws FileNotFoundException, TransformerException, ParserConfigurationException {
+        String kmlSp10Minutes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-2\\stay-points-10-pinned.kml";
+        String kmlSp15Minutes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-2\\stay-points-15-pinned.kml";
 
-//        String outputReadFixes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\read-fixes.csv";
-//        GpsFixCsvWriter gpsFixesWriter = new GpsFixCsvWriter(outputReadFixes, gpsFixes);
-//        gpsFixesWriter.writeFile();
+        OfflineAlgorithm montoliuAlgorithmTenMinutes = new MontoliuAlgorithm(gpsFixes, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        ArrayList<StayPoint> stayPointsTenMinutes = montoliuAlgorithmTenMinutes.extractStayPoints();
+        KmlFileCreator creatorFromSP = PinnedKmlCreator.createForStaypoints(kmlSp10Minutes, stayPointsTenMinutes);
+        creatorFromSP.create();
+
+        OfflineAlgorithm montoliouAlgorithmFifteenMinutes = new MontoliuAlgorithm(gpsFixes, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        ArrayList<StayPoint> stayPointsFiftenMinutes = montoliouAlgorithmFifteenMinutes.extractStayPoints();
+        creatorFromSP = PinnedKmlCreator.createForStaypoints(kmlSp15Minutes, stayPointsFiftenMinutes);
+        creatorFromSP.create();
+
+    }
+
+    private static void processGpsLogger() throws FileNotFoundException, TransformerException, ParserConfigurationException {
+        String inputFull = "c:\\Users\\rafael\\Desktop\\tmp\\exported\\exported-20_28-10-2015.csv";
+        String output15minutes = "c:\\Users\\rafael\\Desktop\\tmp\\exported\\sp-fifteen-minutes.kml";
+        String output10minutes = "c:\\Users\\rafael\\Desktop\\tmp\\exported\\sp-fifteen-minutes.kml";
+        LoggerReaderFixes loggerReaderFixes = new LoggerReaderFixes(inputFull);
+        ArrayList<GpsFix> gpsFixesFromLogger = loggerReaderFixes.readFile();
+
+        OfflineAlgorithm montoliouLoggerFifteenMinutes = new MontoliuAlgorithm(gpsFixesFromLogger, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        ArrayList<StayPoint> spMontoliou = montoliouLoggerFifteenMinutes.extractStayPoints();
+        KmlFileCreator spKmlCreator = PinnedKmlCreator.createForStaypoints(output15minutes, spMontoliou);
+        spKmlCreator.create();
+
+        OfflineAlgorithm montoliouLoggerTenMinutes = new MontoliuAlgorithm(gpsFixesFromLogger, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        spMontoliou = montoliouLoggerTenMinutes.extractStayPoints();
+        spKmlCreator = PinnedKmlCreator.createForStaypoints(output10minutes, spMontoliou);
+        spKmlCreator.create();
+    }
+
+    private static void compareStaypoints(StayPoint stayPointA, StayPoint stayPointB) {
+        long UN_SEGUNDO = 1000;
+        StayPointsComparator comparator = new StayPointsComparator(stayPointA, stayPointB);
+        StayPointsComparatorResult comparisonResult = comparator.compareStayPoints();
+        System.out.println("Comparator output");
+        System.out.println("Arrival time = " + comparisonResult.getArrivalTimeDifference() / UN_SEGUNDO);
+        System.out.println("Departure time = " + comparisonResult.getDepartureTimeDifference() / UN_SEGUNDO);
+        System.out.println("Stay time = " + comparisonResult.getStayTimeDifference() / UN_SEGUNDO + " min, = " + (comparisonResult.getStayTimeDifference() / UN_SEGUNDO) / 60 + " hours");
+        System.out.println("Distance = " + comparisonResult.getDistanceDifference());
     }
 }

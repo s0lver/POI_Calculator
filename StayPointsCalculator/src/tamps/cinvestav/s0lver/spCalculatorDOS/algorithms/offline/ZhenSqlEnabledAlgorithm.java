@@ -1,8 +1,8 @@
-package tamps.cinvestav.s0lver.spCalculator.algorithms.offline;
+package tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline;
 
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
-import tamps.cinvestav.s0lver.spCalculator.dbtools.MySQLConnector;
+import tamps.cinvestav.s0lver.spCalculatorDOS.dbtools.MySQLConnector;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

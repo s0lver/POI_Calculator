@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.spCalculator.dbtools;
+package tamps.cinvestav.s0lver.spCalculatorDOS.dbtools;
 
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 
@@ -61,7 +61,7 @@ public class MySQLConnector {
      * Add a register of type GpsFix to the database
      *
      * @param register The fix register to add
-     * @throws java.sql.SQLException
+     * @throws SQLException
      */
     public void add(GpsFix register) throws SQLException {
         PreparedStatement s;

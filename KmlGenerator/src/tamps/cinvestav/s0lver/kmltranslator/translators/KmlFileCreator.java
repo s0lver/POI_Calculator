@@ -21,13 +21,13 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public abstract class KmlFileTranslator {
+public abstract class KmlFileCreator {
     protected ArrayList<SpatialTimeElement> spatialTimeElements;
     protected String outputFilename;
     protected Document dom;
     protected final SimpleDateFormat dateFormatInKML = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    public KmlFileTranslator(String outputFilename, ArrayList<SpatialTimeElement> spatialTimeElements) {
+    public KmlFileCreator(String outputFilename, ArrayList<SpatialTimeElement> spatialTimeElements) {
         this.outputFilename = outputFilename;
         this.spatialTimeElements = spatialTimeElements;
     }
@@ -48,7 +48,7 @@ public abstract class KmlFileTranslator {
         return (Element) dom.getDocumentElement().getFirstChild();
     }
 
-    public abstract void translate() throws ParserConfigurationException, TransformerException, FileNotFoundException;
+    public abstract void create() throws ParserConfigurationException, TransformerException, FileNotFoundException;
 
     protected Element createDataElement(String name, String value) {
         Element dataElement = dom.createElement("Data");
