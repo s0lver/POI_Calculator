@@ -8,6 +8,7 @@ import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
 import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline.MontoliuAlgorithm;
 import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline.OfflineAlgorithm;
+import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline.ZhenAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsComparator.comparator.StayPointsComparator;
 import tamps.cinvestav.s0lver.stayPointsComparator.comparatorResults.StayPointsComparatorResult;
 
@@ -31,9 +32,22 @@ public class Main {
         SmartphoneFixesFileReader sfr2 = new SmartphoneFixesFileReader(gpsFixesSmartphoneTwo);
         ArrayList<GpsFix> gpsFixesSmartphone2 = sfr2.readFile();
 
-        processSmartphoneOne(gpsFixesSmartphone1);
-        processSmartphoneTwo(gpsFixesSmartphone2);
-        processGpsLogger();
+        //processSmartphoneOne(gpsFixesSmartphone1);
+        //processSmartphoneTwo(gpsFixesSmartphone2);
+        // processGpsLogger();
+        // comparar el 7 (6) del logger // vs 17 (16) del sp2 15 min
+
+        OfflineAlgorithm montoliouAlgorithmFifteenMinutes = new MontoliuAlgorithm(gpsFixesSmartphone2, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        ArrayList<StayPoint> stayPointsFiftenMinutes = montoliouAlgorithmFifteenMinutes.extractStayPoints();
+
+        String inputFull = "c:\\Users\\rafael\\Desktop\\tmp\\exported\\exported-20_28-10-2015.csv";
+        LoggerReaderFixes loggerReaderFixes = new LoggerReaderFixes(inputFull);
+
+        ArrayList<GpsFix> gpsFixesFromLogger = loggerReaderFixes.readFile();
+        OfflineAlgorithm zhenLoggerFifteenMinutes = new ZhenAlgorithm(gpsFixesFromLogger, 15 * ONE_MINUTE, 150);
+        ArrayList<StayPoint> spZhen = zhenLoggerFifteenMinutes.extractStayPoints();
+
+        compareStaypoints(spZhen.get(6), stayPointsFiftenMinutes.get(16));
     }
 
     private static void processSmartphoneOne(ArrayList<GpsFix> gpsFixes) throws FileNotFoundException, TransformerException, ParserConfigurationException {
@@ -70,19 +84,19 @@ public class Main {
 
     private static void processGpsLogger() throws FileNotFoundException, TransformerException, ParserConfigurationException {
         String inputFull = "c:\\Users\\rafael\\Desktop\\tmp\\exported\\exported-20_28-10-2015.csv";
-        String output15minutes = "c:\\Users\\rafael\\Desktop\\tmp\\exported\\sp-fifteen-minutes.kml";
-        String output10minutes = "c:\\Users\\rafael\\Desktop\\tmp\\exported\\sp-fifteen-minutes.kml";
+        String output15minutes = "c:\\Users\\rafael\\Desktop\\tmp\\exported\\sp-zheng-15-minutes.kml";
+        String output10minutes = "c:\\Users\\rafael\\Desktop\\tmp\\exported\\sp-zheng-10-minutes.kml";
         LoggerReaderFixes loggerReaderFixes = new LoggerReaderFixes(inputFull);
         ArrayList<GpsFix> gpsFixesFromLogger = loggerReaderFixes.readFile();
 
-        OfflineAlgorithm montoliouLoggerFifteenMinutes = new MontoliuAlgorithm(gpsFixesFromLogger, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
-        ArrayList<StayPoint> spMontoliou = montoliouLoggerFifteenMinutes.extractStayPoints();
-        KmlFileCreator spKmlCreator = PinnedKmlCreator.createForStaypoints(output15minutes, spMontoliou);
+        OfflineAlgorithm zhenLoggerFifteenMinutes = new ZhenAlgorithm(gpsFixesFromLogger, 15 * ONE_MINUTE, 150);
+        ArrayList<StayPoint> spZhen = zhenLoggerFifteenMinutes.extractStayPoints();
+        KmlFileCreator spKmlCreator = PinnedKmlCreator.createForStaypoints(output15minutes, spZhen);
         spKmlCreator.create();
 
-        OfflineAlgorithm montoliouLoggerTenMinutes = new MontoliuAlgorithm(gpsFixesFromLogger, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
-        spMontoliou = montoliouLoggerTenMinutes.extractStayPoints();
-        spKmlCreator = PinnedKmlCreator.createForStaypoints(output10minutes, spMontoliou);
+        OfflineAlgorithm zhenLoggerTenMinutes = new ZhenAlgorithm(gpsFixesFromLogger, 10 * ONE_MINUTE, 150);
+        spZhen = zhenLoggerTenMinutes.extractStayPoints();
+        spKmlCreator = PinnedKmlCreator.createForStaypoints(output10minutes, spZhen);
         spKmlCreator.create();
     }
 
