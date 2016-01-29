@@ -17,8 +17,9 @@ public class LoggerReaderFixes extends GPSFixesFileReader {
     private final int DATE = 3;
     private final int TIME = 4;
     // Apparently, since we are in GMT -6 and the logger delivers in GMT 0
-    // we have to apply this correction
-    private final int HOURS_DIFFERENCE = -6;
+    // we have to apply this correction... Or maybe -5
+    // private final int HOURS_DIFFERENCE = -6;
+    private final int HOURS_DIFFERENCE = -5;
 
     public LoggerReaderFixes(String path) {
         super(path, true);

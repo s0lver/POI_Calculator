@@ -22,17 +22,17 @@ public class TimePinnedKmlCreator extends PinnedKmlCreator {
     @Override
     public void create() throws ParserConfigurationException, TransformerException, FileNotFoundException {
         prepareDomPreamble();
-
+        int i = 1;
         for (SpatialTimeElement spatialTimeElement : spatialTimeElements) {
-            Element currentPlacemark = processSpatialTimeElement(spatialTimeElement);
+            Element currentPlacemark = processSpatialTimeElement(spatialTimeElement, i++);
             getRootElement().appendChild(currentPlacemark);
         }
 
         writeFile();
     }
 
-    protected Element processSpatialTimeElement(SpatialTimeElement spatialTimeElement) {
-        Element placemarkElement = super.processSpatialTimeElement(spatialTimeElement);
+    protected Element processSpatialTimeElement(SpatialTimeElement spatialTimeElement, int idx) {
+        Element placemarkElement = super.processSpatialTimeElement(spatialTimeElement, idx);
         Element timestampElement = createTimestampElement(spatialTimeElement);
 
         placemarkElement.appendChild(timestampElement);
