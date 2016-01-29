@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.spCalculatorDOS.dbtools;
+package tamps.cinvestav.s0lver.stayPointsCalculator.dbtools;
 
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 

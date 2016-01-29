@@ -7,14 +7,23 @@ import java.util.Locale;
 
 public class StayPoint {
     private double latitude;
+
     private double longitude;
     private Date arrivalTime;
     private Date departureTime;
     private int amountFixes;
 
-    private StayPoint(){
+    private StayPoint() {    }
 
+
+    public StayPoint(double latitude, double longitude, Date arrivalTime, Date departureTime, int amountFixes) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.arrivalTime = arrivalTime;
+        this.departureTime = departureTime;
+        this.amountFixes = amountFixes;
     }
+
 
     public static StayPoint createStayPoint(ArrayList<GpsFix> list) {
         StayPoint pointOfInterest = new StayPoint();

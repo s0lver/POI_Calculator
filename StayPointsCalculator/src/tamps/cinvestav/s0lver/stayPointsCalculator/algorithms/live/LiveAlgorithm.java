@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.live;
+package tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live;
 
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;

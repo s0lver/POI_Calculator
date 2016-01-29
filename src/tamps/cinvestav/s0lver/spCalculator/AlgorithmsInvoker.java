@@ -1,16 +1,16 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
-import tamps.cinvestav.s0lver.iolocationfiles.readers.GPSFixesFileReader;
-import tamps.cinvestav.s0lver.iolocationfiles.readers.LoggerReaderFixes;
-import tamps.cinvestav.s0lver.iolocationfiles.readers.SmartphoneFixesFileReader;
+import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.GPSFixesFileReader;
+import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.LoggerReaderFixes;
+import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.SmartphoneFixesFileReader;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
-import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.live.LiveAlgorithm;
-import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.live.buffered.MontoliouBufferedAlgorithm;
-import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.live.sigma.MontoliouSigmaAlgorithm;
-import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline.MontoliuAlgorithm;
-import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline.OfflineAlgorithm;
-import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline.ZhenAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live.LiveAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live.buffered.MontoliouBufferedAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live.sigma.MontoliouSigmaAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.MontoliuAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.OfflineAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.ZhenAlgorithm;
 
 import java.io.*;
 import java.text.ParseException;

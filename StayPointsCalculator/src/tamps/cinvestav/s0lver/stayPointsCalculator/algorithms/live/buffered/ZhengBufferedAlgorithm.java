@@ -1,15 +1,12 @@
-package tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.live.buffered;
+package tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live.buffered;
 
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
 
-public class MontoliouBufferedAlgorithm extends BufferedLiveAlgorithm{
+public class ZhengBufferedAlgorithm extends BufferedLiveAlgorithm {
 
-    private long maxTimeThreshold;
-
-    public MontoliouBufferedAlgorithm(long maxTimeThreshold, long minTimeThreshold, double distanceThreshold) {
+    public ZhengBufferedAlgorithm(long minTimeThreshold, double distanceThreshold) {
         super(minTimeThreshold,distanceThreshold);
-        this.maxTimeThreshold = maxTimeThreshold;
     }
 
     @Override
@@ -18,18 +15,11 @@ public class MontoliouBufferedAlgorithm extends BufferedLiveAlgorithm{
 
         GpsFix pi = list.get(0);
         GpsFix pj = list.get(n - 1);
-        GpsFix pjMinus = list.get(n - 2);
-
-        long timespan = pjMinus.timeDifference(pj);
-        if (timespan > maxTimeThreshold) {
-            cleanList(pj);
-            return null;
-        }
 
         double distance = pi.distanceTo(pj);
 
         if (distance > distanceThreshold) {
-            timespan = pi.timeDifference(pj);
+            long timespan = pi.timeDifference(pj);
 
             if (timespan > minTimeThreshold) {
                 StayPoint sp = StayPoint.createStayPoint(list, 0, n - 1);

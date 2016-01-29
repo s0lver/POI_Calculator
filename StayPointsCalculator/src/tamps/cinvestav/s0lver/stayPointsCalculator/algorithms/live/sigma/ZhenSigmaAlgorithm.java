@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.live.sigma;
+package tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live.sigma;
 
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
 

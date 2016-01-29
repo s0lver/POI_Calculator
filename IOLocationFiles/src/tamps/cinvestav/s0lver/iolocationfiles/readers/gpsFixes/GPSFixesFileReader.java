@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.iolocationfiles.readers;
+package tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes;
 
 
 import tamps.cinvestav.s0lver.locationentities.GpsFix;

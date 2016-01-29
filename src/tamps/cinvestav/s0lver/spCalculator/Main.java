@@ -1,14 +1,13 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
-import tamps.cinvestav.s0lver.iolocationfiles.readers.LoggerReaderFixes;
-import tamps.cinvestav.s0lver.iolocationfiles.readers.SmartphoneFixesFileReader;
+import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.LoggerReaderFixes;
 import tamps.cinvestav.s0lver.kmltranslator.translators.KmlFileCreator;
 import tamps.cinvestav.s0lver.kmltranslator.translators.PinnedKmlCreator;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
-import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline.MontoliuAlgorithm;
-import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline.OfflineAlgorithm;
-import tamps.cinvestav.s0lver.spCalculatorDOS.algorithms.offline.ZhenAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.MontoliuAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.OfflineAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.ZhenAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsComparator.comparator.StayPointsComparator;
 import tamps.cinvestav.s0lver.stayPointsComparator.comparatorResults.StayPointsComparatorResult;
 
@@ -23,31 +22,28 @@ public class Main {
     public static final int ONE_MINUTE = 60 * 1000;
 
     public static void main(String[] args) throws IOException, ParseException, TransformerException, ParserConfigurationException {
-        String gpsFixesSmartphoneOne = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros.csv";
-        String gpsFixesSmartphoneTwo = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-2\\registros.csv";
+//        String gpsFixesSmartphoneOne = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros.csv";
+//        String gpsFixesSmartphoneTwo = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-2\\registros.csv";
 
-        SmartphoneFixesFileReader sfr1 = new SmartphoneFixesFileReader(gpsFixesSmartphoneOne);
-        ArrayList<GpsFix> gpsFixesSmartphone1 = sfr1.readFile();
+//        SmartphoneFixesFileReader sfr1 = new SmartphoneFixesFileReader(gpsFixesSmartphoneOne);
+//        ArrayList<GpsFix> gpsFixesSmartphone1 = sfr1.readFile();
+//
+//        SmartphoneFixesFileReader sfr2 = new SmartphoneFixesFileReader(gpsFixesSmartphoneTwo);
+//        ArrayList<GpsFix> gpsFixesSmartphone2 = sfr2.readFile();
 
-        SmartphoneFixesFileReader sfr2 = new SmartphoneFixesFileReader(gpsFixesSmartphoneTwo);
-        ArrayList<GpsFix> gpsFixesSmartphone2 = sfr2.readFile();
+//        OfflineAlgorithm montoliouAlgorithmFifteenMinutes = new MontoliuAlgorithm(gpsFixesSmartphone2, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+//        ArrayList<StayPoint> stayPointsFiftenMinutes = montoliouAlgorithmFifteenMinutes.extractStayPoints();
 
-        //processSmartphoneOne(gpsFixesSmartphone1);
-        //processSmartphoneTwo(gpsFixesSmartphone2);
-        // processGpsLogger();
-        // comparar el 7 (6) del logger // vs 17 (16) del sp2 15 min
-
-        OfflineAlgorithm montoliouAlgorithmFifteenMinutes = new MontoliuAlgorithm(gpsFixesSmartphone2, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
-        ArrayList<StayPoint> stayPointsFiftenMinutes = montoliouAlgorithmFifteenMinutes.extractStayPoints();
-
-        String inputFull = "c:\\Users\\rafael\\Desktop\\tmp\\exported\\exported-20_28-10-2015.csv";
-        LoggerReaderFixes loggerReaderFixes = new LoggerReaderFixes(inputFull);
-
-        ArrayList<GpsFix> gpsFixesFromLogger = loggerReaderFixes.readFile();
-        OfflineAlgorithm zhenLoggerFifteenMinutes = new ZhenAlgorithm(gpsFixesFromLogger, 15 * ONE_MINUTE, 150);
-        ArrayList<StayPoint> spZhen = zhenLoggerFifteenMinutes.extractStayPoints();
-
-        compareStaypoints(spZhen.get(6), stayPointsFiftenMinutes.get(16));
+//
+//        String inputFull = "c:\\Users\\rafael\\Desktop\\tmp\\exported\\exported-20_28-10-2015.csv";
+//        LoggerReaderFixes loggerReaderFixes = new LoggerReaderFixes(inputFull);
+//
+//        ArrayList<GpsFix> gpsFixesFromLogger = loggerReaderFixes.readFile();
+//        OfflineAlgorithm zhenLoggerFifteenMinutes = new ZhenAlgorithm(gpsFixesFromLogger, 15 * ONE_MINUTE, 150);
+//        ArrayList<StayPoint> spZhen = zhenLoggerFifteenMinutes.extractStayPoints();
+//
+//        compareStaypoints(spZhen.get(6), stayPointsFiftenMinutes.get(16));
+        new FrmStayPointComparator();
     }
 
     private static void processSmartphoneOne(ArrayList<GpsFix> gpsFixes) throws FileNotFoundException, TransformerException, ParserConfigurationException {
