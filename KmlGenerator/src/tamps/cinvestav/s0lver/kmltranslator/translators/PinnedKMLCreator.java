@@ -24,21 +24,24 @@ public class PinnedKmlCreator extends KmlFileCreator {
     @Override
     public void create() throws ParserConfigurationException, TransformerException, FileNotFoundException {
         prepareDomPreamble();
-
+        int i = 1;
         for (SpatialTimeElement spatialTimeElement : spatialTimeElements) {
-            Element currentPlacemark = processSpatialTimeElement(spatialTimeElement);
+            Element currentPlacemark = processSpatialTimeElement(spatialTimeElement, i++);
             getRootElement().appendChild(currentPlacemark);
         }
 
         writeFile();
     }
 
-    protected Element processSpatialTimeElement(SpatialTimeElement spatialTimeElement) {
+    protected Element processSpatialTimeElement(SpatialTimeElement spatialTimeElement, int idx) {
         Element placemarkElement = dom.createElement("Placemark");
 
         Element pointElement = createPointElement(spatialTimeElement);
-        Element extendedDataElement = createExtendDataElement(spatialTimeElement);
+        Element extendedDataElement = createExtendDataElement(spatialTimeElement, idx);
 
+        Element nameElement = dom.createElement("name");
+        nameElement.appendChild(dom.createTextNode(String.valueOf(idx)));
+        placemarkElement.appendChild(nameElement);
         placemarkElement.appendChild(extendedDataElement);
         placemarkElement.appendChild(pointElement);
 
@@ -59,14 +62,16 @@ public class PinnedKmlCreator extends KmlFileCreator {
         return pointElement;
     }
 
-    private Element createExtendDataElement(SpatialTimeElement spatialTimeElement) {
+    private Element createExtendDataElement(SpatialTimeElement spatialTimeElement, int idx) {
         Element extendedDataElement = dom.createElement("ExtendedData");
 
+        Element indexElement = createDataElement("Index", String.valueOf(idx));
         Element dataLongitude = createDataElement("Longitude", String.valueOf(spatialTimeElement.getLongitude()));
         Element dataLatitude = createDataElement("Latitude", String.valueOf(spatialTimeElement.getLatitude()));
         Element dataAltitude = createDataElement("Altitude", String.valueOf(spatialTimeElement.getAltitude()));
         Element dataAccuracy = createDataElement("Accuracy", String.valueOf(spatialTimeElement.getAccuracy()));
 
+        extendedDataElement.appendChild(indexElement);
         extendedDataElement.appendChild(dataLongitude);
         extendedDataElement.appendChild(dataLatitude);
         extendedDataElement.appendChild(dataAltitude);
