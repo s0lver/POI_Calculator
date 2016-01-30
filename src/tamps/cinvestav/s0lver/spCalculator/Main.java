@@ -10,6 +10,8 @@ import tamps.cinvestav.s0lver.locationentities.StayPoint;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.MontoliuAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.OfflineAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.ZhenAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.gui.FrmMain;
+import tamps.cinvestav.s0lver.stayPointsCalculator.gui.FrmStayPointComparator;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -21,22 +23,23 @@ public class Main {
     public static final int ONE_MINUTE = 60 * 1000;
 
     public static void main(String[] args) throws IOException, ParseException, TransformerException, ParserConfigurationException {
-        String gpsFixesSmartphoneOne = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros.csv";
-        SmartphoneFixesFileReader sfr1 = new SmartphoneFixesFileReader(gpsFixesSmartphoneOne);
-        ArrayList<GpsFix> gpsFixesSmartphone1 = sfr1.readFile();
-
-        String gpsFixesSmartphoneTwo = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-2\\registros.csv";
-        SmartphoneFixesFileReader sfr2 = new SmartphoneFixesFileReader(gpsFixesSmartphoneTwo);
-        ArrayList<GpsFix> gpsFixesSmartphone2 = sfr2.readFile();
-
-        String gpsFixesLogger = "c:\\Users\\rafael\\Desktop\\tmp\\exp\\logger\\exported-20_28-10-2015.csv";
-        LoggerReaderFixes loggerReaderFixes = new LoggerReaderFixes(gpsFixesLogger);
-        ArrayList<GpsFix> gpsFixesFromLogger = loggerReaderFixes.readFile();
-
-        processSmartphoneOne(gpsFixesSmartphone1);
-        processSmartphoneTwo(gpsFixesSmartphone2);
-        processGpsLogger(gpsFixesFromLogger);
-        new FrmStayPointComparator();
+//        String gpsFixesSmartphoneOne = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\registros.csv";
+//        SmartphoneFixesFileReader sfr1 = new SmartphoneFixesFileReader(gpsFixesSmartphoneOne);
+//        ArrayList<GpsFix> gpsFixesSmartphone1 = sfr1.readFile();
+//
+//        String gpsFixesSmartphoneTwo = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-2\\registros.csv";
+//        SmartphoneFixesFileReader sfr2 = new SmartphoneFixesFileReader(gpsFixesSmartphoneTwo);
+//        ArrayList<GpsFix> gpsFixesSmartphone2 = sfr2.readFile();
+//
+//        String gpsFixesLogger = "c:\\Users\\rafael\\Desktop\\tmp\\exp\\logger\\exported-20_28-10-2015.csv";
+//        LoggerReaderFixes loggerReaderFixes = new LoggerReaderFixes(gpsFixesLogger);
+//        ArrayList<GpsFix> gpsFixesFromLogger = loggerReaderFixes.readFile();
+//
+//        processSmartphoneOne(gpsFixesSmartphone1);
+//        processSmartphoneTwo(gpsFixesSmartphone2);
+//        processGpsLogger(gpsFixesFromLogger);
+        // new FrmStayPointComparator();
+        new FrmMain();
     }
 
     private static void processSmartphoneOne(ArrayList<GpsFix> gpsFixes) throws IOException, TransformerException, ParserConfigurationException {

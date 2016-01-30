@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.spCalculator;
+package tamps.cinvestav.s0lver.stayPointsCalculator.gui;
 
 import tamps.cinvestav.s0lver.iolocationfiles.readers.staypoints.StayPointsFileReader;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
@@ -14,16 +14,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class FrmStayPointComparator extends JFrame implements ActionListener{
-//    private ArrayList<StayPoint> stayPointsA;
-//    private ArrayList<StayPoint> stayPointsB;
-
     private final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
     private JTable topTable, bottomTable;
     private JButton btnLoadFileA, btnLoadFileB;
