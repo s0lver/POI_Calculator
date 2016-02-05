@@ -5,8 +5,8 @@ import tamps.cinvestav.s0lver.locationentities.StayPoint;
 
 public class ZhengBufferedAlgorithm extends BufferedLiveAlgorithm {
 
-    public ZhengBufferedAlgorithm(long minTimeThreshold, double distanceThreshold) {
-        super(minTimeThreshold,distanceThreshold);
+    public ZhengBufferedAlgorithm(long minTimeThreshold, double distanceThreshold, boolean verbose) {
+        super(minTimeThreshold, distanceThreshold, verbose);
     }
 
     @Override

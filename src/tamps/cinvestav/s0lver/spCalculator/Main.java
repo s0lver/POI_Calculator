@@ -46,10 +46,10 @@ public class Main {
     }
 
     private static void testServerResults() {
-        String csvOrigin = "C:\\Users\\rafael\\desktop\\tmp\\test-server-side\\registros.csv";
+        String csvOrigin = "C:\\Users\\rafael\\desktop\\tmp\\test-server-side\\test-registros.csv";
         SmartphoneFixesFileReader reader = new SmartphoneFixesFileReader(csvOrigin);
         ArrayList<GpsFix> gpsFixes = reader.readFile();
-        MontoliouBufferedAlgorithm mba = new MontoliouBufferedAlgorithm(60 * ONE_MINUTE, 10 * ONE_MINUTE, 50);
+        MontoliouBufferedAlgorithm mba = new MontoliouBufferedAlgorithm(60 * ONE_MINUTE, 10 * ONE_MINUTE, 50, false);
 
         ArrayList<StayPoint> stayPoints = new ArrayList<>();
         for (GpsFix gpsFix : gpsFixes) {

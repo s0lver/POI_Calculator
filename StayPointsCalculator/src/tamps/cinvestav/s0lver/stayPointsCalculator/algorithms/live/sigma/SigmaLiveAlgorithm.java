@@ -13,8 +13,8 @@ public abstract class SigmaLiveAlgorithm extends LiveAlgorithm {
     protected double sigmaLongitude;
     protected Date arrivalTime, departureTime;
 
-    public SigmaLiveAlgorithm(long minTimeThreshold, double distanceThreshold) {
-        super(minTimeThreshold, distanceThreshold);
+    public SigmaLiveAlgorithm(long minTimeThreshold, double distanceThreshold, boolean verbose) {
+        super(minTimeThreshold, distanceThreshold, verbose);
 
         this.amountFixes = 0;
         this.sigmaLatitude = 0;

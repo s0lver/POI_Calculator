@@ -7,8 +7,8 @@ public class MontoliouBufferedAlgorithm extends BufferedLiveAlgorithm{
 
     private long maxTimeThreshold;
 
-    public MontoliouBufferedAlgorithm(long maxTimeThreshold, long minTimeThreshold, double distanceThreshold) {
-        super(minTimeThreshold,distanceThreshold);
+    public MontoliouBufferedAlgorithm(long maxTimeThreshold, long minTimeThreshold, double distanceThreshold, boolean verbose) {
+        super(minTimeThreshold, distanceThreshold, verbose);
         this.maxTimeThreshold = maxTimeThreshold;
     }
 
@@ -22,18 +22,22 @@ public class MontoliouBufferedAlgorithm extends BufferedLiveAlgorithm{
 
         long timespan = pjMinus.timeDifference(pj);
         if (timespan > maxTimeThreshold) {
+            if (verbose) System.out.println("Max time constraint exceeded.");
             cleanList(pj);
             return null;
         }
 
         double distance = pi.distanceTo(pj);
+        if (verbose) System.out.println("Distance is " + distance);
 
         if (distance > distanceThreshold) {
             timespan = pi.timeDifference(pj);
+            if (verbose) System.out.println("Timestamp is " + timespan);
 
             if (timespan > minTimeThreshold) {
                 StayPoint sp = StayPoint.createStayPoint(list, 0, n - 1);
                 cleanList(pj);
+                System.out.println("Stay point created! " + sp);
                 return sp;
             }
             cleanList(pj);

@@ -7,10 +7,12 @@ public abstract class LiveAlgorithm {
 
     protected double distanceThreshold;
     protected long minTimeThreshold;
+    protected boolean verbose;
 
-    public LiveAlgorithm(long minTimeThreshold, double distanceThreshold) {
+    public LiveAlgorithm(long minTimeThreshold, double distanceThreshold, boolean verbose) {
         this.minTimeThreshold = minTimeThreshold;
         this.distanceThreshold = distanceThreshold;
+        this.verbose = verbose;
     }
 
     public abstract StayPoint processFix(GpsFix fix);

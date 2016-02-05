@@ -3,8 +3,8 @@ package tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live.sigma;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
 
 public class ZhenSigmaAlgorithm extends SigmaLiveAlgorithm {
-    public ZhenSigmaAlgorithm(long minTimeThreshold, double distanceThreshold) {
-        super(minTimeThreshold, distanceThreshold);
+    public ZhenSigmaAlgorithm(long minTimeThreshold, double distanceThreshold, boolean verbose) {
+        super(minTimeThreshold, distanceThreshold, verbose);
     }
 
     protected StayPoint processLive() {

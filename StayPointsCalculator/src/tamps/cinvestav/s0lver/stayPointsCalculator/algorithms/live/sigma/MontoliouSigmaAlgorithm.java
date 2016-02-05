@@ -5,8 +5,8 @@ import tamps.cinvestav.s0lver.locationentities.StayPoint;
 public class MontoliouSigmaAlgorithm extends SigmaLiveAlgorithm {
     private long maxTimeThreshold;
 
-    public MontoliouSigmaAlgorithm(long maxTimeThreshold, long minTimeThreshold, double distanceThreshold) {
-        super(minTimeThreshold, distanceThreshold);
+    public MontoliouSigmaAlgorithm(long maxTimeThreshold, long minTimeThreshold, double distanceThreshold, boolean verbose) {
+        super(minTimeThreshold, distanceThreshold, verbose);
         this.maxTimeThreshold = maxTimeThreshold;
     }
 

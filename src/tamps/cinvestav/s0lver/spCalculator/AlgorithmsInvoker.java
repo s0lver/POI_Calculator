@@ -54,7 +54,7 @@ public class AlgorithmsInvoker {
     }
 
     public static ArrayList<StayPoint> executeMontoliouLive(ArrayList<GpsFix> gpsFixes) {
-        LiveAlgorithm mla = new MontoliouBufferedAlgorithm(60 * ONE_MINUTE, 10 * ONE_MINUTE, 150);
+        LiveAlgorithm mla = new MontoliouBufferedAlgorithm(60 * ONE_MINUTE, 10 * ONE_MINUTE, 150, false);
         ArrayList<StayPoint> stayPointsMLA = new ArrayList<>();
 
         for (int i = 0; i < gpsFixes.size(); i++) {
@@ -73,7 +73,7 @@ public class AlgorithmsInvoker {
     }
 
     public static ArrayList<StayPoint> executeMontoliouLiveSigma(ArrayList<GpsFix> gpsFixes) {
-        LiveAlgorithm mlas = new MontoliouSigmaAlgorithm(60 * ONE_MINUTE, 10 * ONE_MINUTE, 150);
+        LiveAlgorithm mlas = new MontoliouSigmaAlgorithm(60 * ONE_MINUTE, 10 * ONE_MINUTE, 150, false);
         ArrayList<StayPoint> staypoints = new ArrayList<>();
 
         for (int i = 0; i < gpsFixes.size(); i++) {
