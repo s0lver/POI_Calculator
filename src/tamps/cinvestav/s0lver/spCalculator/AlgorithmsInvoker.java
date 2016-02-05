@@ -49,7 +49,7 @@ public class AlgorithmsInvoker {
     }
 
     public static ArrayList<StayPoint> executeMontoliou(ArrayList<GpsFix> gpsFixArrayList) {
-        OfflineAlgorithm montoliuAlgorithm = new MontoliuAlgorithm(gpsFixArrayList, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        OfflineAlgorithm montoliuAlgorithm = new MontoliuAlgorithm(gpsFixArrayList, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150, true);
         return montoliuAlgorithm.extractStayPoints();
     }
 

@@ -7,6 +7,8 @@ import tamps.cinvestav.s0lver.kmltranslator.translators.KmlFileCreator;
 import tamps.cinvestav.s0lver.kmltranslator.translators.PinnedKmlCreator;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live.LiveAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live.buffered.MontoliouBufferedAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.MontoliuAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.OfflineAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.ZhenAlgorithm;
@@ -38,8 +40,35 @@ public class Main {
 //        processSmartphoneOne(gpsFixesSmartphone1);
 //        processSmartphoneTwo(gpsFixesSmartphone2);
 //        processGpsLogger(gpsFixesFromLogger);
-        // new FrmStayPointComparator();
-        new FrmMain();
+
+        // new FrmMain();
+        testServerResults();
+    }
+
+    private static void testServerResults() {
+        String csvOrigin = "C:\\Users\\rafael\\desktop\\tmp\\test-server-side\\registros.csv";
+        SmartphoneFixesFileReader reader = new SmartphoneFixesFileReader(csvOrigin);
+        ArrayList<GpsFix> gpsFixes = reader.readFile();
+        MontoliouBufferedAlgorithm mba = new MontoliouBufferedAlgorithm(60 * ONE_MINUTE, 10 * ONE_MINUTE, 50);
+
+        ArrayList<StayPoint> stayPoints = new ArrayList<>();
+        for (GpsFix gpsFix : gpsFixes) {
+            StayPoint stayPoint = mba.processFix(gpsFix);
+            if (stayPoint != null) {
+                stayPoints.add(stayPoint);
+            }
+        }
+
+        StayPoint stayPoint = mba.processLastPart();
+        if (stayPoint != null) {
+            stayPoints.add(stayPoint);
+        }
+
+        for (StayPoint point : stayPoints) {
+            System.out.println(point);
+        }
+
+
     }
 
     private static void processSmartphoneOne(ArrayList<GpsFix> gpsFixes) throws IOException, TransformerException, ParserConfigurationException {
@@ -49,14 +78,14 @@ public class Main {
         String csvSp10Minutes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\sp1-stay-points-10-pinned.csv";
         String csvSp15Minutes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-1\\sp1-stay-points-15-pinned.csv";
 
-        OfflineAlgorithm montoliuAlgorithmTenMinutes = new MontoliuAlgorithm(gpsFixes, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        OfflineAlgorithm montoliuAlgorithmTenMinutes = new MontoliuAlgorithm(gpsFixes, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150, true);
         ArrayList<StayPoint> stayPointsTenMinutes = montoliuAlgorithmTenMinutes.extractStayPoints();
         KmlFileCreator creatorFromSP = PinnedKmlCreator.createForStaypoints(kmlSp10Minutes, stayPointsTenMinutes);
         creatorFromSP.create();
         StayPointCsvWriter spcsv10minutes = new StayPointCsvWriter(csvSp10Minutes, stayPointsTenMinutes);
         spcsv10minutes.writeFile();
 
-        OfflineAlgorithm montoliouAlgorithmFifteenMinutes = new MontoliuAlgorithm(gpsFixes, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        OfflineAlgorithm montoliouAlgorithmFifteenMinutes = new MontoliuAlgorithm(gpsFixes, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150, true);
         ArrayList<StayPoint> stayPointsFiftenMinutes = montoliouAlgorithmFifteenMinutes.extractStayPoints();
         creatorFromSP = PinnedKmlCreator.createForStaypoints(kmlSp15Minutes, stayPointsFiftenMinutes);
         creatorFromSP.create();
@@ -72,14 +101,14 @@ public class Main {
         String csvSp10Minutes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-2\\sp2-stay-points-10-pinned.csv";
         String csvSp15Minutes = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-2\\sp2-stay-points-15-pinned.csv";
 
-        OfflineAlgorithm montoliuAlgorithmTenMinutes = new MontoliuAlgorithm(gpsFixes, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        OfflineAlgorithm montoliuAlgorithmTenMinutes = new MontoliuAlgorithm(gpsFixes, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150, true);
         ArrayList<StayPoint> stayPointsTenMinutes = montoliuAlgorithmTenMinutes.extractStayPoints();
         KmlFileCreator creatorFromSP = PinnedKmlCreator.createForStaypoints(kmlSp10Minutes, stayPointsTenMinutes);
         creatorFromSP.create();
         StayPointCsvWriter spcsv10minutes = new StayPointCsvWriter(csvSp10Minutes, stayPointsTenMinutes);
         spcsv10minutes.writeFile();
 
-        OfflineAlgorithm montoliouAlgorithmFifteenMinutes = new MontoliuAlgorithm(gpsFixes, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        OfflineAlgorithm montoliouAlgorithmFifteenMinutes = new MontoliuAlgorithm(gpsFixes, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150, true);
         ArrayList<StayPoint> stayPointsFiftenMinutes = montoliouAlgorithmFifteenMinutes.extractStayPoints();
         creatorFromSP = PinnedKmlCreator.createForStaypoints(kmlSp15Minutes, stayPointsFiftenMinutes);
         creatorFromSP.create();
@@ -114,14 +143,14 @@ public class Main {
         String csv10minutesMontoliou = "c:\\Users\\rafael\\Desktop\\tmp\\exp\\logger\\logger-sp-montoliou-10-minutes.csv";
         String csv15minutesMontoliou = "c:\\Users\\rafael\\Desktop\\tmp\\exp\\logger\\logger-sp-montoliou-15-minutes.csv";
 
-        OfflineAlgorithm montoliouLoggerTenMinutes = new MontoliuAlgorithm(gpsFixesFromLogger, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        OfflineAlgorithm montoliouLoggerTenMinutes = new MontoliuAlgorithm(gpsFixesFromLogger, 10 * ONE_MINUTE, 60 * ONE_MINUTE, 150, true);
         ArrayList<StayPoint> stayPoints10MinMontoliou = montoliouLoggerTenMinutes.extractStayPoints();
         spKmlCreator = PinnedKmlCreator.createForStaypoints(kml10minutesMontoliou, stayPoints10MinMontoliou);
         spKmlCreator.create();
         StayPointCsvWriter spcsv10minutesMontoliou = new StayPointCsvWriter(csv10minutesMontoliou, stayPoints10MinMontoliou);
         spcsv10minutesMontoliou.writeFile();
 
-        OfflineAlgorithm montoliouLoggerFifteenMinutes = new MontoliuAlgorithm(gpsFixesFromLogger, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150);
+        OfflineAlgorithm montoliouLoggerFifteenMinutes = new MontoliuAlgorithm(gpsFixesFromLogger, 15 * ONE_MINUTE, 60 * ONE_MINUTE, 150, true);
         ArrayList<StayPoint> stayPoints15MinMontoliou = montoliouLoggerFifteenMinutes.extractStayPoints();
         spKmlCreator = PinnedKmlCreator.createForStaypoints(kml15minutesMontoliou, stayPoints15MinZhen);
         spKmlCreator.create();

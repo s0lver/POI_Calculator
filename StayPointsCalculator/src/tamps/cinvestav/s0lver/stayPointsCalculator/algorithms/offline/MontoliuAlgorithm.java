@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class MontoliuAlgorithm extends OfflineAlgorithm {
     private long maxTimeTreshold;
 
-    public MontoliuAlgorithm(ArrayList<GpsFix> gpsFixes, long minTimeTreshold, long maxTimeTreshold, double distanceTreshold) {
-        super(gpsFixes, minTimeTreshold, distanceTreshold, false);
+    public MontoliuAlgorithm(ArrayList<GpsFix> gpsFixes, long minTimeTreshold, long maxTimeTreshold, double distanceTreshold, boolean verbose) {
+        super(gpsFixes, minTimeTreshold, distanceTreshold, verbose);
         this.maxTimeTreshold = maxTimeTreshold;
     }
 
