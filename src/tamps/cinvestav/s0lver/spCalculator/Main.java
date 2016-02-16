@@ -41,8 +41,8 @@ public class Main {
 //        processSmartphoneTwo(gpsFixesSmartphone2);
 //        processGpsLogger(gpsFixesFromLogger);
 
-        // new FrmMain();
-        testServerResults();
+         new FrmMain();
+//        testServerResults();
     }
 
     private static void testServerResults() {
@@ -123,14 +123,14 @@ public class Main {
         String csv10minutesZheng = "c:\\Users\\rafael\\Desktop\\tmp\\exp\\logger\\logger-sp-zheng-10-minutes.csv";
         String csv15minutesZheng = "c:\\Users\\rafael\\Desktop\\tmp\\exp\\logger\\logger-sp-zheng-15-minutes.csv";
 
-        OfflineAlgorithm zhenLoggerTenMinutes = new ZhenAlgorithm(gpsFixesFromLogger, 10 * ONE_MINUTE, 150);
+        OfflineAlgorithm zhenLoggerTenMinutes = new ZhenAlgorithm(gpsFixesFromLogger, 10 * ONE_MINUTE, 150, false);
         ArrayList<StayPoint> stayPoints10MinZhen = zhenLoggerTenMinutes.extractStayPoints();
         KmlFileCreator spKmlCreator = PinnedKmlCreator.createForStaypoints(kml10minutesZheng, stayPoints10MinZhen);
         spKmlCreator.create();
         StayPointCsvWriter spcsv10minutesZhen = new StayPointCsvWriter(csv10minutesZheng, stayPoints10MinZhen);
         spcsv10minutesZhen.writeFile();
 
-        OfflineAlgorithm zhenLoggerFifteenMinutes = new ZhenAlgorithm(gpsFixesFromLogger, 15 * ONE_MINUTE, 150);
+        OfflineAlgorithm zhenLoggerFifteenMinutes = new ZhenAlgorithm(gpsFixesFromLogger, 15 * ONE_MINUTE, 150, false);
         ArrayList<StayPoint> stayPoints15MinZhen = zhenLoggerFifteenMinutes.extractStayPoints();
         spKmlCreator = PinnedKmlCreator.createForStaypoints(kml15minutesZheng, stayPoints10MinZhen);
         spKmlCreator.create();

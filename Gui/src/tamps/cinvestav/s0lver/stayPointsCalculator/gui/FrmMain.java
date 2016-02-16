@@ -1,8 +1,6 @@
 package tamps.cinvestav.s0lver.stayPointsCalculator.gui;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class FrmMain extends JFrame {
     public FrmMain() {
@@ -21,30 +19,22 @@ public class FrmMain extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu mnuFile = new JMenu("File");
 
-        JMenu mnuGpsFixes = new JMenu("Gps fixes");
-        JMenuItem mnuGpsGenerateKml = new JMenuItem("Generate KML");
-        mnuGpsGenerateKml.addActionListener(e -> menuGpsGenerateKmlSelected());
-        JMenuItem mnuGpsCalculateStayPoints = new JMenuItem("Calculate Stay Points");
-        mnuGpsCalculateStayPoints.addActionListener(e -> menuGpsCalculateStayPointsSelected());
-        mnuGpsFixes.add(mnuGpsGenerateKml);
-        mnuGpsFixes.add(mnuGpsCalculateStayPoints);
 
+        JMenuItem mnuCalculateStayPoints = new JMenuItem("Calculate Stay Points");
+        mnuCalculateStayPoints.addActionListener(e -> menuGpsCalculateStayPointsSelected());
 
-        JMenu mnuStayPoints = new JMenu("Stay points");
-        JMenuItem mnuStayPointsGenerateKml = new JMenuItem("Generate KML");
-        mnuStayPointsGenerateKml.addActionListener(e -> menuStayPointsGenerateKmlSelected());
-        mnuStayPoints.add(mnuStayPointsGenerateKml);
-        JMenuItem mnuStayPointsCompare = new JMenuItem("Compare");
-        mnuStayPointsCompare.addActionListener(e -> menuStayPointsCompareSelected());
-        mnuStayPoints.add(mnuStayPointsCompare);
+        JMenuItem mnuCompareStayPoints = new JMenuItem("Compare Stay Points");
+        mnuCompareStayPoints.addActionListener(e -> menuCompareStayPointsSelected());
+
+        JMenuItem mnuGenerateKml = new JMenuItem("Generate KML");
+        mnuGenerateKml.addActionListener(e -> menuStayPointsGenerateKmlSelected());
 
         JMenuItem mnuExit = new JMenuItem("Exit");
         mnuExit.addActionListener(e -> menuExitSelected());
 
-        mnuFile.add(mnuGpsFixes);
-        mnuFile.addSeparator();
-        mnuFile.add(mnuStayPoints);
-        mnuFile.addSeparator();
+        mnuFile.add(mnuCalculateStayPoints);
+        mnuFile.add(mnuCompareStayPoints);
+        mnuFile.add(mnuGenerateKml);
         mnuFile.add(mnuExit);
 
         menuBar.add(mnuFile);
@@ -52,15 +42,10 @@ public class FrmMain extends JFrame {
     }
 
     private void menuGpsCalculateStayPointsSelected() {
-        JOptionPane.showMessageDialog(this, "We are going to CALCULATE stay points from GPS fixes", "Hey!", JOptionPane.INFORMATION_MESSAGE);
+        new FrmCalculateStayPoints();
     }
 
-    private void menuGpsGenerateKmlSelected() {
-        JOptionPane.showMessageDialog(this, "We are going to GENERATE KML for GPS fixes", "Hey!", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    private void menuStayPointsCompareSelected() {
-        JOptionPane.showMessageDialog(this, "We are going to COMPARE stay points", "Hey!", JOptionPane.INFORMATION_MESSAGE);
+    private void menuCompareStayPointsSelected() {
         this.setEnabled(false);
         new FrmStayPointComparator();
     }

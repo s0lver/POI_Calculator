@@ -44,7 +44,7 @@ public class AlgorithmsInvoker {
     }
 
     public static ArrayList<StayPoint> executeZhen(ArrayList<GpsFix> gpsFixArrayList) {
-        OfflineAlgorithm zhengAlgorithm = new ZhenAlgorithm(gpsFixArrayList, 60 * 1000, 150);
+        OfflineAlgorithm zhengAlgorithm = new ZhenAlgorithm(gpsFixArrayList, 60 * 1000, 150, false);
         return zhengAlgorithm.extractStayPoints();
     }
 

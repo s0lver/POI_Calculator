@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class ZhenAlgorithm extends OfflineAlgorithm {
 
-    public ZhenAlgorithm(ArrayList<GpsFix> gpsFixes, long minTimeTreshold, double distanceTreshold) {
-        super(gpsFixes, minTimeTreshold, distanceTreshold, false);
+    public ZhenAlgorithm(ArrayList<GpsFix> gpsFixes, long minTimeTreshold, double distanceTreshold, boolean verbose) {
+        super(gpsFixes, minTimeTreshold, distanceTreshold, verbose);
     }
 
     @Override
@@ -18,7 +18,7 @@ public class ZhenAlgorithm extends OfflineAlgorithm {
         double distance;
         long timespan;
 
-        int i = 0, j = 0, pointNum = gpsFixes.size();
+        int i = 0, j = 0, n = gpsFixes.size();
         boolean weAreDone = false;
 
         if (gpsFixes.size() == 0) {
@@ -26,7 +26,7 @@ public class ZhenAlgorithm extends OfflineAlgorithm {
             return result;
         }
 
-        while (i < pointNum) {
+        while (i < n) {
             if (weAreDone) {
                 StayPoint sp = StayPoint.createStayPoint(gpsFixes, i, j);
                 result.add(sp);
@@ -34,7 +34,14 @@ public class ZhenAlgorithm extends OfflineAlgorithm {
             }
             pi = gpsFixes.get(i);
             j = i + 1;
-            while (j < pointNum) {
+
+            if (j == n) {
+                // The we have to stop it
+                // weAreDone = true;
+                break;
+            }
+
+            while (j < n) {
                 pj = gpsFixes.get(j);
                 distance = pi.distanceTo(pj); //distance(pi, pj);
                 if (distance > distanceTreshold) {
@@ -56,7 +63,7 @@ public class ZhenAlgorithm extends OfflineAlgorithm {
                 }
                 j++;
                 // If this increment finalises the iteration...
-                if (j == pointNum) {
+                if (j == n) {
                     // The we have to stop it
                     weAreDone = true;
                     j--;
