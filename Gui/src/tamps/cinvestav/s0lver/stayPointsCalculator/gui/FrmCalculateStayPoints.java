@@ -4,6 +4,7 @@ import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.GPSFixesFileReade
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.LoggerReaderFixes;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.SmartphoneFixesFileReader;
 import tamps.cinvestav.s0lver.iolocationfiles.writers.StayPointCsvWriter;
+import tamps.cinvestav.s0lver.kmltranslator.translators.PinnedKmlCreator;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.MontoliuAlgorithm;
@@ -11,19 +12,15 @@ import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.OfflineAlg
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.ZhenAlgorithm;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class FrmCalculateStayPoints extends JFrame implements ActionListener{
     private JTextField txtMinimumDistance;
@@ -168,6 +165,7 @@ public class FrmCalculateStayPoints extends JFrame implements ActionListener{
             if (stayPoints.size() > 1) {
                 showStayPoints(stayPoints);
                 saveStayPoints(stayPoints);
+                saveKmlFile(stayPoints);
             }else{
                 JOptionPane.showMessageDialog(this, "No stay points found", "Alert", JOptionPane.WARNING_MESSAGE);
             }
@@ -175,27 +173,18 @@ public class FrmCalculateStayPoints extends JFrame implements ActionListener{
     }
 
     private void saveStayPoints(ArrayList<StayPoint> stayPoints) {
-        String algorithmIdentifier = null;
-        if (cmbAlgorithms.getSelectedIndex() == 0) {
-            algorithmIdentifier = "zhen";
-        } else if (cmbAlgorithms.getSelectedIndex() == 1) {
-            algorithmIdentifier = "montoliou";
-        }
-        else{
-            throw new RuntimeException("Algorithm type not supported");
-        }
+        String algorithmIdentifier = getAlgorithmIdentifier();
 
         String outputFileName = fileInput.getName().split("\\.")[0];
 
         outputFileName = outputFileName + "-" + algorithmIdentifier + ".csv";
         StayPointCsvWriter writer = new StayPointCsvWriter(fileInput.getParent() + File.separator + outputFileName, stayPoints);
 
-
         try {
             writer.writeFile();
         } catch (IOException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "An error ocurred when saving the file", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "An error occurred when saving the file", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -209,6 +198,35 @@ public class FrmCalculateStayPoints extends JFrame implements ActionListener{
             stayPointChunked[0] = String.valueOf(i++);
             model.addRow(stayPointChunked);
         }
+    }
+
+    private void saveKmlFile(ArrayList<StayPoint> stayPoints) {
+        String algorithmIdentifier = getAlgorithmIdentifier();
+
+        String outputFileName = fileInput.getName().split("\\.")[0];
+
+        outputFileName = outputFileName + "-" + algorithmIdentifier + ".kml";
+        PinnedKmlCreator writer = PinnedKmlCreator.createForStayPoints(fileInput.getParent() + File.separator + outputFileName + outputFileName, stayPoints);
+
+        try {
+            writer.create();
+        } catch (IOException | ParserConfigurationException | TransformerException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occurred when saving the file", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private String getAlgorithmIdentifier() {
+        String algorithmIdentifier = null;
+        if (cmbAlgorithms.getSelectedIndex() == 0) {
+            algorithmIdentifier = "zhen";
+        } else if (cmbAlgorithms.getSelectedIndex() == 1) {
+            algorithmIdentifier = "montoliou";
+        }
+        else{
+            throw new RuntimeException("Algorithm type not supported");
+        }
+        return algorithmIdentifier;
     }
 
     private ArrayList<StayPoint> calculateStayPoints() {

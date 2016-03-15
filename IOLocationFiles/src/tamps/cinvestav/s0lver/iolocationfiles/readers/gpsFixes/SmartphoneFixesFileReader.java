@@ -7,12 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class SmartphoneFixesFileReader extends GPSFixesFileReader {
-    private final int LATITUDE = 1;
-    private final int LONGITUDE = 2;
-    private final int ALTITUDE = 3;
-    private final int ACCURACY = 4;
-    private final int SPEED = 5;
-    private final int TIMESTAMP = 6;
+    private final static int LATITUDE = 1;
+    private final static int LONGITUDE = 2;
+    private final static int ALTITUDE = 3;
+    private final static int ACCURACY = 4;
+    private final static int SPEED = 5;
+    private final static int TIMESTAMP = 6;
 
     // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);

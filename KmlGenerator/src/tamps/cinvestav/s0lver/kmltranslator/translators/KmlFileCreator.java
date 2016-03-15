@@ -27,7 +27,7 @@ public abstract class KmlFileCreator {
     protected Document dom;
     protected final SimpleDateFormat dateFormatInKML = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    public KmlFileCreator(String outputFilename, ArrayList<SpatialTimeElement> spatialTimeElements) {
+    KmlFileCreator(String outputFilename, ArrayList<SpatialTimeElement> spatialTimeElements) {
         this.outputFilename = outputFilename;
         this.spatialTimeElements = spatialTimeElements;
     }

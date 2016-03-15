@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class LoggerReaderFixes extends GPSFixesFileReader {
     private final int LATITUDE = 8;
@@ -18,8 +19,8 @@ public class LoggerReaderFixes extends GPSFixesFileReader {
     private final int TIME = 4;
     // Apparently, since we are in GMT -6 and the logger delivers in GMT 0
     // we have to apply this correction... Or maybe -5
-    // private final int HOURS_DIFFERENCE = -6;
-    private final int HOURS_DIFFERENCE = -5;
+     private final int HOURS_DIFFERENCE = -6;
+//    private final int HOURS_DIFFERENCE = -5;
 
     public LoggerReaderFixes(String path) {
         super(path, true);
@@ -57,7 +58,9 @@ public class LoggerReaderFixes extends GPSFixesFileReader {
     }
 
     private Date createTimestamp(String[] tokens) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/M/d h:m:s");
+        // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/M/d h:m:s");
+        // Excel is messing the dates from the previous to the next format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
 
         StringBuilder sb = new StringBuilder();
 

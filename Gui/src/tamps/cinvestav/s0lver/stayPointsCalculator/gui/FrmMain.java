@@ -7,7 +7,7 @@ public class FrmMain extends JFrame {
         super("Main menu");
         prepareGuiComponents();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        pack();
+        setSize(400, 300);
         setVisible(true);
     }
 
