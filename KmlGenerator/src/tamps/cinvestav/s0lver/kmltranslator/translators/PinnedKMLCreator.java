@@ -100,7 +100,7 @@ public class PinnedKmlCreator extends KmlFileCreator {
         return new PinnedKmlCreator(outputFilename, spatialTimeElements);
     }
 
-    public static PinnedKmlCreator createForStaypoints(String outputFilename, ArrayList<StayPoint> stayPoints) {
+    public static PinnedKmlCreator createForStayPoints(String outputFilename, ArrayList<StayPoint> stayPoints) {
         ArrayList<SpatialTimeElement> spatialTimeElements = convertStaypointsToSpatialTimeElements(stayPoints);
         return new PinnedKmlCreator(outputFilename, spatialTimeElements);
     }

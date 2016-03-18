@@ -206,7 +206,7 @@ public class FrmCalculateStayPoints extends JFrame implements ActionListener{
         String outputFileName = fileInput.getName().split("\\.")[0];
 
         outputFileName = outputFileName + "-" + algorithmIdentifier + ".kml";
-        PinnedKmlCreator writer = PinnedKmlCreator.createForStayPoints(fileInput.getParent() + File.separator + outputFileName + outputFileName, stayPoints);
+        PinnedKmlCreator writer = PinnedKmlCreator.createForStayPoints(fileInput.getParent() + File.separator + outputFileName, stayPoints);
 
         try {
             writer.create();
