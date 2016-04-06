@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/POI Calculator.iml" filepath="$PROJECT_DIR$/POI Calculator.iml" />
       <module fileurl="file://$PROJECT_DIR$/StayPointsCalculator/StayPointsCalculator.iml" filepath="$PROJECT_DIR$/StayPointsCalculator/StayPointsCalculator.iml" />
       <module fileurl="file://$PROJECT_DIR$/StayPointsComparator/StayPointsComparator.iml" filepath="$PROJECT_DIR$/StayPointsComparator/StayPointsComparator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TrajectoriesComparator/TrajectoriesComparator.iml" filepath="$PROJECT_DIR$/TrajectoriesComparator/TrajectoriesComparator.iml" />
     </modules>
   </component>
 </project>

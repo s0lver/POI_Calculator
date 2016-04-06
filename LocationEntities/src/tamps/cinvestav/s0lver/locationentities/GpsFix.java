@@ -9,15 +9,16 @@ public class GpsFix {
     private double longitude;
     private double altitude;
     private double accuracy;
-    private double speed;
+    private double velocity;
     private Date timestamp;
 
-    public GpsFix(double latitude, double longitude, double altitude, double accuracy, double speed, Date timestamp) {
+    public GpsFix(double latitude, double longitude, double altitude, double accuracy, double velocity, Date timestamp) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.altitude = altitude;
-        this.timestamp = timestamp;
         this.accuracy = accuracy;
+        this.velocity = velocity;
+        this.timestamp = timestamp;
     }
 
     public double getLatitude() {
@@ -60,10 +61,18 @@ public class GpsFix {
         this.accuracy = accuracy;
     }
 
-    public String toString(){
+    public double getVelocity() {
+        return velocity;
+    }
+
+    public String toString() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
-        return String.format("Lat: %f, Long: %f, Alt: %f, Acc: %f, Date: %s", getLatitude(), getLongitude(),
-                getAltitude(), getAccuracy(), simpleDateFormat.format(getTimestamp()));
+        return "Lat: " + getLatitude() + ", "
+                + "Long: " + getLongitude() + ", "
+                + "Alt: " + getAltitude() + ", "
+                + "Acc: " + getAccuracy() + ", "
+                + "Vel: " + getVelocity() + ", "
+                + "Date: " + simpleDateFormat.format(getTimestamp());
     }
 
     /***
