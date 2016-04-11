@@ -29,6 +29,7 @@ public class SynchronizedComparator {
      */
     public double compareDistance() {
         // TODO complete this method
+        double distanceSum = 0;
         for (int i = 0; i < compressedTrajectory.getSize(); i++) {
             GpsFix sampledFix = compressedTrajectory.getFix(i);
             int indexEquivalentFixLeft = i;
@@ -39,10 +40,12 @@ public class SynchronizedComparator {
             }
 
             int indexEquivalentFixRight = groundTruthTrajectory.getTimeClosestFixIndex(compressedTrajectory.getFix(i + 1), indexEquivalentFixLeft);
-            Trajectory subtrajectory = groundTruthTrajectory.getSubtrajectory(indexEquivalentFixLeft, indexEquivalentFixRight);
+            Trajectory subTrajectory = groundTruthTrajectory.getSubTrajectory(indexEquivalentFixLeft, indexEquivalentFixRight);
 
-            for (int j = 1; j < subtrajectory.getSize(); j++) {
-
+            for (int indexCurrentMappedFix = 1; indexCurrentMappedFix < subTrajectory.getSize(); indexCurrentMappedFix++) {
+                GpsFix groundTruthFix = subTrajectory.getFix(indexCurrentMappedFix);
+                GpsFix syntheticFix = mapFix(subTrajectory, indexCurrentMappedFix);
+                distanceSum += groundTruthFix.distanceTo(syntheticFix);
             }
 
 
@@ -50,6 +53,19 @@ public class SynchronizedComparator {
 
         double totalDistance = 0;
         return convertCoordinatesDistanceToMeters(totalDistance);
+    }
+
+    private GpsFix mapFix(Trajectory subTrajectory, int indexCurrentMappedFix) {
+        // With the subtrajectory refrence you can get its size, instead of using   indexEquivalentFixRight - indexEquivalentFixLeft
+        // Also, with the subtrajectory you can get the references to such marker-anchor fixes
+        // With the indexCurrentMappedFix you can get the position of the fix to map, and as a consequence the interval in seconds since fixLeft!
+        int subTrajectorySize = subTrajectory.getSize();
+
+        GpsFix initialFix = subTrajectory.getFirst();
+        GpsFix lastFix = subTrajectory.getLast();
+
+
+        return null;
     }
 
     /***

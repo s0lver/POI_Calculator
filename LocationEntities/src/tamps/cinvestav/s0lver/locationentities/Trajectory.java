@@ -122,7 +122,7 @@ public class Trajectory {
      * @param endIndex High endpoint (inclusive) of the sub-Trajectory
      * @return A sub-Trajectory from startingIndex to endIndex, including both fixes
      */
-    public Trajectory getSubtrajectory(int startingIndex, int endIndex) {
+    public Trajectory getSubTrajectory(int startingIndex, int endIndex) {
         ArrayList<GpsFix> subList = (ArrayList<GpsFix>) fixes.subList(startingIndex, endIndex + 1);
         return new Trajectory(subList);
     }
