@@ -28,23 +28,27 @@ public class SynchronizedComparator {
      * @return The distance between the two trajectories, converted to meters.
      */
     public double compareDistance() {
-        GpsFix firstFixInCompressedTrj = compressedTrajectory.getFirst();
-        double distanceFirstFix = firstFixInCompressedTrj.distanceTo(groundTruthTrajectory.getFirst());
+        // TODO complete this method
+        for (int i = 0; i < compressedTrajectory.getSize(); i++) {
+            GpsFix sampledFix = compressedTrajectory.getFix(i);
+            int indexEquivalentFixLeft = i;
 
-        int compressedTrjSize = compressedTrajectory.getSize();
-        double internalDistances = 0;
-        for (int i = 1; i < compressedTrjSize - 1; i++) {
-            // TODO falta interpolar los puntos de la compressedTrajectory para compararlos con los equivalentes en la trayectoria groundtruth
-            GpsFix currentFix = compressedTrajectory.getFix(i);
-            GpsFix timeNearestFix = groundTruthTrajectory.getTimeClosestFix(currentFix, 1);
-            double distanceBetweenFixes = currentFix.distanceTo(timeNearestFix);
-            internalDistances += distanceBetweenFixes;
+            // If we are @ last sampled fix, then everything is already done
+            if (i + 1 == compressedTrajectory.getSize()) {
+                break;
+            }
+
+            int indexEquivalentFixRight = groundTruthTrajectory.getTimeClosestFixIndex(compressedTrajectory.getFix(i + 1), indexEquivalentFixLeft);
+            Trajectory subtrajectory = groundTruthTrajectory.getSubtrajectory(indexEquivalentFixLeft, indexEquivalentFixRight);
+
+            for (int j = 1; j < subtrajectory.getSize(); j++) {
+
+            }
+
+
         }
 
-        GpsFix lastFixInCompressedTrj = compressedTrajectory.getLast();
-        double distanceLastFix = lastFixInCompressedTrj.distanceTo(groundTruthTrajectory.getLast());
-
-        double totalDistance = distanceFirstFix + internalDistances + distanceLastFix;
+        double totalDistance = 0;
         return convertCoordinatesDistanceToMeters(totalDistance);
     }
 

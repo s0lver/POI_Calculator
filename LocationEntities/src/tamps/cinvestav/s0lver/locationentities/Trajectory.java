@@ -1,6 +1,7 @@
 package tamps.cinvestav.s0lver.locationentities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /***
  * Represents a Trajectory composed by time sequenced GPS fixes
@@ -113,5 +114,16 @@ public class Trajectory {
     public GpsFix getTimeClosestFix(GpsFix fix, int startingIndex) {
         int fixIndex = getTimeClosestFixIndex(fix, startingIndex);
         return getFix(fixIndex);
+    }
+
+    /***
+     * Obtains a sub-Trajectory composed from startingIndex up to endIndex (both included)
+     * @param startingIndex low endpoint (inclusive) of the sub-Trajectory
+     * @param endIndex High endpoint (inclusive) of the sub-Trajectory
+     * @return A sub-Trajectory from startingIndex to endIndex, including both fixes
+     */
+    public Trajectory getSubtrajectory(int startingIndex, int endIndex) {
+        ArrayList<GpsFix> subList = (ArrayList<GpsFix>) fixes.subList(startingIndex, endIndex + 1);
+        return new Trajectory(subList);
     }
 }
