@@ -1,5 +1,6 @@
 package tamps.cinvestav.s0lver.locationentities;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,12 +83,7 @@ public class Trajectory {
         int trjSize = fixes.size();
         int i = 0;
         for (i = startingIndex; i < trjSize; i++) {
-//            if (fix.getTimestamp().before(fixes.get(i).getTimestamp())) {
-//                continue;
-//            } else if (fix.getTimestamp().after(fixes.get(i).getTimestamp())) {
-//                break;
-//            }
-            if (fix.getTimestamp().after(fixes.get(i).getTimestamp())) {
+            if (fix.getTimestamp().before(fixes.get(i).getTimestamp())) {
                 break;
             }
         }
@@ -123,7 +119,24 @@ public class Trajectory {
      * @return A sub-Trajectory from startingIndex to endIndex, including both fixes
      */
     public Trajectory getSubTrajectory(int startingIndex, int endIndex) {
-        ArrayList<GpsFix> subList = (ArrayList<GpsFix>) fixes.subList(startingIndex, endIndex + 1);
-        return new Trajectory(subList);
+        List<GpsFix> subAsList = fixes.subList(startingIndex, endIndex + 1);
+        ArrayList<GpsFix> subTrajectory = new ArrayList<>();
+        for (GpsFix gpsFix : subAsList) {
+            subTrajectory.add(gpsFix);
+        }
+
+        return new Trajectory(subTrajectory);
+    }
+
+    /***
+     * Obtains the sum of distances between internal fixes
+     * @return The sum of the distance between internal fixes
+     */
+    public double getInternalDistance() {
+        double distanceSum = 0;
+        for (int i = 0; i < fixes.size() - 1; i++) {
+            distanceSum += fixes.get(i).distanceTo(fixes.get(i + 1));
+        }
+        return distanceSum;
     }
 }

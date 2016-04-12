@@ -13,5 +13,6 @@
     <orderEntry type="module" module-name="StayPointsComparator" />
     <orderEntry type="module" module-name="StayPointsCalculator" />
     <orderEntry type="module" module-name="Gui" />
+    <orderEntry type="module" module-name="TrajectoriesComparator" />
   </component>
 </module>

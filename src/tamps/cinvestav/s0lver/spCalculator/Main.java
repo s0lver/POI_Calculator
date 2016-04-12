@@ -1,5 +1,6 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
+import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.LoggerReaderFixes;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.SmartphoneFixesFileReader;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.staypoints.StayPointsFileReader;
 import tamps.cinvestav.s0lver.iolocationfiles.writers.StayPointCsvWriter;
@@ -7,11 +8,13 @@ import tamps.cinvestav.s0lver.kmltranslator.translators.KmlFileCreator;
 import tamps.cinvestav.s0lver.kmltranslator.translators.PinnedKmlCreator;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
+import tamps.cinvestav.s0lver.locationentities.Trajectory;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live.buffered.MontoliouBufferedAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.MontoliuAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.OfflineAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.ZhenAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsCalculator.gui.FrmMain;
+import tamps.cinvestav.s0lver.trajectoriescomparator.TrajectoryComparator;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -39,12 +42,25 @@ public class Main {
 //        processSmartphoneTwo(gpsFixesSmartphone2);
 //        processGpsLogger(gpsFixesFromLogger);
 
-         new FrmMain();
+//         new FrmMain();
 //        StayPointsFileReader reader = new StayPointsFileReader("C:\\Users\\Rafael\\Desktop\\staypoints_sigma-zhen_fixed-period_03-Mar-2016-16-21.csv");
 //        ArrayList<StayPoint> stayPoints = reader.readFile();
 //
 //        PinnedKmlCreator kmlCreator = PinnedKmlCreator.createForStayPoints("C:\\Users\\Rafael\\Desktop\\staypoints_sigma-zhen_fixed-period_03-Mar-2016-16-21.kml", stayPoints);
 //        kmlCreator.create();
+
+        String groundTruthPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\victoria-guemez.csv";
+        LoggerReaderFixes groundTruthReader = new LoggerReaderFixes(groundTruthPath);
+        ArrayList<GpsFix> groundTruthFixes = groundTruthReader.readFile();
+        Trajectory groundTruthTrajectory = new Trajectory(groundTruthFixes);
+
+        String subSampledPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\victoria-guemez-sub-sampled.csv";
+        LoggerReaderFixes subSampledReader = new LoggerReaderFixes(subSampledPath);
+        ArrayList<GpsFix> subSampledFixes = subSampledReader.readFile();
+        Trajectory subSampledTrajectory = new Trajectory(subSampledFixes);
+
+        TrajectoryComparator comparator = new TrajectoryComparator(groundTruthTrajectory, subSampledTrajectory);
+        double euclideanDistance = comparator.compareEuclidean();
 
     }
 }
