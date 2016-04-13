@@ -1,8 +1,10 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
+import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.GPSFixesFileReader;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.LoggerReaderFixes;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.SmartphoneFixesFileReader;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.staypoints.StayPointsFileReader;
+import tamps.cinvestav.s0lver.iolocationfiles.writers.GpsFixCsvWriter;
 import tamps.cinvestav.s0lver.iolocationfiles.writers.StayPointCsvWriter;
 import tamps.cinvestav.s0lver.kmltranslator.translators.KmlFileCreator;
 import tamps.cinvestav.s0lver.kmltranslator.translators.PinnedKmlCreator;
@@ -60,7 +62,29 @@ public class Main {
         Trajectory subSampledTrajectory = new Trajectory(subSampledFixes);
 
         TrajectoryComparator comparator = new TrajectoryComparator(groundTruthTrajectory, subSampledTrajectory);
-        double euclideanDistance = comparator.compareEuclidean();
+//        double euclideanDistance = comparator.compareEuclidean();
+//        System.out.println("Distance is " + euclideanDistance);
+//        ArrayList<GpsFix> synthetic = comparator.compareEuclidean();
+//        PinnedKmlCreator.createForGpsFixes("C:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes.kml", synthetic).create();
+//        PinnedKmlCreator.createForGpsFixes("C:\\Users\\rafael\\Desktop\\tmp\\trajectories\\originalFixes.kml", groundTruthFixes).create();
+//        ArrayList<GpsFix> syntheticFixes = comparator.getSyntheticFixes();
+//        GpsFixCsvWriter writer = new GpsFixCsvWriter("c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes.csv", syntheticFixes);
+//        writer.writeFile();
 
+
+        String syntheticFixesPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes.csv";
+        SmartphoneFixesFileReader reader = new SmartphoneFixesFileReader(syntheticFixesPath);
+        ArrayList<GpsFix> syntheticFixes = reader.readFile();
+    // TODO something is wrong with the calculateEuclideanly, see that below the result is more believable
+
+        double distanceSum = 0;
+        for (int i = 0; i < syntheticFixes.size(); i++) {
+            GpsFix syntheticFix = syntheticFixes.get(i);
+            GpsFix groundTruthFix = groundTruthFixes.get(i);
+            double distance = syntheticFix.distanceTo(groundTruthFix);
+            System.out.println(syntheticFix + " ->VS<- " + groundTruthFix + "\t = " + distance);
+            distanceSum += distance;
+        }
+        System.out.println("Sum of distances is " + distanceSum);
     }
 }

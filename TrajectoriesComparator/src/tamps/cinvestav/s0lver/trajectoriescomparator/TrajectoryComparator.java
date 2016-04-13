@@ -3,6 +3,7 @@ package tamps.cinvestav.s0lver.trajectoriescomparator;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.Trajectory;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /***
@@ -30,27 +31,65 @@ public class TrajectoryComparator {
      * @return The distance between the two trajectories, converted to meters.
      */
     public double compareEuclidean() {
+        ArrayList<GpsFix> internalMappedFixes = new ArrayList<>();
         double distanceSum = 0;
         int subSampledTrajectorySize = subSampledTrajectory.getSize();
+        int indexEquivalentFixLeft = 0, indexEquivalentFixRight = 0;
         for (int i = 0; i < subSampledTrajectorySize; i++) {
-            GpsFix sampledFix = subSampledTrajectory.getFix(i);
-            int indexEquivalentFixLeft = i;
-
             // If we are @ last sampled fix, then everything is already done
-            if (i + 1 == subSampledTrajectorySize) {
+            if (i + 1 == subSampledTrajectorySize - 1) {
                 break;
             }
 
-            int indexEquivalentFixRight = groundTruthTrajectory.getTimeClosestFixIndex(subSampledTrajectory.getFix(i + 1), indexEquivalentFixLeft);
+            // Get anchor points in subsampled trajectory
+            GpsFix leftFix = subSampledTrajectory.getFix(i);
+            GpsFix rightFix = subSampledTrajectory.getFix(i + 1);
+
+            // Get sub-trajectory of ground truth enclosed by equivalent left and right fixes
+            indexEquivalentFixLeft = groundTruthTrajectory.getTimeClosestFixIndex(subSampledTrajectory.getFix(i), indexEquivalentFixLeft);
+            indexEquivalentFixRight = groundTruthTrajectory.getTimeClosestFixIndex(subSampledTrajectory.getFix(i + 1), indexEquivalentFixLeft);
             Trajectory subTrajectory = groundTruthTrajectory.getSubTrajectory(indexEquivalentFixLeft, indexEquivalentFixRight);
 
-            for (int indexCurrentMappedFix = 1; indexCurrentMappedFix < subTrajectory.getSize(); indexCurrentMappedFix++) {
-                GpsFix groundTruthFix = subTrajectory.getFix(indexCurrentMappedFix);
-                GpsFix syntheticFix = mapFixEuclidean(subTrajectory, indexCurrentMappedFix, i, i + 1);
-                distanceSum += groundTruthFix.distanceTo(syntheticFix);
+            // 1. Get distance of initial fix in current subtrajectory
+            double distanceFirstPoint = subTrajectory.getFix(0).distanceTo(leftFix);
+            distanceSum += distanceFirstPoint;
+
+            // 2. Map all of the internal subtrajectory fixes
+            internalMappedFixes = mapInternalFixesEuclideanly(subTrajectory, leftFix, rightFix);
+
+            // 3. Get distance for all mapped internal fixes
+            double innerDistances = 0;
+            int indexInGroundTruth = 1;
+            for (GpsFix currentSyntheticFix : internalMappedFixes) {
+                GpsFix currentGroundTruthFix = subTrajectory.getFix(indexInGroundTruth);
+                innerDistances += currentSyntheticFix.distanceTo(currentGroundTruthFix);
+                indexInGroundTruth++;
             }
+            distanceSum += innerDistances;
         }
+
+        // 4. Get distance for the last fix that has not been processed
+        indexEquivalentFixRight = groundTruthTrajectory.getTimeClosestFixIndex(subSampledTrajectory.getLast(), indexEquivalentFixRight);
+        GpsFix lastFix = groundTruthTrajectory.getTimeClosestFix(subSampledTrajectory.getLast(), indexEquivalentFixRight);
+        double distanceLastPoint = subSampledTrajectory.getLast().distanceTo(lastFix);
+        distanceSum += distanceLastPoint;
+
         return distanceSum;
+    }
+
+    private ArrayList<GpsFix> mapInternalFixesEuclideanly(Trajectory subTrajectory, GpsFix leftFix, GpsFix rightFix) {
+        ArrayList<GpsFix> mappedFixes = new ArrayList<>();
+
+        // Map only internal fixes
+        int sizeSubTrajectory = subTrajectory.getSize();
+        for (int currentMappedFixIndex = 1; currentMappedFixIndex < (sizeSubTrajectory - 1); currentMappedFixIndex++) {
+            double k1 = currentMappedFixIndex;
+            double k2 = sizeSubTrajectory - k1;
+            GpsFix mappedFix = buildSyntheticFix(currentMappedFixIndex, leftFix, rightFix, k1, k2);
+            mappedFixes.add(mappedFix);
+        }
+
+        return mappedFixes;
     }
 
     public double compareSynchronized() {
@@ -118,12 +157,39 @@ public class TrajectoryComparator {
         return new GpsFix(mappedLatitude, mappedLongitude, 0, 0, 0, calendar.getTime());
     }
 
+
     /***
-     * Converts a distance expressed in coordinates values to meters
-     * @param totalDistance The distance to be converted
-     * @return The distance expressed in meters
+     * Measures the distance between two GPS trajectories
+     * @see Trajectory
+     * @return The distance between the two trajectories, converted to meters.
      */
-    private double convertCoordinatesDistanceToMeters(double totalDistance) {
-        return 0;
+    public ArrayList<GpsFix> getSyntheticFixes() {
+        ArrayList<GpsFix> internalMappedFixes = new ArrayList<>();
+        double distanceSum = 0;
+        int subSampledTrajectorySize = subSampledTrajectory.getSize();
+        int indexEquivalentFixLeft = 0, indexEquivalentFixRight = 0;
+        int i = 0;
+
+        // Get anchor points in subsampled trajectory
+        GpsFix leftFix = subSampledTrajectory.getFix(i);
+        GpsFix rightFix = subSampledTrajectory.getFix(i + 1);
+
+        // Get sub-trajectory of ground truth enclosed by equivalent left and right fixes
+        indexEquivalentFixLeft = groundTruthTrajectory.getTimeClosestFixIndex(subSampledTrajectory.getFix(i), indexEquivalentFixLeft);
+        indexEquivalentFixRight = groundTruthTrajectory.getTimeClosestFixIndex(subSampledTrajectory.getFix(i + 1), indexEquivalentFixLeft);
+        Trajectory subTrajectory = groundTruthTrajectory.getSubTrajectory(indexEquivalentFixLeft, indexEquivalentFixRight);
+
+        // 1. Get distance of initial fix in current subtrajectory
+        double distanceFirstPoint = subTrajectory.getFix(0).distanceTo(leftFix);
+        distanceSum += distanceFirstPoint;
+
+        // 2. Map all of the internal subtrajectory fixes
+        internalMappedFixes = mapInternalFixesEuclideanly(subTrajectory, leftFix, rightFix);
+
+        ArrayList<GpsFix> allFixes = new ArrayList<>();
+        allFixes.add(leftFix);
+        allFixes.addAll(internalMappedFixes);
+        allFixes.add(rightFix);
+        return allFixes;
     }
 }

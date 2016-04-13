@@ -89,6 +89,11 @@ public class Trajectory {
         }
         int previousFixIndex = i - 1;
         int nextFixIndex = i;
+
+        if (isOutOfBounds(nextFixIndex)) {
+            return i - 1;
+        }
+
         GpsFix previousFix = getFix(previousFixIndex);
         GpsFix nextFix = getFix(nextFixIndex);
         long timeDifferencePrevious = fix.getTimestamp().getTime() - previousFix.getTimestamp().getTime();
@@ -99,6 +104,12 @@ public class Trajectory {
         }
 
         return nextFixIndex;
+    }
+
+    private boolean isOutOfBounds(int requestedIndex) {
+        if (fixes.size() <= requestedIndex)
+            return true;
+        return false;
     }
 
     /***
