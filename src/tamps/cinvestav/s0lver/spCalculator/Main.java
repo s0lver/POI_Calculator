@@ -40,17 +40,25 @@ public class Main {
 //        writer.writeFile();
 
 
-        String syntheticFixedEuclideanPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-euclid.csv";
-        SmartphoneFixesFileReader readerEuclid = new SmartphoneFixesFileReader(syntheticFixedEuclideanPath);
-        ArrayList<GpsFix> syntheticEuclidFixes = readerEuclid.readFile();
-        double distanceSum = calculateDistance(groundTruthFixes, syntheticEuclidFixes);
-        System.out.println("Sum of distances is " + distanceSum);
-
-        String syntheticFixesSyncPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-synch.csv";
-        SmartphoneFixesFileReader readerSync = new SmartphoneFixesFileReader(syntheticFixesSyncPath);
-        ArrayList<GpsFix> syntheticSyncFixes = readerSync.readFile();
-        double distanceSumSync = calculateDistance(groundTruthFixes, syntheticSyncFixes);
-        System.out.println("Sum of distances is " + distanceSumSync);
+//        String syntheticFixedEuclideanPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-euclid.csv";
+//        SmartphoneFixesFileReader readerEuclid = new SmartphoneFixesFileReader(syntheticFixedEuclideanPath);
+//        ArrayList<GpsFix> syntheticEuclidFixes = readerEuclid.readFile();
+//        double distanceSum = calculateDistance(groundTruthFixes, syntheticEuclidFixes);
+//        System.out.println("Sum of distances is " + distanceSum);
+//
+//        String syntheticFixesSyncPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-synch.csv";
+//        SmartphoneFixesFileReader readerSync = new SmartphoneFixesFileReader(syntheticFixesSyncPath);
+//        ArrayList<GpsFix> syntheticSyncFixes = readerSync.readFile();
+//        double distanceSumSync = calculateDistance(groundTruthFixes, syntheticSyncFixes);
+//        System.out.println("Sum of distances is " + distanceSumSync);
+//
+//        System.out.println("Ok now pay attention here...");
+//        for (int i = 0; i < syntheticEuclidFixes.size() - 1; i++) {
+//            GpsFix gpsFix = syntheticEuclidFixes.get(i);
+//            GpsFix nextFix = syntheticEuclidFixes.get(i + 1);
+//            double distance = gpsFix.distanceTo(nextFix);
+//            System.out.println(gpsFix + " --> " + nextFix + "  === " + distance);
+//        }
 
 //        ArrayList<GpsFix> syntheticFixes = comparator.getSyntheticFixesSynchronizedly();
 //        GpsFixCsvWriter writer = new GpsFixCsvWriter("c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-synch.csv", syntheticFixes);
@@ -58,6 +66,17 @@ public class Main {
 //        PinnedKmlCreator.createForGpsFixes("C:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-synch.kml", syntheticFixes).create();
 //        PinnedKmlCreator.createForGpsFixes("C:\\Users\\rafael\\Desktop\\tmp\\trajectories\\original-fixes.kml",
 //                getSubArrayList(groundTruthFixes, syntheticFixes.size())).create();
+
+        ArrayList<GpsFix> syntheticEuclidFixes = comparator.getSyntheticFixesEuclideanly();
+                System.out.println("Ok now pay attention here...");
+        for (int i = 0; i < syntheticEuclidFixes.size() - 1; i++) {
+            GpsFix gpsFix = syntheticEuclidFixes.get(i);
+            GpsFix nextFix = syntheticEuclidFixes.get(i + 1);
+            double distance = gpsFix.distanceTo(nextFix);
+            System.out.println(i + " " + gpsFix + " --> " + nextFix + "  === " + distance);
+        }
+        //GpsFixCsvWriter writer = new GpsFixCsvWriter("c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-euclid.csv", syntheticEuclidFixes);
+        //writer.writeFile();
 
     }
 

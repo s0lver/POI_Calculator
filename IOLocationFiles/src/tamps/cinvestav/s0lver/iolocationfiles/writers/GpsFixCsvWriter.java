@@ -28,8 +28,7 @@ public class GpsFixCsvWriter {
     }
 
     private String translateGpsFixToCsv(GpsFix gpsFix) {
-        return String.format("%f,%f,%f,%f,%s",
-                gpsFix.getLatitude(), gpsFix.getLongitude(),
-                gpsFix.getAltitude(), gpsFix.getAccuracy(), simpleDateFormat.format(gpsFix.getTimestamp()));
+        return "Si," + gpsFix.getLatitude() + "," + gpsFix.getLongitude() + "," + gpsFix.getAccuracy()
+                + "," + gpsFix.getVelocity() + "," + simpleDateFormat.format(gpsFix.getTimestamp());
     }
 }

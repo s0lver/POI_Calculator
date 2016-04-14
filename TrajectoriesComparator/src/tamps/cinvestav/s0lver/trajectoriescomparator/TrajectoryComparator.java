@@ -156,6 +156,7 @@ public class TrajectoryComparator {
         ArrayList<GpsFix> mappedFixes = new ArrayList<>();
 
         // Map only internal fixes
+        // TODO it seems that there is a problem with the k1 and k2 values, I need to adjust it
         int sizeSubTrajectory = subTrajectory.getSize();
         for (int currentMappedFixIndex = 1; currentMappedFixIndex < (sizeSubTrajectory - 1); currentMappedFixIndex++) {
             double k1 = currentMappedFixIndex;
