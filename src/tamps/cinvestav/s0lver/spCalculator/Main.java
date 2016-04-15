@@ -1,7 +1,7 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.LoggerReaderFixes;
-import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.SmartphoneFixesFileReader;
+import tamps.cinvestav.s0lver.iolocationfiles.writers.GpsFixComparationCsvWriter;
 import tamps.cinvestav.s0lver.iolocationfiles.writers.GpsFixCsvWriter;
 import tamps.cinvestav.s0lver.kmltranslator.translators.PinnedKmlCreator;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
@@ -31,13 +31,31 @@ public class Main {
 
         TrajectoryComparator comparator = new TrajectoryComparator(groundTruthTrajectory, subSampledTrajectory);
 
-        ArrayList<GpsFix> syntheticFixesEuclideanly = comparator.getSyntheticFixesEuclideanly();
-        double distance = calculateDistance(groundTruthFixes, syntheticFixesEuclideanly);
+
+        System.out.println("Euclidean");
+        ArrayList<GpsFix> syntheticEuclideanFixes = comparator.getEuclideanSyntheticFixes();
+        double distance = calculateDistance(groundTruthFixes, syntheticEuclideanFixes);
         System.out.println("Distance is " + distance);
 
-        ArrayList<GpsFix> syntheticFixesSynchronizedly = comparator.getSyntheticFixesSynchronizedly();
-        distance = calculateDistance(groundTruthFixes, syntheticFixesSynchronizedly);
+        distance = comparator.compareEuclidean();
         System.out.println("Distance is " + distance);
+
+
+//        String euclideanComparationPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\euclidean-comparation.csv";
+//        GpsFixComparationCsvWriter comparationCsvWriter = new GpsFixComparationCsvWriter(euclideanComparationPath, groundTruthFixes, syntheticEuclideanFixes);
+//        comparationCsvWriter.writeFile();
+
+        System.out.println();
+        System.out.println("Synchronized");
+        ArrayList<GpsFix> syntheticSynchronizedFixes = comparator.getSynchronizedSyntheticFixes();
+        distance = calculateDistance(groundTruthFixes, syntheticSynchronizedFixes);
+        System.out.println("Distance is " + distance);
+
+        distance = comparator.compareSynchronized();
+        System.out.println("Distance is " + distance);
+////        String synchronizedComparationPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synchronized-comparation.csv";
+////        comparationCsvWriter = new GpsFixComparationCsvWriter(synchronizedComparationPath, groundTruthFixes, syntheticSynchronizedFixes);
+////        comparationCsvWriter.writeFile();
 
     }
 
@@ -47,10 +65,7 @@ public class Main {
             GpsFix syntheticFix = syntheticFixes.get(i);
             GpsFix groundTruthFix = groundTruthFixes.get(i);
             double distance = syntheticFix.distanceTo(groundTruthFix);
-//            System.out.println(syntheticFix + " ->VS<- " + groundTruthFix + "\t = " + distance);
-//            System.out.println(distance);
             distanceSum += distance;
-
         }
         return distanceSum;
     }
