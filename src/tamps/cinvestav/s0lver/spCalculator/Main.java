@@ -30,53 +30,14 @@ public class Main {
         Trajectory subSampledTrajectory = new Trajectory(subSampledFixes);
 
         TrajectoryComparator comparator = new TrajectoryComparator(groundTruthTrajectory, subSampledTrajectory);
-//        double euclideanDistance = comparator.compareEuclidean();
-//        System.out.println("Distance is " + euclideanDistance);
-//        ArrayList<GpsFix> synthetic = comparator.compareEuclidean();
-//        PinnedKmlCreator.createForGpsFixes("C:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes.kml", synthetic).create();
-//        PinnedKmlCreator.createForGpsFixes("C:\\Users\\rafael\\Desktop\\tmp\\trajectories\\originalFixes.kml", groundTruthFixes).create();
-//        ArrayList<GpsFix> syntheticFixes = comparator.getSyntheticFixesEuclideanly();
-//        GpsFixCsvWriter writer = new GpsFixCsvWriter("c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes.csv", syntheticFixes);
-//        writer.writeFile();
 
+        ArrayList<GpsFix> syntheticFixesEuclideanly = comparator.getSyntheticFixesEuclideanly();
+        double distance = calculateDistance(groundTruthFixes, syntheticFixesEuclideanly);
+        System.out.println("Distance is " + distance);
 
-//        String syntheticFixedEuclideanPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-euclid.csv";
-//        SmartphoneFixesFileReader readerEuclid = new SmartphoneFixesFileReader(syntheticFixedEuclideanPath);
-//        ArrayList<GpsFix> syntheticEuclidFixes = readerEuclid.readFile();
-//        double distanceSum = calculateDistance(groundTruthFixes, syntheticEuclidFixes);
-//        System.out.println("Sum of distances is " + distanceSum);
-//
-//        String syntheticFixesSyncPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-synch.csv";
-//        SmartphoneFixesFileReader readerSync = new SmartphoneFixesFileReader(syntheticFixesSyncPath);
-//        ArrayList<GpsFix> syntheticSyncFixes = readerSync.readFile();
-//        double distanceSumSync = calculateDistance(groundTruthFixes, syntheticSyncFixes);
-//        System.out.println("Sum of distances is " + distanceSumSync);
-//
-//        System.out.println("Ok now pay attention here...");
-//        for (int i = 0; i < syntheticEuclidFixes.size() - 1; i++) {
-//            GpsFix gpsFix = syntheticEuclidFixes.get(i);
-//            GpsFix nextFix = syntheticEuclidFixes.get(i + 1);
-//            double distance = gpsFix.distanceTo(nextFix);
-//            System.out.println(gpsFix + " --> " + nextFix + "  === " + distance);
-//        }
-
-//        ArrayList<GpsFix> syntheticFixes = comparator.getSyntheticFixesSynchronizedly();
-//        GpsFixCsvWriter writer = new GpsFixCsvWriter("c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-synch.csv", syntheticFixes);
-//        writer.writeFile();
-//        PinnedKmlCreator.createForGpsFixes("C:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-synch.kml", syntheticFixes).create();
-//        PinnedKmlCreator.createForGpsFixes("C:\\Users\\rafael\\Desktop\\tmp\\trajectories\\original-fixes.kml",
-//                getSubArrayList(groundTruthFixes, syntheticFixes.size())).create();
-
-        ArrayList<GpsFix> syntheticEuclidFixes = comparator.getSyntheticFixesEuclideanly();
-                System.out.println("Ok now pay attention here...");
-        for (int i = 0; i < syntheticEuclidFixes.size() - 1; i++) {
-            GpsFix gpsFix = syntheticEuclidFixes.get(i);
-            GpsFix nextFix = syntheticEuclidFixes.get(i + 1);
-            double distance = gpsFix.distanceTo(nextFix);
-            System.out.println(i + " " + gpsFix + " --> " + nextFix + "  === " + distance);
-        }
-        //GpsFixCsvWriter writer = new GpsFixCsvWriter("c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synthetic-fixes-euclid.csv", syntheticEuclidFixes);
-        //writer.writeFile();
+        ArrayList<GpsFix> syntheticFixesSynchronizedly = comparator.getSyntheticFixesSynchronizedly();
+        distance = calculateDistance(groundTruthFixes, syntheticFixesSynchronizedly);
+        System.out.println("Distance is " + distance);
 
     }
 
@@ -86,8 +47,10 @@ public class Main {
             GpsFix syntheticFix = syntheticFixes.get(i);
             GpsFix groundTruthFix = groundTruthFixes.get(i);
             double distance = syntheticFix.distanceTo(groundTruthFix);
-            System.out.println(syntheticFix + " ->VS<- " + groundTruthFix + "\t = " + distance);
+//            System.out.println(syntheticFix + " ->VS<- " + groundTruthFix + "\t = " + distance);
+//            System.out.println(distance);
             distanceSum += distance;
+
         }
         return distanceSum;
     }

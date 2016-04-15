@@ -21,6 +21,7 @@ public class GpsFixCsvWriter {
 
     public void writeFile() throws IOException {
         PrintWriter pw = new PrintWriter(new FileWriter(filepath));
+        pw.println("Obtained,Latitude,Longitude,Altitude,Accuracy,Velocity,Timestamp");
         for (GpsFix gpsFix : gpsFixes) {
             pw.println(translateGpsFixToCsv(gpsFix));
         }
@@ -28,7 +29,8 @@ public class GpsFixCsvWriter {
     }
 
     private String translateGpsFixToCsv(GpsFix gpsFix) {
-        return "Si," + gpsFix.getLatitude() + "," + gpsFix.getLongitude() + "," + gpsFix.getAccuracy()
-                + "," + gpsFix.getVelocity() + "," + simpleDateFormat.format(gpsFix.getTimestamp());
+        return "Si," + gpsFix.getLatitude() + "," + gpsFix.getLongitude() + "," + gpsFix.getAltitude()
+                + "," + gpsFix.getAccuracy() + "," + gpsFix.getVelocity() + ","
+                + simpleDateFormat.format(gpsFix.getTimestamp());
     }
 }
