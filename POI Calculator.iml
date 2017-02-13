@@ -14,5 +14,6 @@
     <orderEntry type="module" module-name="StayPointsCalculator" />
     <orderEntry type="module" module-name="Gui" />
     <orderEntry type="module" module-name="TrajectoriesComparator" />
+    <orderEntry type="module" module-name="JsonParser" />
   </component>
 </module>

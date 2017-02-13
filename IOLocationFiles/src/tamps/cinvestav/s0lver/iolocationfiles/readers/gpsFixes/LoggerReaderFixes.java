@@ -58,9 +58,9 @@ public class LoggerReaderFixes extends GPSFixesFileReader {
     }
 
     private Date createTimestamp(String[] tokens) {
-//         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/M/d h:m:s");
+         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/M/d h:m:s");
         // Excel is messing the dates from the previous to the next format
-         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+//         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
 
         StringBuilder sb = new StringBuilder();
 

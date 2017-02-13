@@ -1,11 +1,13 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
+import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.GPSFixesFileReader;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.LoggerReaderFixes;
 import tamps.cinvestav.s0lver.iolocationfiles.writers.GpsFixComparationCsvWriter;
 import tamps.cinvestav.s0lver.iolocationfiles.writers.GpsFixCsvWriter;
 import tamps.cinvestav.s0lver.kmltranslator.translators.PinnedKmlCreator;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.Trajectory;
+import tamps.cinvestav.s0lver.stayPointsCalculator.gui.FrmMain;
 import tamps.cinvestav.s0lver.trajectoriescomparator.TrajectoryComparator;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,62 +21,23 @@ public class Main {
 
     public static void main(String[] args) throws IOException, ParseException, TransformerException, ParserConfigurationException {
 //         new FrmMain();
-        String groundTruthPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\victoria-guemez.csv";
-        LoggerReaderFixes groundTruthReader = new LoggerReaderFixes(groundTruthPath);
-        ArrayList<GpsFix> groundTruthFixes = groundTruthReader.readFile();
-        Trajectory groundTruthTrajectory = new Trajectory(groundTruthFixes);
-
-        String subSampledPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\victoria-guemez-sub-sampled.csv";
-        LoggerReaderFixes subSampledReader = new LoggerReaderFixes(subSampledPath);
-        ArrayList<GpsFix> subSampledFixes = subSampledReader.readFile();
-        Trajectory subSampledTrajectory = new Trajectory(subSampledFixes);
-
-        TrajectoryComparator comparator = new TrajectoryComparator(groundTruthTrajectory, subSampledTrajectory);
-
-
-        System.out.println("Euclidean");
-        ArrayList<GpsFix> syntheticEuclideanFixes = comparator.getEuclideanSyntheticFixes();
-        double distance = calculateDistance(groundTruthFixes, syntheticEuclideanFixes);
-        System.out.println("Distance is " + distance);
-
-        distance = comparator.compareEuclidean();
-        System.out.println("Distance is " + distance);
-
-
-//        String euclideanComparationPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\euclidean-comparation.csv";
-//        GpsFixComparationCsvWriter comparationCsvWriter = new GpsFixComparationCsvWriter(euclideanComparationPath, groundTruthFixes, syntheticEuclideanFixes);
-//        comparationCsvWriter.writeFile();
-
-        System.out.println();
-        System.out.println("Synchronized");
-        ArrayList<GpsFix> syntheticSynchronizedFixes = comparator.getSynchronizedSyntheticFixes();
-        distance = calculateDistance(groundTruthFixes, syntheticSynchronizedFixes);
-        System.out.println("Distance is " + distance);
-
-        distance = comparator.compareSynchronized();
-        System.out.println("Distance is " + distance);
-////        String synchronizedComparationPath = "c:\\Users\\rafael\\Desktop\\tmp\\trajectories\\synchronized-comparation.csv";
-////        comparationCsvWriter = new GpsFixComparationCsvWriter(synchronizedComparationPath, groundTruthFixes, syntheticSynchronizedFixes);
-////        comparationCsvWriter.writeFile();
-
+        String rawCsvLocationsFile = "/home/rafael/Documents/experiments/three/ground-truth-fixes.csv";
+        String outputJsonFilePath = "/home/rafael/Desktop/file.json";
+//        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).generateJsonFileFromSingleLocationFile();
+        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).playWithSerializeAndDeserialize();
     }
 
-    private static double calculateDistance(ArrayList<GpsFix> groundTruthFixes, ArrayList<GpsFix> syntheticFixes) {
-        double distanceSum = 0;
-        for (int i = 0; i < syntheticFixes.size(); i++) {
-            GpsFix syntheticFix = syntheticFixes.get(i);
-            GpsFix groundTruthFix = groundTruthFixes.get(i);
-            double distance = syntheticFix.distanceTo(groundTruthFix);
-            distanceSum += distance;
-        }
-        return distanceSum;
+    /***
+     * Translate a Csv file produced by GPS logger software to our version of CSV, usable for all of the modules of this project
+     * @throws IOException
+     */
+    public void howToTranslateFiles() throws IOException {
+        GPSFixesFileReader fixesFileReader = new LoggerReaderFixes("/home/rafael/Documents/experiments/three/three-groundtruth.csv");
+        ArrayList<GpsFix> gtFixes = fixesFileReader.readFile();
+
+        GpsFixCsvWriter writer = new GpsFixCsvWriter("/home/rafael/Documents/experiments/three/ground-truth-fixes.csv", gtFixes);
+        writer.writeFile();
     }
 
-    private static ArrayList<GpsFix> getSubArrayList(ArrayList<GpsFix> original, int amount) {
-        ArrayList<GpsFix> newArrayList = new ArrayList<>();
-        for (int i = 0; i < amount; i++) {
-            newArrayList.add(original.get(i));
-        }
-        return newArrayList;
-    }
+
 }
