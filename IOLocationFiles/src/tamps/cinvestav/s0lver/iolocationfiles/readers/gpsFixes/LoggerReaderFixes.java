@@ -29,14 +29,15 @@ public class LoggerReaderFixes extends GPSFixesFileReader {
     protected GpsFix processLine(String line) {
         String[] tokens = line.split(",");
 
+        // always true as the GpsLogger ALWAYS obtains a location. If it is on input file, then it must be obtained!
+        boolean obtained = true;
         double latitude = getLatitudeValue(tokens);
         double longitude = getLongitudeValue(tokens);
         double altitude = Double.parseDouble(tokens[ALTITUDE]);
         double accuracy = 0; // The GPS logger is the big brother
         double speed = Double.parseDouble(tokens[SPEED]);
         Date timestamp = createTimestamp(tokens);
-
-        return new GpsFix(latitude, longitude, altitude, accuracy, speed, timestamp);
+        return new GpsFix(obtained, latitude, longitude, altitude, accuracy, speed, timestamp);
     }
 
     private double getLongitudeValue(String[] tokens) {

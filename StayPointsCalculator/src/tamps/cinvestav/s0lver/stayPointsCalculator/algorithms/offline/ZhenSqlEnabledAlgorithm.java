@@ -59,7 +59,7 @@ public class ZhenSqlEnabledAlgorithm extends OfflineAlgorithm {
                         break;
                     }
                     // Fix this when needed
-                    pi = new GpsFix(rs.getDouble("latitud"), rs.getDouble("longitud"), 0, rs.getFloat("precision"), 0, rs.getTimestamp("timestamp"));
+                    pi = new GpsFix(true, rs.getDouble("latitud"), rs.getDouble("longitud"), 0, rs.getFloat("precision"), 0, rs.getTimestamp("timestamp"));
                     tmpList.add(pi);
                 }
                 while (true) {
@@ -70,7 +70,7 @@ public class ZhenSqlEnabledAlgorithm extends OfflineAlgorithm {
                         weAreDone = true;
                         break;
                     }
-                    pj = new GpsFix(rs.getDouble("latitud"), rs.getDouble("longitud"), 0, rs.getFloat("precision"), 0, rs.getTimestamp("timestamp"));
+                    pj = new GpsFix(true, rs.getDouble("latitud"), rs.getDouble("longitud"), 0, rs.getFloat("precision"), 0, rs.getTimestamp("timestamp"));
                     tmpList.add(pj);
 
                     // Obtener la distancia entre ambos

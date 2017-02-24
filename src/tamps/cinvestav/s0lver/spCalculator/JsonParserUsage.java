@@ -21,20 +21,20 @@ public class JsonParserUsage {
         this.outputJsonFilePath = outputJsonFilePath;
     }
 
-    public void generateJsonFileFromSingleLocationFile() throws FileNotFoundException {
-        List<SensingUnit> sensingUnits = sensingUnitsReader.readFileAsSensorUnits();
+    public void generateJsonFileFromSingleLocationFile(boolean generateFakeAccelerometerSamples) throws FileNotFoundException {
+        List<SensingUnit> sensingUnits = sensingUnitsReader.readFileAsSensorUnits(generateFakeAccelerometerSamples);
         jsonSerializer.serialize(sensingUnits);
     }
 
-    public void playWithSerializeAndDeserialize() throws FileNotFoundException {
-        serializeFile();
+    public void playWithSerializeAndDeserialize(boolean generateFakeAccelerometerSamples) throws FileNotFoundException {
+        serializeFile(generateFakeAccelerometerSamples);
         jsonDeserializer = new JsonDeserializer(outputJsonFilePath);
         deserializeWholeFile();
         deserializeByUnit();
     }
 
-    private void serializeFile() throws FileNotFoundException {
-        List<SensingUnit> sensingUnits = sensingUnitsReader.readFileAsSensorUnits();
+    private void serializeFile(boolean generateFakeAccelerometerSamples) throws FileNotFoundException {
+        List<SensingUnit> sensingUnits = sensingUnitsReader.readFileAsSensorUnits(generateFakeAccelerometerSamples);
         jsonSerializer.serialize(sensingUnits);
     }
 

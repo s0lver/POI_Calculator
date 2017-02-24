@@ -2,13 +2,8 @@ package tamps.cinvestav.s0lver.spCalculator;
 
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.GPSFixesFileReader;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.LoggerReaderFixes;
-import tamps.cinvestav.s0lver.iolocationfiles.writers.GpsFixComparationCsvWriter;
 import tamps.cinvestav.s0lver.iolocationfiles.writers.GpsFixCsvWriter;
-import tamps.cinvestav.s0lver.kmltranslator.translators.PinnedKmlCreator;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
-import tamps.cinvestav.s0lver.locationentities.Trajectory;
-import tamps.cinvestav.s0lver.stayPointsCalculator.gui.FrmMain;
-import tamps.cinvestav.s0lver.trajectoriescomparator.TrajectoryComparator;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -21,10 +16,19 @@ public class Main {
 
     public static void main(String[] args) throws IOException, ParseException, TransformerException, ParserConfigurationException {
 //         new FrmMain();
-        String rawCsvLocationsFile = "/home/rafael/Documents/experiments/three/ground-truth-fixes.csv";
-        String outputJsonFilePath = "/home/rafael/Desktop/file.json";
-//        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).generateJsonFileFromSingleLocationFile();
-        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).playWithSerializeAndDeserialize();
+
+//        String rawCsvLocationsFile = "/home/rafael/Documents/experiments/three/ground-truth-fixes.csv";
+//        String outputJsonFilePath = "/home/rafael/Desktop/file.json";
+        String rawCsvLocationsFile = "/home/rafael/Documents/experiments/learning-truncated/asCsv.csv";
+        String outputJsonFilePath = "/home/rafael/Documents/experiments/learning-truncated/json-based-sensing.json";
+
+        boolean generateFakeAccelerometerSamples = true;
+        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).generateJsonFileFromSingleLocationFile(generateFakeAccelerometerSamples);
+//        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).playWithSerializeAndDeserialize();
+
+        String databaseInputFilePath = "/home/rafael/Documents/experiments/learning-truncated/truncated.db";
+        String csvOutputFilePath = "/home/rafael/Documents/experiments/learning-truncated/asCsv.csv";
+//        new DbAccessUsage(databaseInputFilePath, csvOutputFilePath).translateActivitiesInDbToCsvLocationsFile();
     }
 
     /***
@@ -38,6 +42,4 @@ public class Main {
         GpsFixCsvWriter writer = new GpsFixCsvWriter("/home/rafael/Documents/experiments/three/ground-truth-fixes.csv", gtFixes);
         writer.writeFile();
     }
-
-
 }

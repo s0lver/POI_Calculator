@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DatabaseAccess/DatabaseAccess.iml" filepath="$PROJECT_DIR$/DatabaseAccess/DatabaseAccess.iml" />
       <module fileurl="file://$PROJECT_DIR$/Gui/Gui.iml" filepath="$PROJECT_DIR$/Gui/Gui.iml" />
       <module fileurl="file://$PROJECT_DIR$/IOLocationFiles/IOLocationFiles.iml" filepath="$PROJECT_DIR$/IOLocationFiles/IOLocationFiles.iml" />
       <module fileurl="file://$PROJECT_DIR$/JsonParser/JsonParser.iml" filepath="$PROJECT_DIR$/JsonParser/JsonParser.iml" />

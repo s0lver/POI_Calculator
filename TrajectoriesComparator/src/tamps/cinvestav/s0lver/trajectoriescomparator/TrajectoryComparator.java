@@ -14,6 +14,7 @@ import java.util.Calendar;
 public class TrajectoryComparator {
     private Trajectory groundTruthTrajectory;
     private Trajectory subSampledTrajectory;
+    private final static boolean OBTAINED = true;
 
     /***
      * Constructor receiving both trajectories
@@ -291,6 +292,7 @@ public class TrajectoryComparator {
         calendar.setTime(ssInitialFix.getTimestamp());
         calendar.add(Calendar.SECOND, currentMappedFix);
 
-        return new GpsFix(mappedLatitude, mappedLongitude, 0, 0, 0, calendar.getTime());
+        return new GpsFix(OBTAINED, mappedLatitude, mappedLongitude, 0, 0, 0, calendar.getTime());
     }
+
 }

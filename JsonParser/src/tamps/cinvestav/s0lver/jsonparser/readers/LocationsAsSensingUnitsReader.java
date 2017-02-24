@@ -24,8 +24,9 @@ public class LocationsAsSensingUnitsReader {
     /***
      * Reads the file as a list of {@link SensingUnit}
      * @return The content of file as a list of {@link SensingUnit}
+     * @param generateFakeAccelerometerSamples
      */
-    public List<SensingUnit> readFileAsSensorUnits() {
+    public List<SensingUnit> readFileAsSensorUnits(boolean generateFakeAccelerometerSamples) {
         LocationFileReader reader = new LocationFileReader(fileInput.getAbsolutePath());
         SimpleLocation location = reader.readLine();
 
@@ -33,11 +34,14 @@ public class LocationsAsSensingUnitsReader {
         while (location != null) {
 
             SensorDataBlock sensorDataBlockLocation = buildLocationDataBlock(location);
-            SensorDataBlock sensorDataBlockAccelerometer = buildAccelerometerDataBlock(location.getTime());
-
             List<SensorDataBlock> sensorDataBlockList = new ArrayList<>();
             sensorDataBlockList.add(sensorDataBlockLocation);
-            sensorDataBlockList.add(sensorDataBlockAccelerometer);
+
+            if (generateFakeAccelerometerSamples) {
+                SensorDataBlock sensorDataBlockAccelerometer = buildAccelerometerDataBlock(location.getTime());
+                sensorDataBlockList.add(sensorDataBlockAccelerometer);
+            }
+            
             SensingUnit sensingUnit = new SensingUnit(sensorDataBlockList);
             sensingUnitList.add(sensingUnit);
 

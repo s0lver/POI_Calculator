@@ -28,6 +28,7 @@ public class SmartphoneFixesFileReader extends GPSFixesFileReader {
         if (slices[0].equals("Si")) {
             try {
                 fix = new GpsFix(
+                        true,
                         Double.valueOf(slices[LATITUDE]),
                         Double.valueOf(slices[LONGITUDE]),
                         Double.valueOf(slices[ALTITUDE]),

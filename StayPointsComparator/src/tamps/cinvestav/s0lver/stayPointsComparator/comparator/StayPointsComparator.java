@@ -28,8 +28,9 @@ public class StayPointsComparator {
     }
 
     private double computeDistanceBetweenStayPoints() {
-        GpsFix gpsFixA = new GpsFix(stayPointA.getLatitude(), stayPointA.getLongitude(), 0, 0, 0, stayPointA.getArrivalTime());
-        GpsFix gpsFixB = new GpsFix(stayPointB.getLatitude(), stayPointB.getLongitude(), 0, 0, 0, stayPointB.getArrivalTime());
+        boolean obtained = true;
+        GpsFix gpsFixA = new GpsFix(obtained, stayPointA.getLatitude(), stayPointA.getLongitude(), 0, 0, 0, stayPointA.getArrivalTime());
+        GpsFix gpsFixB = new GpsFix(obtained, stayPointB.getLatitude(), stayPointB.getLongitude(), 0, 0, 0, stayPointB.getArrivalTime());
 
         return gpsFixA.distanceTo(gpsFixB);
     }

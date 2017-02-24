@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class GpsFix {
+    private boolean obtained;
     private double latitude;
     private double longitude;
     private double altitude;
@@ -12,13 +13,22 @@ public class GpsFix {
     private double velocity;
     private Date timestamp;
 
-    public GpsFix(double latitude, double longitude, double altitude, double accuracy, double velocity, Date timestamp) {
+    public GpsFix(boolean obtained, double latitude, double longitude, double altitude, double accuracy, double velocity, Date timestamp) {
+        this.obtained = obtained;
         this.latitude = latitude;
         this.longitude = longitude;
         this.altitude = altitude;
         this.accuracy = accuracy;
         this.velocity = velocity;
         this.timestamp = timestamp;
+    }
+
+    public boolean isObtained() {
+        return obtained;
+    }
+
+    public void setObtained(boolean obtained) {
+        this.obtained = obtained;
     }
 
     public double getLatitude() {
