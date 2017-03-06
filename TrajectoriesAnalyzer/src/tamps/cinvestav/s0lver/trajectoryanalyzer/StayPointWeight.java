@@ -1,4 +1,4 @@
-package tamps.cinvestav.s0lver.databaseaccess.dto;
+package tamps.cinvestav.s0lver.trajectoryanalyzer;
 
 /***
  * Models the weight of a stay point in a user trajectory.

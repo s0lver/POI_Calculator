@@ -1,15 +1,24 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
+import tamps.cinvestav.s0lver.databaseaccess.dal.ActivitiesDal;
+import tamps.cinvestav.s0lver.databaseaccess.dal.DatabaseConnectionManager;
+import tamps.cinvestav.s0lver.databaseaccess.dal.StayPointsDal;
+import tamps.cinvestav.s0lver.databaseaccess.dal.VisitsDal;
+import tamps.cinvestav.s0lver.databaseaccess.dto.DtoActivity;
+import tamps.cinvestav.s0lver.databaseaccess.dto.DtoStayPoint;
+import tamps.cinvestav.s0lver.databaseaccess.dto.DtoVisit;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.GPSFixesFileReader;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.LoggerReaderFixes;
 import tamps.cinvestav.s0lver.iolocationfiles.writers.GpsFixCsvWriter;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
+import tamps.cinvestav.s0lver.trajectoryanalyzer.TrajectoryAnalyzer;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static final int ONE_MINUTE = 60 * 1000;
@@ -19,16 +28,19 @@ public class Main {
 
 //        String rawCsvLocationsFile = "/home/rafael/Documents/experiments/three/ground-truth-fixes.csv";
 //        String outputJsonFilePath = "/home/rafael/Desktop/file.json";
-        String rawCsvLocationsFile = "/home/rafael/Documents/experiments/learning-truncated/asCsv.csv";
-        String outputJsonFilePath = "/home/rafael/Documents/experiments/learning-truncated/json-based-sensing.json";
+//        String rawCsvLocationsFile = "/home/rafael/Documents/experiments/learning-truncated/asCsv.csv";
+//        String outputJsonFilePath = "/home/rafael/Documents/experiments/learning-truncated/json-based-sensing.json";
 
-        boolean generateFakeAccelerometerSamples = true;
-        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).generateJsonFileFromSingleLocationFile(generateFakeAccelerometerSamples);
+//        boolean generateFakeAccelerometerSamples = true;
+//        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).generateJsonFileFromSingleLocationFile(generateFakeAccelerometerSamples);
 //        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).playWithSerializeAndDeserialize();
 
-        String databaseInputFilePath = "/home/rafael/Documents/experiments/learning-truncated/truncated.db";
-        String csvOutputFilePath = "/home/rafael/Documents/experiments/learning-truncated/asCsv.csv";
+//        String databaseInputFilePath = "C:\\Users\\LTI\\Desktop\\nexus-2.db";
+//        String csvOutputFilePath = "C:\\Users\\LTI\\Desktop\\nexus-2-as-csv.csv";
 //        new DbAccessUsage(databaseInputFilePath, csvOutputFilePath).translateActivitiesInDbToCsvLocationsFile();
+
+        String databaseInputFilePath = "C:\\Users\\LTI\\Desktop\\nexus-2.db";
+        new TrajectoryAnalyzerUsage(databaseInputFilePath).doWork();
     }
 
     /***
