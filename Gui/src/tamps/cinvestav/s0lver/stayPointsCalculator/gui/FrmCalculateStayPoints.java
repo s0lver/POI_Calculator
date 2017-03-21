@@ -247,7 +247,7 @@ public class FrmCalculateStayPoints extends JFrame implements ActionListener{
     private ArrayList<GpsFix> readFixes(){
         GPSFixesFileReader reader;
         if (rdbSmartphone.isSelected()){
-            reader = new SmartphoneFixesFileReader(fileInput.getAbsolutePath());
+            reader = new SmartphoneFixesFileReader(fileInput.getAbsolutePath(), false);
         }else{
             reader = new LoggerReaderFixes(fileInput.getAbsolutePath());
         }

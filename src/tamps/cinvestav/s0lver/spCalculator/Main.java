@@ -1,19 +1,14 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
-import tamps.cinvestav.s0lver.databaseaccess.dal.ActivitiesDal;
-import tamps.cinvestav.s0lver.databaseaccess.dal.DatabaseConnectionManager;
-import tamps.cinvestav.s0lver.databaseaccess.dal.StayPointsDal;
-import tamps.cinvestav.s0lver.databaseaccess.dal.VisitsDal;
-import tamps.cinvestav.s0lver.databaseaccess.dto.DtoActivity;
-import tamps.cinvestav.s0lver.databaseaccess.dto.DtoStayPoint;
-import tamps.cinvestav.s0lver.databaseaccess.dto.DtoVisit;
+import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.ExportedDatabaseGpsFixesReader;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.GPSFixesFileReader;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.LoggerReaderFixes;
 import tamps.cinvestav.s0lver.iolocationfiles.writers.GpsFixCsvWriter;
+import tamps.cinvestav.s0lver.iolocationfiles.writers.StayPointCsvWriter;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
-import tamps.cinvestav.s0lver.stayPointsCalculator.gui.FrmMain;
-import tamps.cinvestav.s0lver.trajectoryanalyzer.TrajectoryAnalyzer;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live.buffered.ZhengBufferedAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.ZhenAlgorithm;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -21,7 +16,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Main {
     public static final int ONE_MINUTE = 60 * 1000;
@@ -47,17 +41,34 @@ public class Main {
         //new TrajectoryAnalyzerUsage(databaseInputFilePath).doWork();
 
 
-        Date nowDate = new Date(System.currentTimeMillis());
-        GpsFix fix_one = new GpsFix(true, 23.72108268, -99.07762772, 0, 0, 0, nowDate);
-        GpsFix fix_two = new GpsFix(true, 24.72108268, -98.07762772, 0, 0, 0, new Date(nowDate.getTime() + 20 * 1000));
-        GpsFix fix_three = new GpsFix(true, 25.72108268, -97.07762772, 0, 0, 0, new Date(nowDate.getTime() + 40 * 1000));
-        ArrayList<GpsFix> list = new ArrayList<>();
-        list.add(fix_one);
-        list.add(fix_two);
-        list.add(fix_three);
+//        GpsFix fix_1 = new GpsFix(true, 23.72108268, -99.07762772, 0, 0, 0, new Date(System.currentTimeMillis()));
+//        GpsFix fix_2 = new GpsFix(true, 24.72108268, -99.07762772, 0, 0, 0, new Date(System.currentTimeMillis()));
+//        System.out.println("distance_to " + fix_1.distanceTo(fix_2));
 
-        StayPoint stayPoint = StayPoint.createStayPoint(list);
-        System.out.println("Stay point is " + stayPoint);
+        GPSFixesFileReader reader = new ExportedDatabaseGpsFixesReader("c:\\Users\\rafael\\Documents\\experiments\\csv-auc-creator\\2\\nexus-1.csv", true);
+        ArrayList<GpsFix> gpsFixes = reader.readFile();
+        ZhenAlgorithm algorithm = new ZhenAlgorithm(gpsFixes, 40 * 60 * 1000, 500, false);
+        ArrayList<StayPoint> stayPoints = algorithm.extractStayPoints();
+//        System.out.println("Fixes are " + gpsFixes.size());
+//        ArrayList<StayPoint> stayPoints = new ArrayList<>();
+//        for (GpsFix fix : gpsFixes) {
+//            StayPoint stayPoint = algorithm.processFix(fix);
+//            if (stayPoint != null) {
+//                stayPoints.add(stayPoint);
+//            }
+//        }
+//
+//        StayPoint stayPoint = algorithm.processLastPart();
+//        if (stayPoint != null) {
+//            stayPoints.add(stayPoint);
+//        }
+
+        for (StayPoint stayPoint : stayPoints) {
+            System.out.println(stayPoint);
+        }
+
+        StayPointCsvWriter writer = new StayPointCsvWriter("c:\\Users\\rafael\\Desktop\\stay-points-offline-testing-nexus-2.csv", stayPoints);
+        writer.writeFile();
 
     }
 

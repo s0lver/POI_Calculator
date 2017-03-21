@@ -17,8 +17,8 @@ public class SmartphoneFixesFileReader extends GPSFixesFileReader {
     // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
 
-    public SmartphoneFixesFileReader(String path) {
-        super(path, false);
+    public SmartphoneFixesFileReader(String path, boolean skipFirstLine) {
+        super(path, skipFirstLine);
     }
 
     @Override

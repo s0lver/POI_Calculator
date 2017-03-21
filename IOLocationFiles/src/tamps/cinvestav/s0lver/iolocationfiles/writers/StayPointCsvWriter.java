@@ -10,7 +10,8 @@ import java.util.Locale;
 public class StayPointCsvWriter {
     private String filepath;
     private ArrayList<StayPoint> stayPoints;
-    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+//    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 
     public StayPointCsvWriter(String filepath, ArrayList<StayPoint> stayPoints) {
         this.filepath = filepath;

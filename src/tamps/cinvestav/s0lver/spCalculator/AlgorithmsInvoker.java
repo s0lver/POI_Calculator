@@ -26,8 +26,8 @@ public class AlgorithmsInvoker {
         String pathPolicyTwo = "C:\\Users\\rafael\\desktop\\tmp\\exp\\sp-2\\registros.csv";
         String pathGpsLogger = "C:\\Users\\rafael\\desktop\\tmp\\exp\\logger\\exported-20_28-10-2015.csv";
 
-        GPSFixesFileReader sfrPolicyOne = new SmartphoneFixesFileReader(pathPolicyOne);
-        GPSFixesFileReader sfrPolicyTwo = new SmartphoneFixesFileReader(pathPolicyTwo);
+        GPSFixesFileReader sfrPolicyOne = new SmartphoneFixesFileReader(pathPolicyOne, false);
+        GPSFixesFileReader sfrPolicyTwo = new SmartphoneFixesFileReader(pathPolicyTwo, false);
         GPSFixesFileReader glfr = new LoggerReaderFixes(pathGpsLogger);
 
         ArrayList<GpsFix> gpsFixesPolicyOne = sfrPolicyOne.readFile();

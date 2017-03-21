@@ -60,8 +60,8 @@ public class StayPoint {
         }
 
         StayPoint pointOfInterest = new StayPoint();
-        pointOfInterest.setLatitude((float) (sumLat / sizeOfListPortion));
-        pointOfInterest.setLongitude((float) (sumLng / sizeOfListPortion));
+        pointOfInterest.setLatitude(sumLat / sizeOfListPortion);
+        pointOfInterest.setLongitude(sumLng / sizeOfListPortion);
         pointOfInterest.setArrivalTime(list.get(i).getTimestamp());
         pointOfInterest.setDepartureTime(list.get(j).getTimestamp());
         pointOfInterest.setAmountFixes(sizeOfListPortion);
