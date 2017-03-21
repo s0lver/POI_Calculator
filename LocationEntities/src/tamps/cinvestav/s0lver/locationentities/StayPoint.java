@@ -29,8 +29,8 @@ public class StayPoint {
         StayPoint pointOfInterest = new StayPoint();
 
         int sizeOfList = list.size();
-        float sumLatitude = 0;
-        float sumLongitude = 0;
+        double sumLatitude = 0;
+        double sumLongitude = 0;
 
         for (int i = 0; i < sizeOfList; i++) {
             sumLatitude += list.get(i).getLatitude();
@@ -123,7 +123,7 @@ public class StayPoint {
 
     public String toString(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
-        return String.format("Lat: %f, Long: %f, Arr: %s, Dep: %s, Fixes: %d", getLatitude(), getLongitude(),
+        return String.format("Lat: %s, Long: %s, Arr: %s, Dep: %s, Fixes: %d", getLatitude(), getLongitude(),
                 simpleDateFormat.format(getArrivalTime()), simpleDateFormat.format(getDepartureTime()), getAmountFixes());
     }
 }

@@ -13,7 +13,7 @@ import java.util.Scanner;
 /***
  * Reads a file of location fixes
  */
-public class LocationFileReader{
+public class LocationFileReader {
     private final int LATITUDE = 1;
     private final int LONGITUDE = 2;
     private final int ALTITUDE = 3;
@@ -21,7 +21,8 @@ public class LocationFileReader{
     private final int SPEED = 5;
     private final int TIMESTAMP = 6;
 
-    public static final SimpleDateFormat GLOBAL_SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT_HUMAN = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT_FOR_SQLITE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
     public final static String TIMED_OUT_LOCATION_PROVIDER = "TimedOutLocation";
     private static final String CUSTOM_LOCATION_PROVIDER = "CustomProvider";
 
@@ -43,19 +44,20 @@ public class LocationFileReader{
         String[] slices = line.split(",");
         Date timestamp;
         try {
-            timestamp = GLOBAL_SIMPLE_DATE_FORMAT.parse(slices[TIMESTAMP]);
+//            timestamp = SIMPLE_DATE_FORMAT_HUMAN.parse(slices[TIMESTAMP]);
+            timestamp = SIMPLE_DATE_FORMAT_FOR_SQLITE.parse(slices[TIMESTAMP]);
         } catch (ParseException e) {
             e.printStackTrace();
             throw new RuntimeException("I couldn't parse the date, and I hate checked exceptions");
         }
         if (slices[0].equals("Si")) {
-                fix = new SimpleLocation(CUSTOM_LOCATION_PROVIDER);
-                fix.setLatitude(Double.parseDouble(slices[LATITUDE]));
-                fix.setLongitude(Double.parseDouble(slices[LONGITUDE]));
-                fix.setAltitude(Double.parseDouble(slices[ALTITUDE]));
-                fix.setAccuracy(Float.parseFloat(slices[ACCURACY]));
-                fix.setSpeed(Float.parseFloat(slices[SPEED]));
-        }else{
+            fix = new SimpleLocation(CUSTOM_LOCATION_PROVIDER);
+            fix.setLatitude(Double.parseDouble(slices[LATITUDE]));
+            fix.setLongitude(Double.parseDouble(slices[LONGITUDE]));
+            fix.setAltitude(Double.parseDouble(slices[ALTITUDE]));
+            fix.setAccuracy(Float.parseFloat(slices[ACCURACY]));
+            fix.setSpeed(Float.parseFloat(slices[SPEED]));
+        } else {
             fix = new SimpleLocation(TIMED_OUT_LOCATION_PROVIDER);
         }
         fix.setTime(timestamp.getTime());

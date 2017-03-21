@@ -13,10 +13,12 @@ import java.util.Locale;
 public class GpsFixCsvWriter {
     private final static String OBTAINED_YES = "Si";
     private final static String OBTAINED_NO = "No";
+    public final static SimpleDateFormat SIMPLE_DATE_FORMAT_HUMAN = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+//    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
 
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT_FOR_SQLITE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
     private String filepath;
     private List<GpsFix> gpsFixes;
-    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
 
     public GpsFixCsvWriter(String filepath, List<GpsFix> gpsFixes) {
         this.filepath = filepath;
@@ -36,6 +38,6 @@ public class GpsFixCsvWriter {
         String strObtained = gpsFix.isObtained() ? OBTAINED_YES : OBTAINED_NO;
         return strObtained + "," + gpsFix.getLatitude() + "," + gpsFix.getLongitude() + "," + gpsFix.getAltitude()
                 + "," + gpsFix.getAccuracy() + "," + gpsFix.getVelocity() + ","
-                + simpleDateFormat.format(gpsFix.getTimestamp());
+                + SIMPLE_DATE_FORMAT_HUMAN.format(gpsFix.getTimestamp());
     }
 }

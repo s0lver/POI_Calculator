@@ -38,6 +38,7 @@ public class ActivitiesDal {
                 int chargingType = rs.getInt("chargingType");
 
                 Date timestamp = QueryConstants.SIMPLE_DATE_FORMAT_FOR_SQLITE.parse(strTimestamp);
+//                Date timestamp = QueryConstants.SIMPLE_DATE_FORMAT_HUMAN.parse(strTimestamp);
                 DtoActivity dtoActivity = new DtoActivity(id, idDetectedActivity, latitude, longitude, altitude, accuracy, speed, timestamp.getTime(), batteryLevel, chargingType);
                 activities.add(dtoActivity);
 

@@ -23,6 +23,7 @@ public class DbAccessUsage {
         ActivitiesDal activitiesDal = new ActivitiesDal(connectionManager.getConnection());
         List<DtoActivity> activities = activitiesDal.getAll();
         CsvFromDbCreator creator = new CsvFromDbCreator(csvOutputFilePath, activities);
-        creator.writeFile();
+        //creator.writeFile();
+        creator.writeFileWithBatteryLevel();
     }
 }
