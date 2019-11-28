@@ -1,14 +1,21 @@
 package tamps.cinvestav.s0lver.spCalculator;
 
+import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.CabSpottingFileReader;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.ExportedDatabaseGpsFixesReader;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.GPSFixesFileReader;
 import tamps.cinvestav.s0lver.iolocationfiles.readers.gpsFixes.LoggerReaderFixes;
 import tamps.cinvestav.s0lver.iolocationfiles.writers.GpsFixCsvWriter;
 import tamps.cinvestav.s0lver.iolocationfiles.writers.StayPointCsvWriter;
+import tamps.cinvestav.s0lver.kmltranslator.entities.SpatialTimeElement;
+import tamps.cinvestav.s0lver.kmltranslator.translators.KmlFileCreator;
+import tamps.cinvestav.s0lver.kmltranslator.translators.LinedKmlCreator;
+import tamps.cinvestav.s0lver.kmltranslator.translators.PinnedKmlCreator;
+import tamps.cinvestav.s0lver.kmltranslator.translators.TimePinnedKmlCreator;
 import tamps.cinvestav.s0lver.locationentities.GpsFix;
 import tamps.cinvestav.s0lver.locationentities.StayPoint;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.live.buffered.ZhengBufferedAlgorithm;
 import tamps.cinvestav.s0lver.stayPointsCalculator.algorithms.offline.ZhenAlgorithm;
+import tamps.cinvestav.s0lver.stayPointsCalculator.gui.FrmMain;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -16,6 +23,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Main {
     public static final int ONE_MINUTE = 60 * 1000;
@@ -23,52 +31,72 @@ public class Main {
     public static void main(String[] args) throws IOException, ParseException, TransformerException, ParserConfigurationException {
 //         new FrmMain();
 
-//        String rawCsvLocationsFile = "/home/rafael/Documents/experiments/three/ground-truth-fixes.csv";
-//        String outputJsonFilePath = "/home/rafael/Desktop/file.json";
-
-
-//        String databaseInputFilePath = "C:\\Users\\Rafael\\Documents\\experiments\\five\\nexus-1.db";
-//        String csvOutputFilePath = "C:\\Users\\Rafael\\Desktop\\nexus-1.csv";
-//        new DbAccessUsage(databaseInputFilePath, csvOutputFilePath).translateActivitiesInDbToCsvLocationsFile();
+////        String rawCsvLocationsFile = "/home/rafael/Documents/experiments/three/ground-truth-fixes.csv";
+////        String outputJsonFilePath = "/home/rafael/Desktop/file.json";
 //
-//        String rawCsvLocationsFile = "C:\\Users\\Rafael\\Desktop\\nexus-1.csv";
-//        String outputJsonFilePath = "C:\\Users\\Rafael\\Desktop\\json-based-sensing.json";
-//        boolean generateFakeAccelerometerSamples = false;
-//        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).generateJsonFileFromSingleLocationFile(generateFakeAccelerometerSamples);
-//        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).playWithSerializeAndDeserialize(false);
-
-        //String databaseInputFilePath = "C:\\Users\\LTI\\Desktop\\nexus-2.db";
-        //new TrajectoryAnalyzerUsage(databaseInputFilePath).doWork();
-
-
-//        GpsFix fix_1 = new GpsFix(true, 23.72108268, -99.07762772, 0, 0, 0, new Date(System.currentTimeMillis()));
-//        GpsFix fix_2 = new GpsFix(true, 24.72108268, -99.07762772, 0, 0, 0, new Date(System.currentTimeMillis()));
-//        System.out.println("distance_to " + fix_1.distanceTo(fix_2));
-
-        GPSFixesFileReader reader = new ExportedDatabaseGpsFixesReader("c:\\Users\\rafael\\Documents\\experiments\\csv-auc-creator\\2\\nexus-1.csv", true);
-        ArrayList<GpsFix> gpsFixes = reader.readFile();
-        ZhenAlgorithm algorithm = new ZhenAlgorithm(gpsFixes, 40 * 60 * 1000, 500, false);
-        ArrayList<StayPoint> stayPoints = algorithm.extractStayPoints();
-//        System.out.println("Fixes are " + gpsFixes.size());
-//        ArrayList<StayPoint> stayPoints = new ArrayList<>();
-//        for (GpsFix fix : gpsFixes) {
-//            StayPoint stayPoint = algorithm.processFix(fix);
-//            if (stayPoint != null) {
-//                stayPoints.add(stayPoint);
-//            }
+//
+////        String databaseInputFilePath = "C:\\Users\\Rafael\\Documents\\experiments\\five\\nexus-1.db";
+////        String csvOutputFilePath = "C:\\Users\\Rafael\\Desktop\\nexus-1.csv";
+////        new DbAccessUsage(databaseInputFilePath, csvOutputFilePath).translateActivitiesInDbToCsvLocationsFile();
+////
+////        String rawCsvLocationsFile = "C:\\Users\\Rafael\\Desktop\\nexus-1.csv";
+////        String outputJsonFilePath = "C:\\Users\\Rafael\\Desktop\\json-based-sensing.json";
+////        boolean generateFakeAccelerometerSamples = false;
+////        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).generateJsonFileFromSingleLocationFile(generateFakeAccelerometerSamples);
+////        new JsonParserUsage(rawCsvLocationsFile, outputJsonFilePath).playWithSerializeAndDeserialize(false);
+//
+//        //String databaseInputFilePath = "C:\\Users\\LTI\\Desktop\\nexus-2.db";
+//        //new TrajectoryAnalyzerUsage(databaseInputFilePath).doWork();
+//
+//
+////        GpsFix fix_1 = new GpsFix(true, 23.72108268, -99.07762772, 0, 0, 0, new Date(System.currentTimeMillis()));
+////        GpsFix fix_2 = new GpsFix(true, 24.72108268, -99.07762772, 0, 0, 0, new Date(System.currentTimeMillis()));
+////        System.out.println("distance_to " + fix_1.distanceTo(fix_2));
+//
+//        GPSFixesFileReader reader = new ExportedDatabaseGpsFixesReader("c:\\Users\\rafael\\Documents\\experiments\\csv-auc-creator\\2\\nexus-1.csv", true);
+//        ArrayList<GpsFix> gpsFixes = reader.readFile();
+//        ZhenAlgorithm algorithm = new ZhenAlgorithm(gpsFixes, 40 * 60 * 1000, 500, false);
+//        ArrayList<StayPoint> stayPoints = algorithm.extractStayPoints();
+////        System.out.println("Fixes are " + gpsFixes.size());
+////        ArrayList<StayPoint> stayPoints = new ArrayList<>();
+////        for (GpsFix fix : gpsFixes) {
+////            StayPoint stayPoint = algorithm.processFix(fix);
+////            if (stayPoint != null) {
+////                stayPoints.add(stayPoint);
+////            }
+////        }
+////
+////        StayPoint stayPoint = algorithm.processLastPart();
+////        if (stayPoint != null) {
+////            stayPoints.add(stayPoint);
+////        }
+//
+//        for (StayPoint stayPoint : stayPoints) {
+//            System.out.println(stayPoint);
 //        }
 //
-//        StayPoint stayPoint = algorithm.processLastPart();
-//        if (stayPoint != null) {
-//            stayPoints.add(stayPoint);
-//        }
+//        StayPointCsvWriter writer = new StayPointCsvWriter("c:\\Users\\rafael\\Desktop\\stay-points-offline-testing-nexus-2.csv", stayPoints);
+//        writer.writeFile();
 
-        for (StayPoint stayPoint : stayPoints) {
-            System.out.println(stayPoint);
+        // generate a KML for the input files
+        String cabSpottingSampleFilePath = "c:\\Users\\rafael\\Downloads\\cabspottingdata.tar\\cabspottingdata\\new_objoyhi.txt";
+        CabSpottingFileReader cabSpottingFileReader = new CabSpottingFileReader(cabSpottingSampleFilePath, false);
+        ArrayList<GpsFix> fixes = cabSpottingFileReader.readFile();
+        List<SpatialTimeElement> listStElements = new ArrayList<>();
+        for (GpsFix f : fixes) {
+            listStElements.add(new SpatialTimeElement(f));
         }
 
-        StayPointCsvWriter writer = new StayPointCsvWriter("c:\\Users\\rafael\\Desktop\\stay-points-offline-testing-nexus-2.csv", stayPoints);
-        writer.writeFile();
+        String outputPath = "c:\\Users\\rafael\\Desktop\\kmlAsTimePinned.kml";
+        KmlFileCreator kmlFileCreator = new TimePinnedKmlCreator(outputPath, listStElements);
+        kmlFileCreator.create();
+        outputPath = "c:\\Users\\rafael\\Desktop\\kmlAsPinned.kml";
+        kmlFileCreator = new PinnedKmlCreator(outputPath, listStElements);
+        kmlFileCreator.create();
+        outputPath = "c:\\Users\\rafael\\Desktop\\kmlAsLine.kml";
+        kmlFileCreator = new LinedKmlCreator(outputPath, listStElements);
+        kmlFileCreator.create();
+
 
     }
 

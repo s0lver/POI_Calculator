@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /***
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  * Can be seen in Google Earth
  */
 public class PinnedKmlCreator extends KmlFileCreator {
-    protected PinnedKmlCreator(String outputFilename, ArrayList<SpatialTimeElement> spatialTimeElements) {
+    public PinnedKmlCreator(String outputFilename, List<SpatialTimeElement> spatialTimeElements) {
         super(outputFilename, spatialTimeElements);
     }
 
@@ -48,7 +49,7 @@ public class PinnedKmlCreator extends KmlFileCreator {
         return placemarkElement;
     }
 
-    private Element createPointElement(SpatialTimeElement spatialTimeElement){
+    private Element createPointElement(SpatialTimeElement spatialTimeElement) {
         Element pointElement = dom.createElement("Point");
 
         String latitude = String.valueOf(spatialTimeElement.getLatitude());
@@ -79,7 +80,7 @@ public class PinnedKmlCreator extends KmlFileCreator {
 
         String arrivalTS = dateFormatInKML.format(spatialTimeElement.getArrivalTime());
 
-        if (spatialTimeElement.isStayPoint()){
+        if (spatialTimeElement.isStayPoint()) {
             Element dataArrivalTime = createDataElement("Arrival time", arrivalTS);
 
             String departureTS = dateFormatInKML.format(spatialTimeElement.getDepartureTime());
@@ -87,7 +88,7 @@ public class PinnedKmlCreator extends KmlFileCreator {
 
             extendedDataElement.appendChild(dataArrivalTime);
             extendedDataElement.appendChild(dataDepartureTime);
-        }else{
+        } else {
             Element dataTimestamp = createDataElement("Timestamp", arrivalTS);
             extendedDataElement.appendChild(dataTimestamp);
         }
@@ -95,7 +96,7 @@ public class PinnedKmlCreator extends KmlFileCreator {
         return extendedDataElement;
     }
 
-    public static PinnedKmlCreator createForGpsFixes(String outputFilename, ArrayList<GpsFix> gpsFixes){
+    public static PinnedKmlCreator createForGpsFixes(String outputFilename, ArrayList<GpsFix> gpsFixes) {
         ArrayList<SpatialTimeElement> spatialTimeElements = convertGpsFixesToSpatialTimeElements(gpsFixes);
         return new PinnedKmlCreator(outputFilename, spatialTimeElements);
     }

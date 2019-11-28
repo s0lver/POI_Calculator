@@ -20,14 +20,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class KmlFileCreator {
-    protected ArrayList<SpatialTimeElement> spatialTimeElements;
+    protected List<SpatialTimeElement> spatialTimeElements;
     protected String outputFilename;
     protected Document dom;
     protected final SimpleDateFormat dateFormatInKML = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    KmlFileCreator(String outputFilename, ArrayList<SpatialTimeElement> spatialTimeElements) {
+    KmlFileCreator(String outputFilename, List<SpatialTimeElement> spatialTimeElements) {
         this.outputFilename = outputFilename;
         this.spatialTimeElements = spatialTimeElements;
     }
@@ -44,7 +45,7 @@ public abstract class KmlFileCreator {
         dom.getDocumentElement().appendChild(root);
     }
 
-    protected Element getRootElement(){
+    protected Element getRootElement() {
         return (Element) dom.getDocumentElement().getFirstChild();
     }
 

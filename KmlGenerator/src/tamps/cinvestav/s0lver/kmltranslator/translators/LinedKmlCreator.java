@@ -9,13 +9,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LinedKmlCreator extends KmlFileCreator {
     private String coordinates;
     private final String LINE_STYLE_NAME = "theline";
     private final String LINE_COLOR = "FF00FFFF";
 
-    private LinedKmlCreator(String outputFilename, ArrayList<SpatialTimeElement> spatialTimeElements) {
+    public LinedKmlCreator(String outputFilename, List<SpatialTimeElement> spatialTimeElements) {
         super(outputFilename, spatialTimeElements);
     }
 
@@ -32,7 +33,7 @@ public class LinedKmlCreator extends KmlFileCreator {
     /***
      * Remember that for the lined kml files, there is only a HUGE list of locations in CSV style
      */
-    private void buildCoordinatesList(){
+    private void buildCoordinatesList() {
         StringBuilder sbCoordinates = new StringBuilder();
 
         for (SpatialTimeElement spatialTimeElement : spatialTimeElements) {
@@ -133,7 +134,7 @@ public class LinedKmlCreator extends KmlFileCreator {
         return (Element) placemark.getElementsByTagName("LineString").item(0);
     }
 
-    public static LinedKmlCreator createForGpsFixes(String outputFilename, ArrayList<GpsFix> gpsFixes){
+    public static LinedKmlCreator createForGpsFixes(String outputFilename, ArrayList<GpsFix> gpsFixes) {
         ArrayList<SpatialTimeElement> spatialTimeElements = convertGpsFixesToSpatialTimeElements(gpsFixes);
         return new LinedKmlCreator(outputFilename, spatialTimeElements);
     }

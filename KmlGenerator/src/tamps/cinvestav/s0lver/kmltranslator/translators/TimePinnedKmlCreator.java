@@ -9,13 +9,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 /***
  * This class extends the PinnedKmlCreator by adding time information.
  * It can be "played" in Google Earth
  */
 public class TimePinnedKmlCreator extends PinnedKmlCreator {
-    private TimePinnedKmlCreator(String outputFilename, ArrayList<SpatialTimeElement> spatialTimeElements) {
+    public TimePinnedKmlCreator(String outputFilename, List<SpatialTimeElement> spatialTimeElements) {
         super(outputFilename, spatialTimeElements);
     }
 
@@ -50,7 +51,7 @@ public class TimePinnedKmlCreator extends PinnedKmlCreator {
         return timestampElement;
     }
 
-    public static TimePinnedKmlCreator createForGpsFixes(String outputFilename, ArrayList<GpsFix> gpsFixes){
+    public static TimePinnedKmlCreator createForGpsFixes(String outputFilename, ArrayList<GpsFix> gpsFixes) {
         ArrayList<SpatialTimeElement> spatialTimeElements = convertGpsFixesToSpatialTimeElements(gpsFixes);
         return new TimePinnedKmlCreator(outputFilename, spatialTimeElements);
     }
